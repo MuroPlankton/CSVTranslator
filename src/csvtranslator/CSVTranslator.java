@@ -15,6 +15,7 @@ public class CSVTranslator {
 
     public static void main(String[] args) {
         // TODO code application logic here
+
         System.out.println("args[0]: " + args[0] + ", args[1]: " + args[1]);    
         csvReader();
 
@@ -50,6 +51,9 @@ public class CSVTranslator {
                 }
             }
         }
+
+
+
 
 
     }
