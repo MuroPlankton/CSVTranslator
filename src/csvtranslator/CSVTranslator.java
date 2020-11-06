@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author s1800870
@@ -13,45 +15,45 @@ public class CSVTranslator {
     /**
      * @param args the command line arguments
      */
-    private int linesHandled = 0;
-    static String lineToModify = "", modifiedLine = "";
-    static String[] lineHandler;
+    private static int linesHandled = 0;
+    static String lineToModify = "", modifiedLine = "", outputPlattform = "", language = "";
+    static List<String> lineHandler;
     static int key = 0, value = 0;
 
     public static void main(String[] args) {
         // TODO code application logic here
-        String fileName = args[0], outputPlattform = args[1], language = args[2];
-        csvReader();
+        String fileName = args[0];
+        outputPlattform = args[1];
+        language = args[2];
+        System.out.println("<resources>");
+        csvReader(fileName);
+        System.out.println("<resources>");
     }
 
     private static void dataHandler(String line) {
-
+        lineHandler = Arrays.asList(line.split(","));
+        if (linesHandled == 0) {
+            key = lineHandler.indexOf(outputPlattform);
+            value = lineHandler.indexOf(language);
+        } else {
+            System.out.println("<string name=\"" + lineHandler.get(key) + "\">" + lineHandler.get(value) + "</String>");
+        }
+        linesHandled++;
     }
 
-    private static void csvReader() {
-        String csvFile = "C:\\Users\\s1800885\\Documents\\CSVTranslator\\src\\csvtranslator\\CSVdata.csv";
+    private static void csvReader(String fileName) {
         BufferedReader br = null;
         String line = "";
         String splitter = ",";
 
-        
-        
         try {
-            br = new BufferedReader(new FileReader(csvFile));
+            br = new BufferedReader(new FileReader(fileName));
 
             while ((line = br.readLine()) != null) {
 
                 String[] data = line.split(splitter);
-                
-                for(int i = 0; i < data.length; i++){
-                    System.out.print(data[i] + ", ");
-                    if(i == data.length -1){
-                        System.out.println("");
-                    }
-                }
-
+                dataHandler(line);
             }
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
