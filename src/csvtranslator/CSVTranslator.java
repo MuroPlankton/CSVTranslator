@@ -38,6 +38,7 @@ public class CSVTranslator {
         } else {
             System.out.println("<string name=\"" + lineHandler.get(key) + "\">" + lineHandler.get(value) + "</String>");
         }
+        linesHandled++;
     }
 
     private static void csvReader(String fileName) {
