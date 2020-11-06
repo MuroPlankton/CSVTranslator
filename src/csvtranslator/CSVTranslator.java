@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package csvtranslator;
 
 import java.io.BufferedWriter;
@@ -14,52 +9,31 @@ import java.util.logging.Logger;
 import javax.swing.text.Document;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 
 /**
- *
  * @author s1800870
  */
 public class CSVTranslator {
 
-    /**
-     * @param args the command line arguments
-     */
-    static FileWriter writer;
+    private static CsvHandler csvHandler;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         // TODO code application logic here
-        beginWriting();
-        int i = 0;
-
-        while (i < 5) {
-            writeOneRow();
-            i++;
-        }
-        stopWriting();
+        
+        csvHandler = new CsvHandler(args[0], args[1], args[2]);
+        csvHandler.beginWriting();
+        
+        csvHandler.csvReader(csvHandler.fileName);
+        csvHandler.stopWriting();
+        
     }
 
-    public static void beginWriting() {
-        File file = new File("strings.xml");
-
-        try {
-            //If the true is added here, the writer doesn't overwrite the existing text
-            writer = new FileWriter(file, true);
-            System.out.println("Tiedostoon on kirjoitettu");
-        } catch (IOException e) {
-            System.out.println("Virhe");
-        }
-    }
-
-    public static void writeOneRow() throws IOException {
-        writer.write("hei" + System.lineSeparator());
-    }
-
-    public static void stopWriting() {
-        try {
-            writer.close();
-            System.out.println("Lopetus");
-        } catch (IOException e) {
-            System.out.println("Virhe");
-        }
-    }
 }
