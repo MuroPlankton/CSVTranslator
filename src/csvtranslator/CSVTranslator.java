@@ -34,15 +34,22 @@ public class CSVTranslator {
         String line = "";
         String splitter = ",";
 
+        
+        
         try {
             br = new BufferedReader(new FileReader(csvFile));
 
             while ((line = br.readLine()) != null) {
 
                 String[] data = line.split(splitter);
+                
+                for(int i = 0; i < data.length; i++){
+                    System.out.print(data[i] + ", ");
+                    if(i == data.length -1){
+                        System.out.println("");
+                    }
+                }
 
-                //       System.out.println("<String name=“”" + data[0] + ">" + data[2] + "</string>");
-                System.out.println(data[0] + ", " + data[1] + ", " + data[2] + ", " + data[3]);
             }
 
         } catch (FileNotFoundException e) {
