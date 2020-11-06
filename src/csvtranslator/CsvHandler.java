@@ -26,7 +26,8 @@ public class CsvHandler {
     private String lineToModify = "";
     private String modifiedLine = "";
     private List<String> lineHandler;
-    private int key = 0, value = 0;
+    private int value = 0;
+    public int key = 0;
 
     public String fileName;
     private String os;
@@ -44,8 +45,15 @@ public class CsvHandler {
         if (linesHandled == 0) {
             key = lineHandler.indexOf(os);
             value = lineHandler.indexOf(language);
+            writeOneRow((key == 0) ? "<resources>" : "");
         } else {
-            writeOneRow("<string name=\"" + lineHandler.get(key) + "\">" + lineHandler.get(value) + "</String>");
+            switch(key) {
+                case 0:
+                    writeOneRow("<string name=\"" + lineHandler.get(key) + "\">" + lineHandler.get(value) + "</String>");
+                    break;
+                case 1:
+                    writeOneRow("\"" + lineHandler.get(key) + "\" = \"" + lineHandler.get(value) + "\"");
+            }
         }
         linesHandled++;
     }
