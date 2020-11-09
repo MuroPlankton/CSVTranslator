@@ -23,6 +23,7 @@ public class CSVTranslator {
         csvHandler.writeOneRow((csvHandler.key == 0) ? "</resources>" : "");
         csvHandler.stopWriting();
 
+
         translatorUI = new TranslatorUI();
         SwingUtilities.invokeLater(translatorUI.getRunUI());
     }
