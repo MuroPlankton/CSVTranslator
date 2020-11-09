@@ -1,9 +1,9 @@
 package csvtranslator;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 class TranslatorUI {
@@ -16,7 +16,8 @@ class TranslatorUI {
     private JButton closeButton;
     private JComboBox osDropDown;
     private JTextField languageTextField;
-    private JTextField filePath;
+    private JLabel filePath;
+    private String chosenPath;
 
     private Runnable runUI = () -> {
         startUI();
@@ -50,15 +51,24 @@ class TranslatorUI {
         JLabel chooseFile = new JLabel("Choose file:");
         findFileButton = new JButton("Search");
 
-        filePath = new JTextField();
-        filePath.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-
-        filePath.setEditable(false);
-
         filePanel.add(chooseFile);
         filePanel.add(findFileButton);
         filePanel.add(filePath);
         choosingPanel.add(filePanel);
+
+        findFileButton.addActionListener(e -> {
+            fileChooser();
+            System.out.println("search button pressed");
+        });
+
+        filePanel.add(chooseFile);
+        filePanel.add(findFileButton);
+        choosingPanel.add(filePanel);
+
+        JPanel pathPanel = new JPanel();
+        filePath = new JLabel(".");
+        pathPanel.add(filePath);
+        choosingPanel.add(pathPanel);
 
         JPanel osPanel = new JPanel();
         JLabel targetOS = new JLabel("Target OS:");
@@ -103,6 +113,18 @@ class TranslatorUI {
         container.add(mainFrame);
     }
 
+    private void fileChooser() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("CSV files only", "csv"));
+        int returnVal = fileChooser.showOpenDialog(mainFrame);
+
+        if (returnVal == fileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            chosenPath = file.getAbsolutePath();
+            filePath.setText(chosenPath);
+            System.out.println(chosenPath);
+        }
+    }
     private void createMethod() throws IOException {
         String osSelected = osDropDown.getSelectedItem().toString();
         String languageSelected = languageTextField.getText();
