@@ -1,2 +1,6 @@
 /build/
 /dist/
+strings.xml
+.idea/
+out/
+*.iml
