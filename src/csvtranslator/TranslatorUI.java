@@ -6,16 +6,35 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-class TranslatorUI implements Runnable {
+class TranslatorUI {
 
-    private JFrame mainFrame;
     private static CsvHandler csvHandler;
 
-    public void run() {
+    private JFrame mainFrame;
+    private JButton findFileButton;
+    private JButton createButton;
+    private JButton closeButton;
+    private JComboBox osDropDown;
+    private JTextField languageTextField;
+    private JTextField filePath;
+
+    private Runnable runUI = () -> {
+        startUI();
+    };
+
+    public Runnable getRunUI() {
+        return runUI;
+    }
+
+    private void startUI() {
+        createUIComponents();
+    }
+
+    private void createUIComponents() {
         Container container = new Container();
 
         mainFrame = new JFrame("Translator");
-        mainFrame.setPreferredSize(new Dimension(200, 220));
+        mainFrame.setPreferredSize(new Dimension(190, 270));
 
         JPanel mainPanel = new JPanel(new BorderLayout());
 
@@ -31,16 +50,26 @@ class TranslatorUI implements Runnable {
 
         JPanel filePanel = new JPanel();
         JLabel chooseFile = new JLabel("Choose file:");
-        JButton findFileButton = new JButton("Search");
+        findFileButton = new JButton("Search");
+
+        filePath = new JTextField();
+        filePath.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+
+
+
+        filePath.setEditable(false);
 
         filePanel.add(chooseFile);
         filePanel.add(findFileButton);
+        filePanel.add(filePath
+        );
         choosingPanel.add(filePanel);
+
 
         JPanel osPanel = new JPanel();
         JLabel targetOS = new JLabel("Target OS:");
         String OS[] = {"android", "ios"};
-        JComboBox osDropDown = new JComboBox(OS);
+        osDropDown = new JComboBox(OS);
 
         osPanel.add(targetOS);
         osPanel.add(osDropDown);
@@ -48,7 +77,7 @@ class TranslatorUI implements Runnable {
 
         JPanel languagePanel = new JPanel();
         JLabel language = new JLabel("Language:");
-        JTextField languageTextField = new JTextField(5);
+        languageTextField = new JTextField(5);
 
         languagePanel.add(language);
         languagePanel.add(languageTextField);
@@ -58,28 +87,26 @@ class TranslatorUI implements Runnable {
 
         JPanel buttonPanel = new JPanel();
 
-        JButton createBtn = new JButton("Create");
-        JButton closeBtn = new JButton("Close");
-        buttonPanel.add(createBtn);
-        buttonPanel.add(closeBtn);
+        createButton = new JButton("Create");
+        closeButton = new JButton("Close");
+        buttonPanel.add(createButton);
+        buttonPanel.add(closeButton);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-        createBtn.addActionListener(e -> {
+        createButton.addActionListener(e -> {
             //createMethod();
         });
 
         mainFrame.setResizable(false);
-
         mainFrame.add(mainPanel);
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.pack();
         mainFrame.setVisible(true);
         container.add(mainFrame);
-
     }
 
     private void createMethod() throws IOException {
-        csvHandler = new CsvHandler(args[0], args[1], args[2]);
+        //csvHandler = new CsvHandler(args[0], args[1], args[2]);
         csvHandler.beginWriting();
         csvHandler.csvReader(csvHandler.fileName);
         csvHandler.writeOneRow((csvHandler.key == 0) ? "</resources>" : "");

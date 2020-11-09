@@ -24,7 +24,7 @@ public class CSVTranslator {
         csvHandler.stopWriting();
 
         translatorUI = new TranslatorUI();
-        SwingUtilities.invokeLater(translatorUI);
+        SwingUtilities.invokeLater(translatorUI.getRunUI());
     }
 
 }
