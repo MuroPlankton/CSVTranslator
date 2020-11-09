@@ -43,6 +43,7 @@ public class CsvHandler {
             key = lineHandler.indexOf(os);
             value = lineHandler.indexOf(language);
         } else {
+            
             System.out.println("<string name=\"" + lineHandler.get(key) + "\">" + lineHandler.get(value) + "</String>");
         }
         linesHandled++;
