@@ -16,7 +16,7 @@ class TranslatorUI {
     private JButton closeButton;
     private JComboBox osDropDown;
     private JTextField languageTextField;
-    private JLabel filePath;
+    private JTextArea filePath;
     private String chosenPath;
 
     private Runnable runUI = () -> {
@@ -63,7 +63,10 @@ class TranslatorUI {
         choosingPanel.add(filePanel);
 
         JPanel pathPanel = new JPanel();
-        filePath = new JLabel(".");
+        filePath = new JTextArea(".");
+        filePath.setLineWrap(true);
+        filePath.setEditable(false);
+        filePath.setBorder(null);
         pathPanel.add(filePath);
         choosingPanel.add(pathPanel);
 
