@@ -32,7 +32,6 @@ class TranslatorUI {
 
     private void createUIComponents() {
         Container container = new Container();
-
         mainFrame = new JFrame("Translator");
         mainFrame.setPreferredSize(new Dimension(190, 270));
 
@@ -42,7 +41,6 @@ class TranslatorUI {
         JLabel title = new JLabel("CSV Translator");
         titleFrame.add(title);
         mainPanel.add(titleFrame, BorderLayout.NORTH);
-
 
         JPanel choosingPanel = new JPanel();
         BoxLayout layout = new BoxLayout(choosingPanel, BoxLayout.Y_AXIS);
@@ -55,16 +53,12 @@ class TranslatorUI {
         filePath = new JTextField();
         filePath.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 
-
-
         filePath.setEditable(false);
 
         filePanel.add(chooseFile);
         filePanel.add(findFileButton);
-        filePanel.add(filePath
-        );
+        filePanel.add(filePath);
         choosingPanel.add(filePanel);
-
 
         JPanel osPanel = new JPanel();
         JLabel targetOS = new JLabel("Target OS:");
@@ -94,7 +88,11 @@ class TranslatorUI {
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         createButton.addActionListener(e -> {
-            //createMethod();
+            try {
+                createMethod();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         });
 
         mainFrame.setResizable(false);
@@ -106,12 +104,13 @@ class TranslatorUI {
     }
 
     private void createMethod() throws IOException {
-        //csvHandler = new CsvHandler(args[0], args[1], args[2]);
+        String osSelected = osDropDown.getSelectedItem().toString();
+        String languageSelected = languageTextField.getText();
+
+        csvHandler = new CsvHandler("file", osSelected, languageSelected);
         csvHandler.beginWriting();
         csvHandler.csvReader(csvHandler.fileName);
         csvHandler.writeOneRow((csvHandler.key == 0) ? "</resources>" : "");
         csvHandler.stopWriting();
     }
-
-
 }
