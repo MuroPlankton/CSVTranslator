@@ -1,11 +1,15 @@
 package csvtranslator;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicOptionPaneUI;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
 class TranslatorUI implements Runnable {
     private JFrame mainFrame;
+
+    private static CsvHandler csvHandler;
 
     public void run() {
         Container container = new Container();
@@ -31,9 +35,7 @@ class TranslatorUI implements Runnable {
         choosingPanel.add(filePanel, BorderLayout.NORTH);
         mainPanel.add(choosingPanel);
 
-        JPanel osPanel = new JPanel();
-
-
+        //JPanel osPanel = new JPanel();
 
         //mainPanel.add(new JLabel("Choose file:"));
 
@@ -45,6 +47,4 @@ class TranslatorUI implements Runnable {
         container.add(mainFrame);
 
     }
-
-
 }
