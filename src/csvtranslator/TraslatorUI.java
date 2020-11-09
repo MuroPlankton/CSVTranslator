@@ -32,7 +32,7 @@ class TranslatorUI implements Runnable {
         mainPanel.add(choosingPanel);
 
         JPanel osPanel = new JPanel();
-        
+
 
 
         //mainPanel.add(new JLabel("Choose file:"));

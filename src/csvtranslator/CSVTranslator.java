@@ -1,6 +1,8 @@
 package csvtranslator;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -25,6 +27,13 @@ public class CSVTranslator {
 
         traslatorUI = new TranslatorUI();
         SwingUtilities.invokeLater(traslatorUI);
+
+        
+        String osUsed = System.getProperty("os.name").toLowerCase();
+        if (Desktop.isDesktopSupported()) {
+            Desktop desktop = Desktop.getDesktop();
+            desktop.open(new File((osUsed.indexOf("win") >= 0) ? "C:\\Windows\\explorer.exe" : "~")); // Throws
+        }
     }
 
 }
