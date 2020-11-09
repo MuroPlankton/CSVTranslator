@@ -1,0 +1,84 @@
+
+
+
+
+
+"choicely_ok" = "Ok"
+"choicely_yes" = "Yes"
+
+
+"choicely_ok" = "Ok"
+"choicely_yes" = "Yes"
+
+
+<<<<<<< HEAD
+"choicely_ok" = "Ok"
+"choicely_yes" = "Yes"
+
+
+"choicely_ok" = "Ok"
+"choicely_yes" = "Yes"
+
+
+"choicely_ok" = "Ok"
+"choicely_yes" = "Yes"
+
+
+"choicely_ok" = "Ok"
+"choicely_yes" = "Yes"
+
+
+"choicely_ok" = "Ok"
+"choicely_yes" = "Yes"
+
+
+"choicely_ok" = "Ok"
+"choicely_yes" = "Yes"
+
+
+"choicely_ok" = "Ok"
+"choicely_yes" = "Yes"
+
+
+"choicely_ok" = "Ok"
+"choicely_yes" = "Yes"
+
+
+<string name="choicely_ok">Ok</String>
+<string name="choicely_yes">Yes</String>
+
+
+"choicely_ok" = "Ok"
+"choicely_yes" = "Yes"
+
+=======
+
+
+
+
+
+<string name="choicely_ok">Ok</String>
+<string name="choicely_yes">Yes</String>
+</resources>
+<string name="choicely_ok">Ok</String>
+<string name="choicely_yes">Yes</String>
+</resources>
+
+
+
+
+
+
+
+
+
+
+<resources>
+<string name="choicely_ok">Ok</String>
+<string name="choicely_yes">Yes</String>
+</resources>
+<resources>
+<string name="choicely_ok">Ok</String>
+<string name="choicely_yes">Yes</String>
+</resources>
+>>>>>>> 5b2ae5c63d3ac9916c6d2242454b89686e963705

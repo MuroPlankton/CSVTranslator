@@ -27,10 +27,11 @@ public class CSVTranslator {
 
     public static void main(String[] args) throws IOException {
         // TODO code application logic here
-        
+
+
+
         csvHandler = new CsvHandler(args[0], args[1], args[2]);
         csvHandler.beginWriting();
-        
         csvHandler.csvReader(csvHandler.fileName);
         csvHandler.writeOneRow((csvHandler.key == 0) ? "</resources>" : "");
         csvHandler.stopWriting();

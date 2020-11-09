@@ -16,10 +16,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- *
- * @author s1800885
- */
+
 public class CsvHandler {
 
     private int linesHandled = 0;
@@ -45,17 +42,20 @@ public class CsvHandler {
             key = lineHandler.indexOf("android");
             value = lineHandler.indexOf(language);
             writeOneRow((key == 0) ? "<resources>" : "");
-        } else {            
+
+        } else {
             String osKey = lineHandler.get(key);
             String langValue = lineHandler.get(value);
-            switch(key) {
+            switch (key) {
                 case 0:
                     writeOneRow(String.format("<string name=\"%s\">%s</String>", osKey, langValue));
                     break;
                 case 1:
                     writeOneRow(String.format("\"%s\" = \"%s\"", osKey, langValue));
             }
+
         }
+
         linesHandled++;
     }
 
@@ -66,9 +66,9 @@ public class CsvHandler {
 
         try {
 
-            
+
             InputStreamReader inputReader = new InputStreamReader(getClass().getResourceAsStream(fileName));
-            
+
             br = new BufferedReader(inputReader);
 
             while ((line = br.readLine()) != null) {
@@ -91,7 +91,7 @@ public class CsvHandler {
         }
 
     }
-    
+
     public void beginWriting() {
         File file = new File("strings.xml");
 
@@ -103,7 +103,7 @@ public class CsvHandler {
             System.out.println("Virhe");
         }
     }
-    
+
     public void writeOneRow(String row) throws IOException {
         writer.write(row + System.lineSeparator());
     }
