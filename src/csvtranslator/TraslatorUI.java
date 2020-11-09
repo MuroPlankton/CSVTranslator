@@ -1,11 +1,14 @@
 package csvtranslator;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicOptionPaneUI;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.io.File;
 
 class TranslatorUI implements Runnable {
     private JFrame mainFrame;
+
+    private String chosenPath;
 
     public void run() {
         Container container = new Container();
@@ -25,15 +28,18 @@ class TranslatorUI implements Runnable {
 
         JPanel filePanel = new JPanel();
         JLabel chooseFile = new JLabel("Choose file:");
-        JComboBox fileDropDown = new JComboBox();
+        JButton fileButton = new JButton();
+        fileButton.setText("Choose file");
         filePanel.add(chooseFile);
-        filePanel.add(fileDropDown);
+        filePanel.add(fileButton);
         choosingPanel.add(filePanel, BorderLayout.NORTH);
         mainPanel.add(choosingPanel);
 
         JPanel osPanel = new JPanel();
 
-
+        fileButton.addActionListener(e -> {
+            chosenPath = fileChooser();
+        });
 
         //mainPanel.add(new JLabel("Choose file:"));
 
@@ -44,6 +50,19 @@ class TranslatorUI implements Runnable {
         mainFrame.setVisible(true);
         container.add(mainFrame);
 
+    }
+
+    private String fileChooser() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("CSV files only", "csv"));
+        int returnVal = fileChooser.showOpenDialog(mainFrame);
+
+        if (returnVal == fileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            chosenPath = file.getAbsolutePath();
+            System.out.println(chosenPath);
+        }
+        return "";
     }
 
 
