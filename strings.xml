@@ -6,3 +6,37 @@
 "choicely_ok" = "Ok"
 "choicely_yes" = "Yes"
 
+
+"choicely_ok" = "Ok"
+"choicely_yes" = "Yes"
+
+
+
+
+
+
+
+<string name="choicely_ok">Ok</String>
+<string name="choicely_yes">Yes</String>
+</resources>
+<string name="choicely_ok">Ok</String>
+<string name="choicely_yes">Yes</String>
+</resources>
+
+
+
+
+
+
+
+
+
+
+<resources>
+<string name="choicely_ok">Ok</String>
+<string name="choicely_yes">Yes</String>
+</resources>
+<resources>
+<string name="choicely_ok">Ok</String>
+<string name="choicely_yes">Yes</String>
+</resources>

@@ -25,7 +25,6 @@ public class CsvHandler {
     private int linesHandled = 0;
     private String lineToModify = "";
     private String modifiedLine = "";
-    private List<String> lineHandler;
     private int value = 0;
     public int key = 0;
 
@@ -41,18 +40,20 @@ public class CsvHandler {
     }
 
     public void dataHandler(String line) throws IOException {
-        lineHandler = Arrays.asList(line.split(","));
+        List<String> lineHandler = Arrays.asList(line.split(","));
         if (linesHandled == 0) {
-            key = lineHandler.indexOf(os);
+            key = lineHandler.indexOf("android");
             value = lineHandler.indexOf(language);
             writeOneRow((key == 0) ? "<resources>" : "");
-        } else {
+        } else {            
+            String osKey = lineHandler.get(key);
+            String langValue = lineHandler.get(value);
             switch(key) {
                 case 0:
-                    writeOneRow("<string name=\"" + lineHandler.get(key) + "\">" + lineHandler.get(value) + "</String>");
+                    writeOneRow(String.format("<string name=\"%s\">%s</String>", osKey, langValue));
                     break;
                 case 1:
-                    writeOneRow("\"" + lineHandler.get(key) + "\" = \"" + lineHandler.get(value) + "\"");
+                    writeOneRow(String.format("\"%s\" = \"%s\"", osKey, langValue));
             }
         }
         linesHandled++;
