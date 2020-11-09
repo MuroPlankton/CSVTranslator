@@ -2,9 +2,14 @@ package csvtranslator;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
 
 class TranslatorUI implements Runnable {
+
     private JFrame mainFrame;
+    private static CsvHandler csvHandler;
 
     public void run() {
         Container container = new Container();
@@ -59,6 +64,10 @@ class TranslatorUI implements Runnable {
         buttonPanel.add(closeBtn);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
+        createBtn.addActionListener(e -> {
+            //createMethod();
+        });
+
         mainFrame.setResizable(false);
 
         mainFrame.add(mainPanel);
@@ -67,6 +76,14 @@ class TranslatorUI implements Runnable {
         mainFrame.setVisible(true);
         container.add(mainFrame);
 
+    }
+
+    private void createMethod() throws IOException {
+        csvHandler = new CsvHandler(args[0], args[1], args[2]);
+        csvHandler.beginWriting();
+        csvHandler.csvReader(csvHandler.fileName);
+        csvHandler.writeOneRow((csvHandler.key == 0) ? "</resources>" : "");
+        csvHandler.stopWriting();
     }
 
 
