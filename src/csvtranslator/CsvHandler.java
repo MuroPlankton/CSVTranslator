@@ -22,7 +22,6 @@ public class CsvHandler {
     private int linesHandled = 0;
     private String lineToModify = "";
     private String modifiedLine = "";
-    private List<String> lineHandler;
     private int value = 0;
     public int key = 0;
 
@@ -38,24 +37,25 @@ public class CsvHandler {
     }
 
     public void dataHandler(String line) throws IOException {
-        lineHandler = Arrays.asList(line.split(","));
+        List<String> lineHandler = Arrays.asList(line.split(","));
         if (linesHandled == 0) {
-            key = lineHandler.indexOf(os);
+            key = lineHandler.indexOf("android");
             value = lineHandler.indexOf(language);
             writeOneRow((key == 0) ? "<resources>" : "");
+
         } else {
-
-            System.out.println("<string name=\"" + lineHandler.get(key) + "\">" + lineHandler.get(value) + "</String>");
-
-            switch(key) {
+            String osKey = lineHandler.get(key);
+            String langValue = lineHandler.get(value);
+            switch (key) {
                 case 0:
-                    writeOneRow("<string name=\"" + lineHandler.get(key) + "\">" + lineHandler.get(value) + "</String>");
+                    writeOneRow(String.format("<string name=\"%s\">%s</String>", osKey, langValue));
                     break;
                 case 1:
-                    writeOneRow("\"" + lineHandler.get(key) + "\" = \"" + lineHandler.get(value) + "\"");
+                    writeOneRow(String.format("\"%s\" = \"%s\"", osKey, langValue));
             }
 
         }
+
         linesHandled++;
     }
 
@@ -66,9 +66,9 @@ public class CsvHandler {
 
         try {
 
-            
+
             InputStreamReader inputReader = new InputStreamReader(getClass().getResourceAsStream(fileName));
-            
+
             br = new BufferedReader(inputReader);
 
             while ((line = br.readLine()) != null) {
@@ -91,7 +91,7 @@ public class CsvHandler {
         }
 
     }
-    
+
     public void beginWriting() {
         File file = new File("strings.xml");
 
@@ -103,7 +103,7 @@ public class CsvHandler {
             System.out.println("Virhe");
         }
     }
-    
+
     public void writeOneRow(String row) throws IOException {
         writer.write(row + System.lineSeparator());
     }
