@@ -4,8 +4,11 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 
 class TranslatorUI {
+
+    private static CsvHandler csvHandler;
 
     private JFrame mainFrame;
     private JButton findFileButton;
@@ -91,6 +94,11 @@ class TranslatorUI {
         buttonPanel.add(closeButton);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
+        createButton.addActionListener(e -> {
+            //createMethod();
+        });
+
+        mainFrame.setResizable(false);
         mainFrame.add(mainPanel);
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.pack();
@@ -110,5 +118,11 @@ class TranslatorUI {
             System.out.println(chosenPath);
         }
     }
-
+    private void createMethod() throws IOException {
+        //csvHandler = new CsvHandler(args[0], args[1], args[2]);
+        csvHandler.beginWriting();
+        csvHandler.csvReader(csvHandler.fileName);
+        csvHandler.writeOneRow((csvHandler.key == 0) ? "</resources>" : "");
+        csvHandler.stopWriting();
+    }
 }
