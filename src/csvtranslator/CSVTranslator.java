@@ -1,5 +1,6 @@
 package csvtranslator;
 
+import javax.swing.*;
 import java.io.IOException;
 
 /**
@@ -7,10 +8,12 @@ import java.io.IOException;
  */
 public class CSVTranslator {
 
+    private static TranslatorUI traslatorUI;
+
+
     private static CsvHandler csvHandler;
 
     public static void main(String[] args) throws IOException {
-        // TODO code application logic here
 
 
 
@@ -19,7 +22,9 @@ public class CSVTranslator {
         csvHandler.csvReader(csvHandler.fileName);
         csvHandler.writeOneRow((csvHandler.key == 0) ? "</resources>" : "");
         csvHandler.stopWriting();
-        
+
+        traslatorUI = new TranslatorUI();
+        SwingUtilities.invokeLater(traslatorUI);
     }
 
 }
