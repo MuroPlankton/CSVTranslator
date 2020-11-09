@@ -39,7 +39,7 @@ public class CsvHandler {
     public void dataHandler(String line) throws IOException {
         List<String> lineHandler = Arrays.asList(line.split(","));
         if (linesHandled == 0) {
-            key = lineHandler.indexOf("android");
+            key = lineHandler.indexOf(os);
             value = lineHandler.indexOf(language);
             writeOneRow((key == 0) ? "<resources>" : "");
 
