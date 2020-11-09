@@ -1,8 +1,6 @@
 package csvtranslator;
 
 import javax.swing.*;
-import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 
 /**
@@ -10,7 +8,7 @@ import java.io.IOException;
  */
 public class CSVTranslator {
 
-    private static TranslatorUI traslatorUI;
+    private static TranslatorUI translatorUI;
 
 
     private static CsvHandler csvHandler;
@@ -25,15 +23,11 @@ public class CSVTranslator {
         csvHandler.writeOneRow((csvHandler.key == 0) ? "</resources>" : "");
         csvHandler.stopWriting();
 
-        traslatorUI = new TranslatorUI();
-        SwingUtilities.invokeLater(traslatorUI);
+        translatorUI = new TranslatorUI();
+        SwingUtilities.invokeLater(translatorUI);
 
-        
-        String osUsed = System.getProperty("os.name").toLowerCase();
-        if (Desktop.isDesktopSupported()) {
-            Desktop desktop = Desktop.getDesktop();
-            desktop.open(new File((osUsed.indexOf("win") >= 0) ? "C:\\Windows\\explorer.exe" : "~")); // Throws
-        }
+
+
     }
 
 }

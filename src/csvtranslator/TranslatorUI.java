@@ -10,7 +10,7 @@ class TranslatorUI implements Runnable {
         Container container = new Container();
 
         mainFrame = new JFrame("Translator");
-        mainFrame.setPreferredSize(new Dimension(300, 200));
+        mainFrame.setPreferredSize(new Dimension(200, 220));
 
         JPanel mainPanel = new JPanel(new BorderLayout());
 
@@ -26,14 +26,15 @@ class TranslatorUI implements Runnable {
 
         JPanel filePanel = new JPanel();
         JLabel chooseFile = new JLabel("Choose file:");
-        JComboBox fileDropDown = new JComboBox();
+        JButton findFileButton = new JButton("Search");
+
         filePanel.add(chooseFile);
-        filePanel.add(fileDropDown);
+        filePanel.add(findFileButton);
         choosingPanel.add(filePanel);
 
         JPanel osPanel = new JPanel();
         JLabel targetOS = new JLabel("Target OS:");
-        String OS[] = {"Android", "Ios"};
+        String OS[] = {"android", "ios"};
         JComboBox osDropDown = new JComboBox(OS);
 
         osPanel.add(targetOS);
