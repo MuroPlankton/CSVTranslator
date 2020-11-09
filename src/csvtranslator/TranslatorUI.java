@@ -53,7 +53,6 @@ class TranslatorUI {
 
         filePanel.add(chooseFile);
         filePanel.add(findFileButton);
-        filePanel.add(filePath);
         choosingPanel.add(filePanel);
 
         findFileButton.addActionListener(e -> {
@@ -129,7 +128,7 @@ class TranslatorUI {
         String osSelected = osDropDown.getSelectedItem().toString();
         String languageSelected = languageTextField.getText();
 
-        csvHandler = new CsvHandler("file", osSelected, languageSelected);
+        csvHandler = new CsvHandler(chosenPath, osSelected, languageSelected);
         csvHandler.beginWriting();
         csvHandler.csvReader(csvHandler.fileName);
         csvHandler.writeOneRow((csvHandler.key == 0) ? "</resources>" : "");
