@@ -48,7 +48,7 @@ public class CsvHandler {
             String langValue = lineHandler.get(value);
             switch (key) {
                 case 0:
-                    writeOneRow(String.format("<string name=\"%s\">%s</String>", osKey, langValue));
+                    writeOneRow(String.format("\t<string name=\"%s\">%s</String>", osKey, langValue));
                     break;
                 case 1:
                     writeOneRow(String.format("\"%s\" = \"%s\"", osKey, langValue));
@@ -67,9 +67,8 @@ public class CsvHandler {
         try {
 
 
-            InputStreamReader inputReader = new InputStreamReader(getClass().getResourceAsStream(fileName));
 
-            br = new BufferedReader(inputReader);
+            br = new BufferedReader(new FileReader(fileName));
 
             while ((line = br.readLine()) != null) {
 
