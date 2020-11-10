@@ -65,8 +65,6 @@ public class CsvHandler {
         String splitter = ",";
 
         try {
-
-
             InputStreamReader inputReader = new InputStreamReader(getClass().getResourceAsStream(fileName));
 
             br = new BufferedReader(inputReader);
