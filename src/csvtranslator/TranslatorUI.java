@@ -3,6 +3,8 @@ package csvtranslator;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -34,7 +36,7 @@ class TranslatorUI {
     private void createUIComponents() {
         Container container = new Container();
         mainFrame = new JFrame("Translator");
-        mainFrame.setPreferredSize(new Dimension(190, 270));
+        mainFrame.setPreferredSize(new Dimension(200, 290));
 
         JPanel mainPanel = new JPanel(new BorderLayout());
 
@@ -107,6 +109,10 @@ class TranslatorUI {
             }
         });
 
+        closeButton.addActionListener(e -> {
+            mainFrame.dispose();
+        });
+
         mainFrame.setResizable(false);
         mainFrame.add(mainPanel);
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -127,6 +133,7 @@ class TranslatorUI {
             System.out.println(chosenPath);
         }
     }
+
     private void createMethod() throws IOException {
         String osSelected = osDropDown.getSelectedItem().toString();
         String languageSelected = languageTextField.getText();

@@ -48,7 +48,7 @@ public class CsvHandler {
             String langValue = lineHandler.get(value);
             switch (key) {
                 case 0:
-                    writeOneRow(String.format("<string name=\"%s\">%s</String>", osKey, langValue));
+                    writeOneRow(String.format("\t<string name=\"%s\">%s</String>", osKey, langValue));
                     break;
                 case 1:
                     writeOneRow(String.format("\"%s\" = \"%s\"", osKey, langValue));
@@ -65,9 +65,13 @@ public class CsvHandler {
         String splitter = ",";
 
         try {
+<<<<<<< HEAD
             InputStreamReader inputReader = new InputStreamReader(getClass().getResourceAsStream(fileName));
 
             br = new BufferedReader(inputReader);
+=======
+            br = new BufferedReader(new FileReader(fileName));
+>>>>>>> d4d9ad5859877f21e5f30f4aecf91c56a76f999f
 
             while ((line = br.readLine()) != null) {
 
@@ -95,7 +99,7 @@ public class CsvHandler {
 
         try {
             //If the true is added here, the writer doesn't overwrite the existing text
-            writer = new FileWriter(file, true);
+            writer = new FileWriter(file);
             System.out.println("Tiedostoon on kirjoitettu");
         } catch (IOException e) {
             System.out.println("Virhe");
