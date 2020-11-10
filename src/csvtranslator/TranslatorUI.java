@@ -3,6 +3,8 @@ package csvtranslator;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -106,6 +108,11 @@ class TranslatorUI {
                 ioException.printStackTrace();
             }
         });
+
+        closeButton.addActionListener(e -> {
+            mainFrame.dispose();
+        });
+
         mainFrame.setResizable(false);
         mainFrame.add(mainPanel);
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

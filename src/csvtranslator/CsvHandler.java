@@ -65,9 +65,6 @@ public class CsvHandler {
         String splitter = ",";
 
         try {
-
-
-
             br = new BufferedReader(new FileReader(fileName));
 
             while ((line = br.readLine()) != null) {
@@ -96,7 +93,7 @@ public class CsvHandler {
 
         try {
             //If the true is added here, the writer doesn't overwrite the existing text
-            writer = new FileWriter(file, true);
+            writer = new FileWriter(file);
             System.out.println("Tiedostoon on kirjoitettu");
         } catch (IOException e) {
             System.out.println("Virhe");
