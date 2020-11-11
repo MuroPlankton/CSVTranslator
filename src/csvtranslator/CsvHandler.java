@@ -62,14 +62,10 @@ public class CsvHandler {
     public void csvReader(String fileName) {
         BufferedReader br = null;
         String line = "";
-        String splitter = ",";
-
         try {
             br = new BufferedReader(new FileReader(fileName));
 
             while ((line = br.readLine()) != null) {
-
-                String[] data = line.split(splitter);
                 dataHandler(line);
             }
         } catch (FileNotFoundException e) {
