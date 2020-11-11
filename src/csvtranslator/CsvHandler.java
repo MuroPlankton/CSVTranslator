@@ -37,26 +37,41 @@ public class CsvHandler {
     }
 
     public void dataHandler(String line) throws IOException {
+        System.out.println("the received line: " + line);
         List<String> cellList = Arrays.asList(line.split(","));
+        System.out.println("the list from that line: " + cellList + " and the amount of items it has: " + cellList.size());
         if (linesHandled == 0) {
             key = cellList.indexOf(os);
+            if(key < 0){
+                key = 0;
+            }
             value = cellList.indexOf(language);
             writeOneRow((key == 0) ? "<resources>" : "");
 
-        } else {
-            String osKey = cellList.get(key);
-            String langValue = cellList.get(value);
-            switch (key) {
-                case 0:
-                    writeOneRow(String.format("\t<string name=\"%s\">%s</String>", osKey, langValue));
-                    break;
-                case 1:
-                    writeOneRow(String.format("\"%s\" = \"%s\"", osKey, langValue));
+        } else if (!cellList.isEmpty()) {
+            String osKey = null;
+            String langValue = null;
+            if (cellList.size() > key) {
+                osKey = cellList.get(key);
             }
-
+            if(cellList.size() > value) {
+                langValue = cellList.get(value);
+            }
+            if(isNotEmpty(osKey) && isNotEmpty(langValue)) {
+                switch (key) {
+                    case 0:
+                        writeOneRow(String.format("\t<string name=\"%s\">%s</string>", osKey, langValue));
+                        break;
+                    case 1:
+                        writeOneRow(String.format("\"%s\" = \"%s\";", osKey, langValue));
+                }
+            }
         }
-
         linesHandled++;
+    }
+
+    private boolean isNotEmpty(String text) {
+        return text != null && text.length() > 0;
     }
 
     public void csvReader(String fileName) {

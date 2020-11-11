@@ -36,7 +36,7 @@ class TranslatorUI {
     private void createUIComponents() {
         Container container = new Container();
         mainFrame = new JFrame("Translator");
-        mainFrame.setPreferredSize(new Dimension(200, 290));
+        mainFrame.setPreferredSize(new Dimension(400, 350));
 
         JPanel mainPanel = new JPanel(new BorderLayout());
 
@@ -71,10 +71,11 @@ class TranslatorUI {
         choosingPanel.add(filePanel);
 
         JPanel pathPanel = new JPanel();
-        filePath = new JTextArea(".");
+        filePath = new JTextArea();
         filePath.setLineWrap(true);
         filePath.setEditable(false);
         filePath.setBorder(null);
+
         pathPanel.add(filePath);
         choosingPanel.add(pathPanel);
 
@@ -89,7 +90,7 @@ class TranslatorUI {
 
         JPanel languagePanel = new JPanel();
         JLabel language = new JLabel("Language:");
-        languageTextField = new JTextField(5);
+        languageTextField = new JTextField(10);
 
         languagePanel.add(language);
         languagePanel.add(languageTextField);
@@ -117,7 +118,6 @@ class TranslatorUI {
             mainFrame.dispose();
         });
 
-        mainFrame.setResizable(false);
         mainFrame.add(mainPanel);
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.pack();
