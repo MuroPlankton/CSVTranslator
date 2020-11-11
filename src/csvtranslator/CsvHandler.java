@@ -62,6 +62,8 @@ public class CsvHandler {
     public void csvReader(String fileName) {
         BufferedReader br = null;
         String line = "";
+        String splitter = ",";
+
         try {
 <<<<<<< HEAD
             InputStreamReader inputReader = new InputStreamReader(getClass().getResourceAsStream(fileName));
@@ -72,6 +74,8 @@ public class CsvHandler {
 >>>>>>> d4d9ad5859877f21e5f30f4aecf91c56a76f999f
 
             while ((line = br.readLine()) != null) {
+
+                String[] data = line.split(splitter);
                 dataHandler(line);
             }
         } catch (FileNotFoundException e) {
