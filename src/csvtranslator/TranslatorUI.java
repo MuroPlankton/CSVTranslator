@@ -58,7 +58,11 @@ class TranslatorUI {
         choosingPanel.add(filePanel);
 
         findFileButton.addActionListener(e -> {
-            fileChooser();
+            try {
+                fileChooser();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
             System.out.println("search button pressed");
         });
 
@@ -121,9 +125,11 @@ class TranslatorUI {
         container.add(mainFrame);
     }
 
-    private void fileChooser() {
+    private void fileChooser() throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("CSV files only", "csv"));
+        String currentDir = System.getProperty("user.dir");
+        fileChooser.setCurrentDirectory(new File(currentDir));
         int returnVal = fileChooser.showOpenDialog(mainFrame);
 
         if (returnVal == fileChooser.APPROVE_OPTION) {

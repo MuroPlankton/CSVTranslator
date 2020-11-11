@@ -37,15 +37,15 @@ public class CsvHandler {
     }
 
     public void dataHandler(String line) throws IOException {
-        List<String> lineHandler = Arrays.asList(line.split(","));
+        List<String> cellList = Arrays.asList(line.split(","));
         if (linesHandled == 0) {
-            key = lineHandler.indexOf(os);
-            value = lineHandler.indexOf(language);
+            key = cellList.indexOf(os);
+            value = cellList.indexOf(language);
             writeOneRow((key == 0) ? "<resources>" : "");
 
         } else {
-            String osKey = lineHandler.get(key);
-            String langValue = lineHandler.get(value);
+            String osKey = cellList.get(key);
+            String langValue = cellList.get(value);
             switch (key) {
                 case 0:
                     writeOneRow(String.format("\t<string name=\"%s\">%s</String>", osKey, langValue));
