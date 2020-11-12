@@ -6,13 +6,9 @@
 package csvtranslator;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,9 +22,10 @@ public class CsvHandler {
     public int key = 0;
 
     public String fileName;
+    public String directory;
     private String os;
     private String language;
-    private FileWriter writer;
+    private CsvWriter csvWriter;
 
     public CsvHandler(String fileName, String os, String language) {
         this.fileName = fileName;
@@ -37,16 +34,19 @@ public class CsvHandler {
     }
 
     public void dataHandler(String line) throws IOException {
+        csvWriter = new CsvWriter(directory,fileName);
+
         System.out.println("the received line: " + line);
         List<String> cellList = Arrays.asList(line.split(","));
         System.out.println("the list from that line: " + cellList + " and the amount of items it has: " + cellList.size());
+
         if (linesHandled == 0) {
             key = cellList.indexOf(os);
             if(key < 0){
                 key = 0;
             }
             value = cellList.indexOf(language);
-            writeOneRow((key == 0) ? "<resources>" : "");
+            csvWriter.writeOneRow((key == 0) ? "<resources>" : "");
 
         } else if (!cellList.isEmpty()) {
             String osKey = null;
@@ -60,10 +60,10 @@ public class CsvHandler {
             if(isNotEmpty(osKey) && isNotEmpty(langValue)) {
                 switch (key) {
                     case 0:
-                        writeOneRow(String.format("\t<string name=\"%s\">%s</string>", osKey, langValue));
+                        csvWriter.writeOneRow(String.format("\t<string name=\"%s\">%s</string>", osKey, langValue));
                         break;
                     case 1:
-                        writeOneRow(String.format("\"%s\" = \"%s\";", osKey, langValue));
+                        csvWriter.writeOneRow(String.format("\"%s\" = \"%s\";", osKey, langValue));
                 }
             }
         }
@@ -101,29 +101,8 @@ public class CsvHandler {
 
     }
 
-    public void beginWriting() {
-        File file = new File("strings.xml");
 
-        try {
-            //If the true is added here, the writer doesn't overwrite the existing text
-            writer = new FileWriter(file);
-            System.out.println("Tiedostoon on kirjoitettu");
-        } catch (IOException e) {
-            System.out.println("Virhe");
-        }
-    }
 
-    public void writeOneRow(String row) throws IOException {
-        writer.write(row + System.lineSeparator());
-    }
 
-    public void stopWriting() {
-        try {
-            writer.close();
-            System.out.println("Lopetus");
-        } catch (IOException e) {
-            System.out.println("Virhe");
-        }
-    }
 
 }

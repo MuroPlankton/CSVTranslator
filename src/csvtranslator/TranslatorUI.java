@@ -11,6 +11,7 @@ import java.io.IOException;
 class TranslatorUI {
 
     private static CsvHandler csvHandler;
+    private CsvWriter csvWriter;
 
     private JFrame mainFrame;
     private JButton findFileButton;
@@ -25,6 +26,9 @@ class TranslatorUI {
         startUI();
     };
 
+    TranslatorUI() {
+    }
+
     public Runnable getRunUI() {
         return runUI;
     }
@@ -34,7 +38,6 @@ class TranslatorUI {
     }
 
     private void createUIComponents() {
-        Container container = new Container();
         mainFrame = new JFrame("Translator");
         mainFrame.setPreferredSize(new Dimension(400, 350));
 
@@ -122,7 +125,6 @@ class TranslatorUI {
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.pack();
         mainFrame.setVisible(true);
-        container.add(mainFrame);
     }
 
     private void fileChooser() throws IOException {
@@ -145,9 +147,9 @@ class TranslatorUI {
         String languageSelected = languageTextField.getText();
 
         csvHandler = new CsvHandler(chosenPath, osSelected, languageSelected);
-        csvHandler.beginWriting();
+        csvWriter.beginWriting();
         csvHandler.csvReader(csvHandler.fileName);
-        csvHandler.writeOneRow((csvHandler.key == 0) ? "</resources>" : "");
-        csvHandler.stopWriting();
+        csvWriter.writeOneRow((csvHandler.key == 0) ? "</resources>" : "");
+        csvWriter.stopWriting();
     }
 }
