@@ -28,8 +28,19 @@ public class CsvHandler {
 
     public void dataHandler(String line) throws IOException {
         List<String> cellList = Arrays.asList(line.split(","));
+        System.out.println(cellList + String.format(" has %s values", cellList.size()));
 
         if (linesHandled == 0) {
+            for (int listIndex = 0; listIndex < (cellList.size() - 2) * 2; listIndex++) {
+                if (listIndex < writerList.size() / 2) {
+                    String dir = "\\values_" + cellList.get(listIndex / 2);
+                    writerList.add(new CsvWriter(dir, "strings.xml"));
+                    writerList.get(listIndex).writeOneRow("<resources>");
+                } else {
+                    String dir = String.format("\\%s.lproi", cellList.get(listIndex / 2));
+                    writerList.add(new CsvWriter(dir, "Localizable.strings"));
+                }
+            }
             for (int osIndex = 0; osIndex < 2; osIndex++) {
                 for (int langIndex = 0; langIndex < cellList.size() - 2; langIndex++) {
                     if (osIndex == 0) {
@@ -40,23 +51,22 @@ public class CsvHandler {
                         String dir = String.format("\\%s.lproi", cellList.get(langIndex + 2));
                         writerList.add(new CsvWriter(dir, "Localizable.strings"));
                     }
-                    writerList.get(langIndex * (osIndex + 1)).beginWriting();
+//                    writerList.get(langIndex * (osIndex + 1)).beginWriting();
                 }
             }
 
         } else if (!cellList.isEmpty()) {
             String osKey = null;
             String langValue = null;
-            if (cellList.size() > key) {
-                osKey = cellList.get(key);
-            }
-            if(cellList.size() > value) {
-                langValue = cellList.get(value);
-            }
 
-            for (int listIndex = 0; listIndex <= writerList.size(); listIndex++) {
-                osKey = ((listIndex < writerList.size() / 2) ? "android" : "ios");
-                langValue = cellList.get(listIndex / 2 + 2);
+            for (int listIndex = 0; listIndex < writerList.size(); listIndex++) {
+                int key = ((listIndex < writerList.size() / 2) ? 0 : 1);
+                if (cellList.size() > key) {
+                    osKey = cellList.get(key);
+                }
+                if(cellList.size() > listIndex / 2 + 2) {
+                    langValue = cellList.get(listIndex / 2 + 2);
+                }
 
                 if(isNotEmpty(osKey) && isNotEmpty(langValue)) {
                     switch (key) {
@@ -106,7 +116,7 @@ public class CsvHandler {
     }
 
     private void finishWriterWriting() throws IOException {
-        for (int listIndex = 0; listIndex <= writerList.size(); listIndex++) {
+        for (int listIndex = 0; listIndex < writerList.size(); listIndex++) {
             if (listIndex < writerList.size() / 2) {
                 writerList.get(listIndex).writeOneRow("</resources>");
             }
