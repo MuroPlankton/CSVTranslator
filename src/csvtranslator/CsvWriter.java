@@ -7,33 +7,48 @@ import java.io.IOException;
 public class CsvWriter {
 
     private FileWriter writer;
-    private String directory;
-    private String filename;
 
-    public CsvWriter(String directory, String filename) throws IOException {
-        this.directory = directory;
-        this.filename = filename;
-        File file = new File(filename);
-        writer = new FileWriter(file);
+    private String os;
+    private String lang;
+
+    public CsvWriter(String os, String lang) {
+        this.os = os;
+        this.lang = lang;
+
+        String dir;
+        String fileName;
+        switch (os) {
+            default:
+            case "android":
+                writeOneRow("<resources>");
+                dir = "\\values-" + lang;
+                fileName = "string.xml";
+                break;
+            case "ios":
+                dir = String.format("\\%s.lproi", lang);
+                fileName = "Localizable.strings";
+                break;
+        }
+
+        File file = new File(dir, fileName);
+        try {
+            file.mkdirs();
+            writer = new FileWriter(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-//    public void beginWriting() {
-//        File file = new File(filename);
-//
-//        try {
-//            //If true is added here, the writer doesn't overwrite the existing text
-//            writer = new FileWriter(file);
-//            System.out.println("Writing...");
-//        } catch (IOException e) {
-//            System.out.println("Error!");
-//        }
-//    }
-
-    public void writeOneRow(String row) throws IOException {
-        writer.write(row + System.lineSeparator());
+    public void writeOneRow(String row) {
+        try {
+            writer.write(row + System.lineSeparator());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void stopWriting() {
+        writeOneRow("</resources>");
         try {
             writer.close();
             System.out.println("Writing complete");

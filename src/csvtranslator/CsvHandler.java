@@ -5,10 +5,11 @@
  */
 package csvtranslator;
 
+import com.sun.jdi.IntegerValue;
+import javafx.util.Pair;
+
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 public class CsvHandler {
@@ -18,7 +19,10 @@ public class CsvHandler {
     private String modifiedLine = "";
     private int value = 0;
     public int key = 0;
-    private List<CsvWriter> writerList = new ArrayList<>();
+    private Map<Pair<Integer, Integer>, CsvWriter> writerMap = new HashMap<>();
+
+    private final int ANDROID_INDEX = 0;
+    private final int IOS_INDEX = 1;
 
     public String fileName;
 
@@ -26,59 +30,42 @@ public class CsvHandler {
         this.fileName = fileName;
     }
 
-    public void dataHandler(String line) throws IOException {
+    public void dataHandler(String line) {
         List<String> cellList = Arrays.asList(line.split(","));
         System.out.println(cellList + String.format(" has %s values", cellList.size()));
 
         if (linesHandled == 0) {
-            for (int listIndex = 0; listIndex < (cellList.size() - 2) * 2; listIndex++) {
-                if (listIndex < writerList.size() / 2) {
-                    String dir = "\\values_" + cellList.get(listIndex / 2);
-                    writerList.add(new CsvWriter(dir, "strings.xml"));
-                    writerList.get(listIndex).writeOneRow("<resources>");
-                } else {
-                    String dir = String.format("\\%s.lproi", cellList.get(listIndex / 2));
-                    writerList.add(new CsvWriter(dir, "Localizable.strings"));
-                }
-            }
-            for (int osIndex = 0; osIndex < 2; osIndex++) {
-                for (int langIndex = 0; langIndex < cellList.size() - 2; langIndex++) {
-                    if (osIndex == 0) {
-                        String dir = "\\values_" + cellList.get(langIndex + 2);
-                        writerList.add(new CsvWriter(dir, "strings.xml"));
-                        writerList.get(langIndex).writeOneRow("<resources>");
-                    } else {
-                        String dir = String.format("\\%s.lproi", cellList.get(langIndex + 2));
-                        writerList.add(new CsvWriter(dir, "Localizable.strings"));
-                    }
-//                    writerList.get(langIndex * (osIndex + 1)).beginWriting();
-                }
-            }
+            for (int langIndex = 2; langIndex < cellList.size(); langIndex++) {
+                //in this for loop we go trough every language
+                String lang = cellList.get(langIndex);
 
+                writerMap.put(new Pair<>(ANDROID_INDEX, langIndex), new CsvWriter("android", lang));
+                writerMap.put(new Pair<>(IOS_INDEX, langIndex), new CsvWriter("ios", lang));
+            }
         } else if (!cellList.isEmpty()) {
-            String osKey = null;
-            String langValue = null;
-
-            for (int listIndex = 0; listIndex < writerList.size(); listIndex++) {
-                int key = ((listIndex < writerList.size() / 2) ? 0 : 1);
-                if (cellList.size() > key) {
-                    osKey = cellList.get(key);
+            for (Pair<Integer, Integer> pair : writerMap.keySet()) {
+                int osIndex = pair.getKey();
+                int langIndex = pair.getValue();
+                String translation = null;
+                String osKey = null;
+                if(cellList.size() > osIndex) {
+                    osKey = cellList.get(osIndex);
                 }
-                if(cellList.size() > listIndex / 2 + 2) {
-                    langValue = cellList.get(listIndex / 2 + 2);
+                if(cellList.size() > langIndex) {
+                    translation = cellList.get(langIndex);
                 }
 
-                if(isNotEmpty(osKey) && isNotEmpty(langValue)) {
-                    switch (key) {
-                        case 0:
-                            writerList.get(listIndex).writeOneRow(String.format("\t<string name=\"%s\">%s</string>", osKey, langValue));
+                CsvWriter writer = writerMap.get(pair);
+                if(writer != null && isNotEmpty(osKey) && isNotEmpty(translation)) {
+                    switch (pair.getKey()) {
+                        case ANDROID_INDEX:
+                            writer.writeOneRow(String.format("\t<string name=\"%s\">%s</string>", osKey, translation));
                             break;
-                        case 1:
-                            writerList.get(listIndex).writeOneRow(String.format("\"%s\" = \"%s\";", osKey, langValue));
+                        case IOS_INDEX:
+                            writer.writeOneRow(String.format("\"%s\" = \"%s\";", osKey, translation));
                     }
                 }
             }
-
         }
         linesHandled++;
     }
@@ -115,12 +102,10 @@ public class CsvHandler {
         finishWriterWriting();
     }
 
-    private void finishWriterWriting() throws IOException {
-        for (int listIndex = 0; listIndex < writerList.size(); listIndex++) {
-            if (listIndex < writerList.size() / 2) {
-                writerList.get(listIndex).writeOneRow("</resources>");
-            }
-            writerList.get(listIndex).stopWriting();
+    private void finishWriterWriting() {
+        for (Pair<Integer, Integer> pair : writerMap.keySet()) {
+            CsvWriter writer = writerMap.get(pair);
+            writer.stopWriting();
         }
     }
 }
