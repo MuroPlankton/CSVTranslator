@@ -74,6 +74,7 @@ class TranslatorUI {
 
         JPanel pathPanel = new JPanel();
         filePath = new JTextArea();
+        filePath.setColumns(30);
         filePath.setLineWrap(true);
         filePath.setEditable(false);
         filePath.setBorder(null);
@@ -90,13 +91,9 @@ class TranslatorUI {
         osPanel.add(osDropDown);
         choosingPanel.add(osPanel);
 
-        JPanel languagePanel = new JPanel();
-        JLabel language = new JLabel("Language:");
-        languageTextField = new JTextField(10);
 
-        languagePanel.add(language);
-        languagePanel.add(languageTextField);
-        choosingPanel.add(languagePanel);
+
+
 
         mainPanel.add(choosingPanel, BorderLayout.CENTER);
 
@@ -110,6 +107,7 @@ class TranslatorUI {
 
         createButton.addActionListener(e -> {
             try {
+
                 createMethod();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -119,6 +117,12 @@ class TranslatorUI {
         closeButton.addActionListener(e -> {
             mainFrame.dispose();
         });
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         mainFrame.add(mainPanel);
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
