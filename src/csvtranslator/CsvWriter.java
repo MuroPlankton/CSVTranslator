@@ -16,7 +16,7 @@ public class CsvWriter {
     }
 
     public void beginWriting() {
-        File file = new File("strings.xml");
+        File file = new File(filename);
 
         try {
             //If true is added here, the writer doesn't overwrite the existing text

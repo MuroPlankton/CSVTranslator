@@ -5,10 +5,8 @@
  */
 package csvtranslator;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,33 +18,31 @@ public class CsvHandler {
     private String modifiedLine = "";
     private int value = 0;
     public int key = 0;
+    private List<CsvWriter> writerList = new ArrayList<>();
 
     public String fileName;
-    public String directory;
-    private String os;
-    private String language;
-    private CsvWriter csvWriter;
 
-    public CsvHandler(String fileName, String os, String language) {
+    public CsvHandler(String fileName) {
         this.fileName = fileName;
-        this.os = os;
-        this.language = language;
     }
 
     public void dataHandler(String line) throws IOException {
-        csvWriter = new CsvWriter(directory,fileName);
-
-        System.out.println("the received line: " + line);
         List<String> cellList = Arrays.asList(line.split(","));
-        System.out.println("the list from that line: " + cellList + " and the amount of items it has: " + cellList.size());
 
         if (linesHandled == 0) {
-            key = cellList.indexOf(os);
-            if(key < 0){
-                key = 0;
+            for (int osIndex = 0; osIndex < 2; osIndex++) {
+                for (int langIndex = 0; langIndex < cellList.size() - 2; langIndex++) {
+                    if (osIndex == 0) {
+                        String dir = "\\values_" + cellList.get(langIndex + 2);
+                        writerList.add(new CsvWriter(dir, "strings.xml"));
+                        writerList.get(langIndex).writeOneRow("<resources>");
+                    } else {
+                        String dir = String.format("\\%s.lproi", cellList.get(langIndex + 2));
+                        writerList.add(new CsvWriter(dir, "Localizable.strings"));
+                    }
+                    writerList.get(langIndex * (osIndex + 1)).beginWriting();
+                }
             }
-            value = cellList.indexOf(language);
-            csvWriter.writeOneRow((key == 0) ? "<resources>" : "");
 
         } else if (!cellList.isEmpty()) {
             String osKey = null;
@@ -57,15 +53,22 @@ public class CsvHandler {
             if(cellList.size() > value) {
                 langValue = cellList.get(value);
             }
-            if(isNotEmpty(osKey) && isNotEmpty(langValue)) {
-                switch (key) {
-                    case 0:
-                        csvWriter.writeOneRow(String.format("\t<string name=\"%s\">%s</string>", osKey, langValue));
-                        break;
-                    case 1:
-                        csvWriter.writeOneRow(String.format("\"%s\" = \"%s\";", osKey, langValue));
+
+            for (int listIndex = 0; listIndex <= writerList.size(); listIndex++) {
+                osKey = ((listIndex < writerList.size() / 2) ? "android" : "ios");
+                langValue = cellList.get(listIndex / 2 + 2);
+
+                if(isNotEmpty(osKey) && isNotEmpty(langValue)) {
+                    switch (key) {
+                        case 0:
+                            writerList.get(listIndex).writeOneRow(String.format("\t<string name=\"%s\">%s</string>", osKey, langValue));
+                            break;
+                        case 1:
+                            writerList.get(listIndex).writeOneRow(String.format("\"%s\" = \"%s\";", osKey, langValue));
+                    }
                 }
             }
+
         }
         linesHandled++;
     }
@@ -74,7 +77,7 @@ public class CsvHandler {
         return text != null && text.length() > 0;
     }
 
-    public void csvReader(String fileName) {
+    public void csvReader(String fileName) throws IOException {
         BufferedReader br = null;
         String line = "";
 
@@ -99,10 +102,15 @@ public class CsvHandler {
             }
         }
 
+        finishWriterWriting();
     }
 
-
-
-
-
+    private void finishWriterWriting() throws IOException {
+        for (int listIndex = 0; listIndex <= writerList.size(); listIndex++) {
+            if (listIndex < writerList.size() / 2) {
+                writerList.get(listIndex).writeOneRow("</resources>");
+            }
+            writerList.get(listIndex).stopWriting();
+        }
+    }
 }

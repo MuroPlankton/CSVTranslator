@@ -11,7 +11,6 @@ import java.io.IOException;
 class TranslatorUI {
 
     private static CsvHandler csvHandler;
-    private CsvWriter csvWriter;
 
     private JFrame mainFrame;
     private JButton findFileButton;
@@ -143,13 +142,8 @@ class TranslatorUI {
     }
 
     private void createMethod() throws IOException {
-        String osSelected = osDropDown.getSelectedItem().toString();
-        String languageSelected = languageTextField.getText();
 
-        csvHandler = new CsvHandler(chosenPath, osSelected, languageSelected);
-        csvWriter.beginWriting();
+        csvHandler = new CsvHandler(chosenPath);
         csvHandler.csvReader(csvHandler.fileName);
-        csvWriter.writeOneRow((csvHandler.key == 0) ? "</resources>" : "");
-        csvWriter.stopWriting();
     }
 }
