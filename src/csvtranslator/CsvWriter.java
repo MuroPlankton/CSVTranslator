@@ -10,22 +10,24 @@ public class CsvWriter {
     private String directory;
     private String filename;
 
-    public CsvWriter(String directory, String filename){
+    public CsvWriter(String directory, String filename) throws IOException {
         this.directory = directory;
         this.filename = filename;
-    }
-
-    public void beginWriting() {
         File file = new File(filename);
-
-        try {
-            //If true is added here, the writer doesn't overwrite the existing text
-            writer = new FileWriter(file);
-            System.out.println("Writing...");
-        } catch (IOException e) {
-            System.out.println("Error!");
-        }
+        writer = new FileWriter(file);
     }
+
+//    public void beginWriting() {
+//        File file = new File(filename);
+//
+//        try {
+//            //If true is added here, the writer doesn't overwrite the existing text
+//            writer = new FileWriter(file);
+//            System.out.println("Writing...");
+//        } catch (IOException e) {
+//            System.out.println("Error!");
+//        }
+//    }
 
     public void writeOneRow(String row) throws IOException {
         writer.write(row + System.lineSeparator());
