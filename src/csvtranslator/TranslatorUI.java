@@ -144,7 +144,7 @@ class TranslatorUI {
         String osSelected = osDropDown.getSelectedItem().toString();
         String languageSelected = languageTextField.getText();
 
-        csvHandler = new CsvHandler(chosenPath, osSelected, languageSelected);
+        csvHandler = new CsvHandler(chosenPath);
         csvHandler.beginWriting();
         csvHandler.csvReader(csvHandler.fileName);
         csvHandler.writeOneRow((csvHandler.key == 0) ? "</resources>" : "");
