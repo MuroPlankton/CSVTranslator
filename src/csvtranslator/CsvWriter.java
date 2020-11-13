@@ -54,7 +54,9 @@ public class CsvWriter {
     }
 
     public void stopWriting() {
-        writeOneRow("</resources>");
+        if ("android".equals(os)) {
+            writeOneRow("</resources>");
+        }
         try {
             writer.close();
             System.out.println("Writing complete");
