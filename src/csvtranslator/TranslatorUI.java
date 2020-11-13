@@ -83,6 +83,7 @@ class TranslatorUI {
         JComboBox<String> languageToSearch = new JComboBox<>();
         JButton findMatchButton = new JButton("Find match");
         JLabel result = new JLabel("The best match will display here.");
+
         matchingPanel.add(textToMatch);
         matchingPanel.add(languageToSearch);
         matchingPanel.add(findMatchButton);
@@ -96,7 +97,6 @@ class TranslatorUI {
 
         createButton.addActionListener(e -> {
             try {
-
                 createMethod();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -135,7 +135,6 @@ class TranslatorUI {
     }
 
     private void createMethod() throws IOException {
-
         csvHandler = new CsvHandler(chosenPath);
         csvHandler.csvReader(csvHandler.fileName);
     }

@@ -85,13 +85,12 @@ public class CsvHandler {
         return text != null && text.length() > 0;
     }
 
-    public void csvReader(String fileName) throws IOException {
+    public void csvReader(String filePath) throws IOException {
         BufferedReader br = null;
         String line = "";
 
         try {
-            br = new BufferedReader(new FileReader(fileName));
-
+            br = new BufferedReader(new FileReader(filePath));
             while ((line = br.readLine()) != null) {
 
                 dataHandler(line);
