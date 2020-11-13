@@ -86,9 +86,6 @@ public class CsvHandler {
         return text != null && text.length() > 0;
     }
 
-<<<<<<< HEAD
-    public void csvReader(String filePath) throws IOException {
-=======
     interface CsvLineHandlerInterface {
         void handleCsvLine(String line);
     }
@@ -100,12 +97,11 @@ public class CsvHandler {
     }
 
     public void readCSV(CsvLineHandlerInterface lineHandler){
->>>>>>> 0138db3a47bb525d10f7a43e5f2fce17487e61b6
         BufferedReader br = null;
         String line = "";
 
         try {
-            br = new BufferedReader(new FileReader(filePath));
+            br = new BufferedReader(new FileReader(fileName));
             while ((line = br.readLine()) != null) {
                 lineHandler.handleCsvLine(line);
             }

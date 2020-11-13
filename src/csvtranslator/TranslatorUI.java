@@ -113,21 +113,12 @@ class TranslatorUI {
         bottomPanel.add(closeButton);
         mainPanel.add(bottomPanel);
 
-<<<<<<< HEAD
-        createButton.addActionListener(e -> {
-            try {
-                createMethod();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
-=======
         findMatchButton.addActionListener(e -> {
             findBestMatch();
         });
 
         createButton.addActionListener(e -> {
                 handleCsvToTranslateFiles();
->>>>>>> 0138db3a47bb525d10f7a43e5f2fce17487e61b6
         });
 
         closeButton.addActionListener(e -> {
@@ -163,11 +154,6 @@ class TranslatorUI {
         }
     }
 
-<<<<<<< HEAD
-    private void createMethod() throws IOException {
-        csvHandler = new CsvHandler(chosenPath);
-        csvHandler.csvReader(csvHandler.fileName);
-=======
     private void handleCsvToTranslateFiles() {
         csvHandler.readCsvAndCreateTranslateFiles();
     }
@@ -177,7 +163,6 @@ class TranslatorUI {
         String sentence1 = textToMatch.getText();
 
         csvHandler.matchSentence(sentence1);
->>>>>>> 0138db3a47bb525d10f7a43e5f2fce17487e61b6
     }
 
 

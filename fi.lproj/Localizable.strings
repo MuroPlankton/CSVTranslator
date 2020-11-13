@@ -1,5 +1,4 @@
 "done" = "Valmis";
-"Done" = "done";
 "Vote" = "äänestä";
 "Ok" = "Ok";
 "Yes" = "Kyllä";
@@ -291,4 +290,3 @@
 "CityPlaceholder" = "Kaupunki";
 "OldPasswordPlaceholder" = "Vanha salasana";
 "NewPasswordPlaceholder" = "Uusi salasana";
-</resources>
