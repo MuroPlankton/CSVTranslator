@@ -3,8 +3,6 @@ package csvtranslator;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -16,9 +14,7 @@ class TranslatorUI {
     private JButton findFileButton;
     private JButton createButton;
     private JButton closeButton;
-    private JComboBox osDropDown;
-    private JTextField languageTextField;
-    private JTextArea filePath;
+    private JLabel filePath;
     private String chosenPath;
 
     private Runnable runUI = () -> {
@@ -38,16 +34,16 @@ class TranslatorUI {
 
     private void createUIComponents() {
         mainFrame = new JFrame("Translator");
-        mainFrame.setPreferredSize(new Dimension(400, 350));
+//        mainFrame.setPreferredSize(new Dimension(400, 350));
 
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        JPanel mainPanel = new JPanel();
+        BoxLayout mainLayout = new BoxLayout(mainPanel, BoxLayout.Y_AXIS);
+        mainPanel.setLayout(mainLayout);
 
-        JPanel titleFrame = new JPanel();
         JLabel title = new JLabel("CSV Translator");
         title.setFont(title.getFont().deriveFont(20.0f));
-
-        titleFrame.add(title);
-        mainPanel.add(titleFrame, BorderLayout.NORTH);
+        title.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        mainPanel.add(title);
 
         JPanel choosingPanel = new JPanel();
         BoxLayout layout = new BoxLayout(choosingPanel, BoxLayout.Y_AXIS);
@@ -75,25 +71,28 @@ class TranslatorUI {
         choosingPanel.add(filePanel);
 
         JPanel pathPanel = new JPanel();
-        filePath = new JTextArea();
-        filePath.setColumns(30);
-        filePath.setLineWrap(true);
-        filePath.setEditable(false);
-        filePath.setBorder(null);
+        filePath = new JLabel();
 
         pathPanel.add(filePath);
         choosingPanel.add(pathPanel);
 
-        mainPanel.add(choosingPanel, BorderLayout.CENTER);
+        mainPanel.add(choosingPanel);
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BorderLayout());
+        JPanel matchingPanel = new JPanel();
+        JTextField textToMatch = new JTextField("Key or value");
+        JComboBox<String> languageToSearch = new JComboBox<>();
+        JButton findMatchButton = new JButton("Find match");
+        JLabel result = new JLabel("The best match will display here.");
+        matchingPanel.add(textToMatch);
+        matchingPanel.add(languageToSearch);
+        matchingPanel.add(findMatchButton);
+        mainPanel.add(matchingPanel);
+        mainPanel.add(result);
 
         createButton = new JButton("Create");
         closeButton = new JButton("Close");
-        buttonPanel.add(createButton, BorderLayout.CENTER);
-        buttonPanel.add(closeButton, BorderLayout.PAGE_END);
-        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+        mainPanel.add(createButton);
+        mainPanel.add(closeButton);
 
         createButton.addActionListener(e -> {
             try {
