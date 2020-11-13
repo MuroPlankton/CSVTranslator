@@ -4,6 +4,8 @@ public class LevenshteinAlgorithm {
     /**
      * Calculates the similarity (a number within 0 and 1) between two strings.
      */
+
+
     public double similarity(String s1, String s2) {
         String longer = s1, shorter = s2;
         if (s1.length() < s2.length()) { // longer should always have greater length
@@ -17,7 +19,11 @@ public class LevenshteinAlgorithm {
 /* // If you have Apache Commons Text, you can use it to calculate the edit distance:
 LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
 return (longerLength - levenshteinDistance.apply(longer, shorter)) / (double) longerLength; */
+        System.out.println("similarity: " + (longerLength - editDistance(longer, shorter)) / (double) longerLength);
+
+
         return (longerLength - editDistance(longer, shorter)) / (double) longerLength;
+
     }
 
     // Example implementation of the Levenshtein Edit Distance
@@ -45,6 +51,7 @@ return (longerLength - levenshteinDistance.apply(longer, shorter)) / (double) lo
             if (i > 0)
                 costs[s2.length()] = lastValue;
         }
+
         return costs[s2.length()];
     }
 }

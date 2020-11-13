@@ -15,7 +15,10 @@ class TranslatorUI {
     private JButton createButton;
     private JButton closeButton;
     private JLabel filePath;
-    private String chosenPath;
+
+    private JTextField textToMatch;
+    private JComboBox<String> languageToSearch;
+    private JButton findMatchButton;
 
     private Runnable runUI = () -> {
         startUI();
@@ -29,6 +32,8 @@ class TranslatorUI {
     }
 
     private void startUI() {
+        csvHandler = new CsvHandler();
+
         createUIComponents();
     }
 
@@ -83,6 +88,7 @@ class TranslatorUI {
         mainPanel.add(choosingPanel);
 
         JPanel matchingPanel = new JPanel();
+
         matchingPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
         JTextField textToMatch = new JTextField("Key or value");
         textToMatch.setColumns(20);
@@ -107,12 +113,21 @@ class TranslatorUI {
         bottomPanel.add(closeButton);
         mainPanel.add(bottomPanel);
 
+<<<<<<< HEAD
         createButton.addActionListener(e -> {
             try {
                 createMethod();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
+=======
+        findMatchButton.addActionListener(e -> {
+            findBestMatch();
+        });
+
+        createButton.addActionListener(e -> {
+                handleCsvToTranslateFiles();
+>>>>>>> 0138db3a47bb525d10f7a43e5f2fce17487e61b6
         });
 
         closeButton.addActionListener(e -> {
@@ -131,6 +146,7 @@ class TranslatorUI {
         mainFrame.setVisible(true);
     }
 
+
     private void fileChooser() throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("CSV files only", "csv"));
@@ -140,14 +156,29 @@ class TranslatorUI {
 
         if (returnVal == fileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            chosenPath = file.getAbsolutePath();
+            String chosenPath = file.getAbsolutePath();
+            csvHandler.setFileName(chosenPath);
             filePath.setText(chosenPath);
             System.out.println(chosenPath);
         }
     }
 
+<<<<<<< HEAD
     private void createMethod() throws IOException {
         csvHandler = new CsvHandler(chosenPath);
         csvHandler.csvReader(csvHandler.fileName);
+=======
+    private void handleCsvToTranslateFiles() {
+        csvHandler.readCsvAndCreateTranslateFiles();
     }
+
+
+    public void findBestMatch() {
+        String sentence1 = textToMatch.getText();
+
+        csvHandler.matchSentence(sentence1);
+>>>>>>> 0138db3a47bb525d10f7a43e5f2fce17487e61b6
+    }
+
+
 }
