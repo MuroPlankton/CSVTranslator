@@ -82,19 +82,6 @@ class TranslatorUI {
         pathPanel.add(filePath);
         choosingPanel.add(pathPanel);
 
-        JPanel osPanel = new JPanel();
-        JLabel targetOS = new JLabel("Target OS:");
-        String OS[] = {"android", "ios"};
-        osDropDown = new JComboBox(OS);
-
-        osPanel.add(targetOS);
-        osPanel.add(osDropDown);
-        choosingPanel.add(osPanel);
-
-
-
-
-
         mainPanel.add(choosingPanel, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
