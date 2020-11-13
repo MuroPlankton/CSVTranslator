@@ -28,6 +28,7 @@ public class CsvHandler {
 
     private final int ANDROID_INDEX = 0;
     private final int IOS_INDEX = 1;
+    private final int WEB_INDEX = 2;
 
     public String fileName;
 
@@ -40,12 +41,14 @@ public class CsvHandler {
         System.out.println(cellList + String.format(" has %s values", cellList.size()));
 
         if (linesHandled == 0) {
-            for (int langIndex = 2; langIndex < cellList.size(); langIndex++) {
+            for (int langIndex = 3; langIndex < cellList.size(); langIndex++) {
                 //in this for loop we go trough every language
                 String lang = cellList.get(langIndex);
 
                 writerMap.put(new Pair<>(ANDROID_INDEX, langIndex), new CsvWriter("android", lang));
                 writerMap.put(new Pair<>(IOS_INDEX, langIndex), new CsvWriter("ios", lang));
+                writerMap.put(new Pair<>(WEB_INDEX, langIndex), new CsvWriter("web", lang));
+
             }
         } else if (!cellList.isEmpty()) {
             for (Pair<Integer, Integer> pair : writerMap.keySet()) {
@@ -53,21 +56,24 @@ public class CsvHandler {
                 int langIndex = pair.getValue();
                 String translation = null;
                 String osKey = null;
-                if(cellList.size() > osIndex) {
+                if (cellList.size() > osIndex) {
                     osKey = cellList.get(osIndex);
                 }
-                if(cellList.size() > langIndex) {
+                if (cellList.size() > langIndex) {
                     translation = cellList.get(langIndex);
                 }
 
                 CsvWriter writer = writerMap.get(pair);
-                if(writer != null && isNotEmpty(osKey) && isNotEmpty(translation)) {
+                if (writer != null && isNotEmpty(osKey) && isNotEmpty(translation)) {
                     switch (pair.getKey()) {
                         case ANDROID_INDEX:
                             writer.writeOneRow(String.format("\t<string name=\"%s\">%s</string>", osKey, translation));
                             break;
                         case IOS_INDEX:
                             writer.writeOneRow(String.format("\"%s\" = \"%s\";", osKey, translation));
+                            break;
+                        case WEB_INDEX:
+                            writer.writeOneRow("WEB STUFF");
                     }
                 }
             }

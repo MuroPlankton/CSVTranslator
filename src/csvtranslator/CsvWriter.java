@@ -28,6 +28,10 @@ public class CsvWriter {
                 dir = String.format("./%s.lproj", lang);
                 fileName = "Localizable.strings";
                 break;
+            case "web":
+                dir = String.format("./web-", lang);
+                fileName = "web.txt";
+                break;
         }
 
         File file = new File(dir, fileName);
@@ -54,6 +58,8 @@ public class CsvWriter {
     }
 
     public void stopWriting() {
+        
+
         writeOneRow("</resources>");
         try {
             writer.close();

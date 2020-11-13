@@ -44,6 +44,8 @@ class TranslatorUI {
 
         JPanel titleFrame = new JPanel();
         JLabel title = new JLabel("CSV Translator");
+        title.setFont(title.getFont().deriveFont(20.0f));
+
         titleFrame.add(title);
         mainPanel.add(titleFrame, BorderLayout.NORTH);
 
