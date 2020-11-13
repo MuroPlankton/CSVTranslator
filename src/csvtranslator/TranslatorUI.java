@@ -2,7 +2,6 @@ package csvtranslator;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -15,7 +14,10 @@ class TranslatorUI {
     private JButton createButton;
     private JButton closeButton;
     private JLabel filePath;
-    private String chosenPath;
+
+    private JTextField textToMatch;
+    private JComboBox<String> languageToSearch;
+    private JButton findMatchButton;
 
     private Runnable runUI = () -> {
         startUI();
@@ -29,6 +31,8 @@ class TranslatorUI {
     }
 
     private void startUI() {
+        csvHandler = new CsvHandler();
+
         createUIComponents();
     }
 
@@ -79,9 +83,9 @@ class TranslatorUI {
         mainPanel.add(choosingPanel);
 
         JPanel matchingPanel = new JPanel();
-        JTextField textToMatch = new JTextField("Key or value");
-        JComboBox<String> languageToSearch = new JComboBox<>();
-        JButton findMatchButton = new JButton("Find match");
+        textToMatch = new JTextField("Key or value");
+        languageToSearch = new JComboBox<>();
+        findMatchButton = new JButton("Find match");
         JLabel result = new JLabel("The best match will display here.");
         matchingPanel.add(textToMatch);
         matchingPanel.add(languageToSearch);
@@ -94,13 +98,12 @@ class TranslatorUI {
         mainPanel.add(createButton);
         mainPanel.add(closeButton);
 
-        createButton.addActionListener(e -> {
-            try {
+        findMatchButton.addActionListener(e -> {
+            findBestMatch();
+        });
 
-                createMethod();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+        createButton.addActionListener(e -> {
+                handleCsvToTranslateFiles();
         });
 
         closeButton.addActionListener(e -> {
@@ -119,6 +122,7 @@ class TranslatorUI {
         mainFrame.setVisible(true);
     }
 
+
     private void fileChooser() throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("CSV files only", "csv"));
@@ -128,15 +132,23 @@ class TranslatorUI {
 
         if (returnVal == fileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            chosenPath = file.getAbsolutePath();
+            String chosenPath = file.getAbsolutePath();
+            csvHandler.setFileName(chosenPath);
             filePath.setText(chosenPath);
             System.out.println(chosenPath);
         }
     }
 
-    private void createMethod() throws IOException {
-
-        csvHandler = new CsvHandler(chosenPath);
-        csvHandler.csvReader(csvHandler.fileName);
+    private void handleCsvToTranslateFiles() {
+        csvHandler.readCsvAndCreateTranslateFiles();
     }
+
+
+    public void findBestMatch() {
+        String sentence1 = textToMatch.getText();
+
+        csvHandler.matchSentence(sentence1);
+    }
+
+
 }

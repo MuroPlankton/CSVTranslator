@@ -20,23 +20,23 @@ import java.util.Map;
 public class CsvHandler {
 
     private int linesHandled = 0;
-    private String lineToModify = "";
-    private String modifiedLine = "";
-    private int value = 0;
-    public int key = 0;
     private Map<Pair<Integer, Integer>, CsvWriter> writerMap = new HashMap<>();
 
     private final int ANDROID_INDEX = 0;
     private final int IOS_INDEX = 1;
     private final int WEB_INDEX = 2;
 
-    public String fileName;
+    private String fileName;
 
-    public CsvHandler(String fileName) {
+    public CsvHandler() {
+
+    }
+
+    public void setFileName(String fileName) {
         this.fileName = fileName;
     }
 
-    public void dataHandler(String line) {
+    public void handleTranslateData(String line) {
         List<String> cellList = Arrays.asList(line.split(","));
         System.out.println(cellList + String.format(" has %s values", cellList.size()));
 
@@ -63,6 +63,7 @@ public class CsvHandler {
                     translation = cellList.get(langIndex);
                 }
 
+
                 CsvWriter writer = writerMap.get(pair);
                 if (writer != null && isNotEmpty(osKey) && isNotEmpty(translation)) {
                     switch (pair.getKey()) {
@@ -85,7 +86,17 @@ public class CsvHandler {
         return text != null && text.length() > 0;
     }
 
-    public void csvReader(String fileName) throws IOException {
+    interface CsvLineHandlerInterface {
+        void handleCsvLine(String line);
+    }
+
+    public void readCsvAndCreateTranslateFiles() {
+        readCSV(line -> {
+            handleTranslateData(line);
+        });
+    }
+
+    public void readCSV(CsvLineHandlerInterface lineHandler){
         BufferedReader br = null;
         String line = "";
 
@@ -93,8 +104,7 @@ public class CsvHandler {
             br = new BufferedReader(new FileReader(fileName));
 
             while ((line = br.readLine()) != null) {
-
-                dataHandler(line);
+                lineHandler.handleCsvLine(line);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -119,4 +129,37 @@ public class CsvHandler {
             writer.stopWriting();
         }
     }
+
+
+    public void matchSentence(String sentence1) {
+
+        readCSV(line -> {
+            // TODO get langs from this CSV line
+
+            // TODO for loop languages, get sentence2 from each langage
+
+            String sentence2 = "Koirat ovat parempia kuin kissat";
+
+            List<String> wordList = Arrays.asList(sentence1.split(" "));
+            List<String> wordList2 = Arrays.asList(sentence2.split(" "));
+
+            System.out.println(wordList);
+            System.out.println(wordList2);
+            System.out.println();
+            LevenshteinAlgorithm algorithm = new LevenshteinAlgorithm();
+
+            for (int i = 0; i < wordList.size(); i++) {
+                for (int j = 0; j < wordList2.size(); j++) {
+
+                    System.out.println(String.format("Word 1: %s, Word 2: %s", wordList.get(i), wordList2.get(j)));
+                    algorithm.similarity(wordList.get(i), wordList2.get (j));
+                    System.out.println();
+
+                }
+
+            }
+
+        });
+    }
+
 }
