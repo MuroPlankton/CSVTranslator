@@ -87,11 +87,12 @@ class TranslatorUI {
         mainPanel.add(choosingPanel, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BorderLayout());
 
         createButton = new JButton("Create");
         closeButton = new JButton("Close");
-        buttonPanel.add(createButton);
-        buttonPanel.add(closeButton);
+        buttonPanel.add(createButton, BorderLayout.CENTER);
+        buttonPanel.add(closeButton, BorderLayout.PAGE_END);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         createButton.addActionListener(e -> {

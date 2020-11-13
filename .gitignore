@@ -5,3 +5,5 @@ strings.xml
 out/
 *.iml
 nbproject/
+en.lproj/Localizable.strings
+fi.lproj/Localizable.strings
