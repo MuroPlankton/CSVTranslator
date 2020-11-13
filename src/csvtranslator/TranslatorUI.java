@@ -38,10 +38,13 @@ class TranslatorUI {
 
         JPanel mainPanel = new JPanel();
         BoxLayout mainLayout = new BoxLayout(mainPanel, BoxLayout.Y_AXIS);
+        mainPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         mainPanel.setLayout(mainLayout);
 
         JLabel title = new JLabel("CSV Translator");
         title.setFont(title.getFont().deriveFont(20.0f));
+        title.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         title.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         mainPanel.add(title);
 
@@ -70,29 +73,37 @@ class TranslatorUI {
         filePanel.add(findFileButton);
         choosingPanel.add(filePanel);
 
-        JPanel pathPanel = new JPanel();
         filePath = new JLabel();
+        filePath.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
-        pathPanel.add(filePath);
-        choosingPanel.add(pathPanel);
+        choosingPanel.add(filePath);
+
+        choosingPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 
         mainPanel.add(choosingPanel);
 
         JPanel matchingPanel = new JPanel();
+        matchingPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
         JTextField textToMatch = new JTextField("Key or value");
+        textToMatch.setColumns(20);
         JComboBox<String> languageToSearch = new JComboBox<>();
+        languageToSearch.addItem("lang");
         JButton findMatchButton = new JButton("Find match");
         JLabel result = new JLabel("The best match will display here.");
-        matchingPanel.add(textToMatch);
+        result.setAlignmentX(JPanel.CENTER_ALIGNMENT);
+        result.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+        mainPanel.add(textToMatch);
         matchingPanel.add(languageToSearch);
         matchingPanel.add(findMatchButton);
         mainPanel.add(matchingPanel);
         mainPanel.add(result);
 
+        JPanel bottomPanel = new JPanel();
         createButton = new JButton("Create");
         closeButton = new JButton("Close");
-        mainPanel.add(createButton);
-        mainPanel.add(closeButton);
+        bottomPanel.add(createButton);
+        bottomPanel.add(closeButton);
+        mainPanel.add(bottomPanel);
 
         createButton.addActionListener(e -> {
             try {
