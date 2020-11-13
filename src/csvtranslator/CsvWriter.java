@@ -17,25 +17,31 @@ public class CsvWriter {
 
         String dir;
         String fileName;
+
         switch (os) {
             default:
             case "android":
-                writeOneRow("<resources>");
-                dir = "\\values-" + lang;
-                fileName = "string.xml";
+                dir = "./values-" + lang;
+                fileName = "strings.xml";
                 break;
             case "ios":
-                dir = String.format("\\%s.lproi", lang);
+                dir = String.format("./%s.lproj", lang);
                 fileName = "Localizable.strings";
                 break;
         }
 
         File file = new File(dir, fileName);
+        File dirFile = new File(dir);
+
         try {
-            file.mkdirs();
+            dirFile.mkdirs();
             writer = new FileWriter(file);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        if("android".equals(os)){
+            writeOneRow("<resources>");
         }
     }
 

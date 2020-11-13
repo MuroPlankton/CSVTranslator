@@ -5,11 +5,16 @@
  */
 package csvtranslator;
 
-import com.sun.jdi.IntegerValue;
 import javafx.util.Pair;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class CsvHandler {
