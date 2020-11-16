@@ -92,6 +92,7 @@ public class CsvHandler {
         readCSV(line -> {
             handleTranslateData(line);
         });
+        finishWriterWriting();
     }
 
     public void readCSV(CsvLineHandlerInterface lineHandler) {
@@ -118,7 +119,7 @@ public class CsvHandler {
             }
         }
 
-        finishWriterWriting();
+
     }
 
     private void finishWriterWriting() {
@@ -135,13 +136,13 @@ public class CsvHandler {
 
     public void matchSentence(String sentence1, String language) {
         matchSentenceLineNumber = 0;
+        highestMatch = 0;
         readCSV(line -> {
             matchSentenceLineNumber += 1;
 
             // TODO for loop languages, get sentence2 from each language
 
-            String sentence2 = line;
-            sentence2 = sentence2.toLowerCase();
+            String sentence2 = line.toLowerCase();
             System.out.println();
             System.out.println("line: " + line);
 
@@ -166,19 +167,24 @@ public class CsvHandler {
                 double wordComparisonCount = 0;
                 LevenshteinAlgorithm algorithm = new LevenshteinAlgorithm();
 
-                double match = algorithm.similarity(sentence1, wordList2.get(languageIndex));
+                double match;
+                if(sentence1.equals(sentence2)) {
+                    match = 1d;
+                } else {
+                    match = algorithm.similarity(sentence1, wordList2.get(languageIndex));
+                }
                 if (match < 0.9d) {
                     for (int i = 0; i < wordList.size(); i++) {
                         for (int j = 0; j < selectedLangValuesList.size()/*wordList2.size()*/; j++) {
 
                             double wordSimilarity = algorithm.similarity(wordList.get(i), selectedLangValuesList.get(j)/*wordList2.get (j)*/);
-                            if (wordSimilarity > 0.25d) {
+                            if (wordSimilarity > 0.75d) {
                                 rowSimilarity += wordSimilarity;
+                                wordComparisonCount += 1;
                             }
-                            wordComparisonCount += 1;
                         }
                     }
-                    match = rowSimilarity / wordComparisonCount;
+                    match = rowSimilarity / Math.max(wordComparisonCount, wordList.size());
                 }
 
                 if (match > highestMatch) {

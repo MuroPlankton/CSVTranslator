@@ -89,7 +89,7 @@ class TranslatorUI {
         JPanel matchingPanel = new JPanel();
 
         matchingPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
-        textToMatch = new JTextField("Key or value");
+        textToMatch = new JTextField("");
         textToMatch.setColumns(20);
         languageToSearch = new JComboBox<>();
         languageToSearch.addItem("lang");
