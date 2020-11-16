@@ -1,0 +1,511 @@
+android,ios,web,en,fi
+choicely_done,done,done,Done,Valmis
+,Done,,Done,
+drawer_open,,,Menu open,Valikko auki
+drawer_close,,,Menu closed,Valikko kiinni
+choicely_free,,,Free,Ilmainen
+choicely_vote,Vote,,vote,äänestä
+choicely_single_vote,,,vote,ääni
+choicely_ok,Ok,,Ok,Ok
+choicely_yes,Yes,,Yes,Kyllä
+choicely_no,No,,No,Ei
+choicely_cancel,cancel,,Cancel,Peruuta
+,Cancel,,Cancel,Peruuta
+choicely_close,,,Close,Sulje
+choicely_refresh,,,Refresh,Päivitä
+choicely_share,,,Share,Jaa
+,getPaidVotesShare,,Want to support your favourite to win? Invite friends & get more votes!,Haluatko tukea suosikkiasi? Kutsu ystäviäsi mukaan ja saat enemmän ääniä!
+choicely_add_photo,,,Add,Lisää kuva
+,addContestPhoto,,Tap to add a contest photo,
+choicely_follow,follow,,Follow,Seuraa
+choicely_following,following_plural,,Following,Älä seuraa
+,following_singular,,Following,Seurattu
+,followers,,Followers,Seuraajia
+choicely_search,search_key,,Search,Etsi
+choicely_save,Save,,Save,Tallenna
+choicely_saving,CreatingContest,,Saving,Tallentaa
+choicely_saved,,,Saved,Tallennettu
+,ProfileSaved,,Profile saved,Profiili Tallennettu
+choicely_remove_participant_text,,,Are you sure you want to remove this image? All votes for this image will be lost.,Oletko varma että haluat poistaa kuvan? Menetät kaikki tälle kuvalle annetut äänet.
+choicely_remove_participant_title,,,Remove image,Poista kuva
+choicely_answered_with_colon,,,Answered:,Vastattu:
+choicely_answered,,,Answered,Vastattu
+choicely_submit,Submit,,Submit,Vastaa
+choicely_survey_submitted,,,Survey answer submitted,Kyselyn vastaus lähetetty
+choicely_edit,,,Edit,Muokkaa
+,edit_profile,,Edit profile,Muokkaa profiilia
+,MyProfile,,Edit profile,Muokkaa profiilia
+choicely_live_caps,timeLeft,,TIME LEFT,LIVE
+choicely_results,,,RESULTS,TULOKSET
+,finished_contests,,Results,
+choicely_open_in_browser,OpenInBrowser,,Open in browser,Avaa selaimessa
+choicely_buy_votes,,,buy votes,Osta ääniä
+choicely_voted,,,voted,Äänestetty
+,ThanksForYourVote,,Thanks for your vote!,
+choicely_update,Update,,Update,Päivitä
+choicely_update_default_title,,,A new version of this app has been released!\nPlease update the app to all the latest features.,Uusi versio sovellusksesta on julkaistu!\nPäivitä uusimpaan versioon saadaksesi kaikki uudet ominaisuudet.
+choicely_generic_error,UnknownErrorOccurred,,An error has occured!,Tapahtui virhe!
+choicely_no_internet_connection,,,No internet connection!,Ei internet-yhteyttä!
+choicely_check_your_connection,PleaseCheckYoutInternetConnection,,Try to enable your internet connection and refresh!,Koita saada yhteys internettiin ja päivitä sivu!
+,PleaseCheckYoutInternetConnection,,,Ole hyvä ja tarkista verkkoyhteytesi
+choicely_content_download_failed,,,Content download failed!,Sisällön lataaminen epäonnistui!
+,requestError,,Error loading content. Please try again.,Virhe ladattaessa sisältöä. Yritä uudelleen.
+choicely_content_does_not_exist,,,"Content does not exist, or it has been deleted!",Sisältöä ei ole enää olemassa tai se on poistettu!
+choicely_could_not_follow,,,Could not follow!,Seuraaminen epäonnistui!
+choicely_please_try_again_later,,,Please try again later.,Kokeile myöhemmin uudelleen.
+choicely_forbidden_content,,,Unauthorized content!,Pääsy estetty!
+choicely_you_do_not_have_access_to_this_content,,,You do not have access to this content.,Sinulla ei ole oikeutta tähän sisältöön.
+choicely_video_not_available,,,Video is not currently available.,Video ei ole tällä hetkellä saatavilla.
+,VideoNotFound,,Video not found,Video ei löydy
+,,,,
+choicely_time_just_now,,,now,nyt
+,JustNow,,just now,Juuri äsken
+,just_now,,just now,
+,by %@,,by %@,%@
+,%@ ago,,%@ ago,%@ sitten
+,timeLeft,,time left,
+choicely_time_years,years,,%1$dy,%1$dy
+,month,,month,kuukausi
+,months,,months,kuukautta
+,week,,week,viikko
+choicely_time_weeks,weeks,,%1$dw,%1$dv
+,day,,day,päivä
+choicely_time_days,days,,%1$dd,%1$dpv
+choicely_time_hours,hours,,%1$dh,%1$dt
+choicely_time_min,minutes,,%1$dm,%1$dm
+choicely_time_sec,,,%1$ds,%1$ds
+choicely_time_year,year,,year,vuosi
+choicely_time_long_moments_ago,just_now,,just now,nyt
+choicely_contest_participation_failed_general,,,Contest participation failed. Please try again later.,Osallituminen epäonnistui. Yritä myöhemmin uudestaan.
+choicely_contest_participation_failed_already_participated,,,You have already participated with this image.,Olet jo osallistunut tällä kuvalla.
+choicely_contest_has_ended,,,Contest has ended,Kilpailu on päättynyt
+choicely_info,,,Info,Info
+,ReportAdditionalContent,,Additional information,
+,PersonalInformation,,Personal information,Henkilötiedot
+,,,,
+choicely_notification_channel_default_title,,,Follow,Seuraa
+,followButtonFollow,,follow,seurataan
+choicely_notification_channel_default_description,,,Information you follow,Aiheet joita sinä seuraat
+,,,,
+choicely_age,,,Age,Ikä
+choicely_under_18,,,Under 18,Alle 18
+choicely_select_yout_age,,,Select your age,Valitse ikäsi
+choicely_location,,,Location,Sijainti
+choicely_enter_location,,,Enter location,Aseta sijainti
+choicely_enter_your_location,,,Enter your location,Aseta sijaintisi
+,,,,
+choicely_gender,GenderPlaceholder,,Gender,Sukupuoli
+choicely_select_your_gender,,,Select your gender,Valitse sukupuolesi
+choicely_gender_not_selected,,,Not specified,Ei määritelty
+choicely_gender_male,Male,,Male,Mies
+choicely_gender_female,Female,,Female,Nainen
+choicely_gender_other,Other,,Other,Muu
+,NotChosen,,Not specified,Määrittelemätön
+,,,,
+choicely_profile_password_reset_success,,,Password reset request sent,Salasanan nollaus pyyntö lähetetty
+,APasswordResetLinkWasSentTo,,A password reset link was sent to,Linkki salasanan palauttamista varten on lähetetty osoitteeseen
+choicely_profile_continue_with_sms,,,Continue with SMS,Jatka tekstiviestillä
+choicely_profile_continue_with_google,,,Continue with Google,Jatka Googlella
+choicely_profile_continue_with_facebook,,,Continue with Facebook,Jatka Facebookilla
+choicely_profile_continue_with_apple_id,,,Continue with Apple ID,Jatka Apple ID:llä
+,FBLoginFailed,,Facebook login failed,Facebook -kirjautuminen epäonnistui.
+,GoogleLoginFailed,,Google login failed.,Google -kirjautuminen epäonnistui.
+,ChoicelyLoginFailed,,Check email and password,Tarkista käyttäjänimi tai salasana
+,ChoicelyRegisterFailed,,Registering failed. Try again later please.,Rekisteröinti epäonnistui. Yritä myöhemmin uudelleen.
+,CantVerifyEmailConfirmed,,Couldn't find email confirmation!,Sähköpostiosoitteen vahvistusta ei löytynyt!
+,CheckEmailOrPassword,,Please check username or password,Tarkista käyttäjänimi ja salasana
+,CheckEmail,,Please check email address,Tarkista sähköpostiosoite
+,UsernameNotAvailable,,Username not available,Käyttäjänimi ei ole saatavilla
+,LoginEmail,,email or username,Valitse viisaasti
+,AlternateLogin,,or,tai
+choicely_forgot_password_question,ForgotPassword?,,Forgot password?,Unohtuiko salasanasi?
+,Email,,EMAIL,Sähköposti
+,Password,,Password,Salasana
+,Register,,Send confirmation email,Lähetä varmistussähköposti
+,EmailAlreadyConfirmed,,I have already confirmed my email address,Olen jo varmistanut sähköpostiosoitteeni
+choicely_search_location_select_city,,,Select your city,Valitse kaupunkisi
+,SelectCity,,Select city,Valitse kaupunki
+choicely_search_location_error_no_city_selected,,,No city selected,Ei valittua kaupunkia
+choicely_fill_profile_to_see_results,,,Complete profile to see advanced results,Täydennä profiilisi nähdäksesi tarkemmat tulokset
+,EmailOrUsername,,Email or username,Sähköposti tai käyttäjänimi
+choicely_profile_sign_in,SignIn,,Sign in,Kirjaudu sisään
+,Login,,Login,Kirjaudu sisään
+,LoginTitile,,Sign in with,Kirjaudu sisään
+,logout,,Logout,Kirjaudu ulos
+,LogoutConfirmation,,Are you sure you want to log out?,Haluatko varmasti kirjautua ulos?
+,,,,
+,contests,,Contests,Kilpailut
+,contests_alt,,Contests,Kilpailuja
+choicely_finished,,,Finished,Kilpailu on päättynyt
+choicely_rating_contest,,,Rating contest,Arvostelu kilpailu
+choicely_contest_state_running,running_contests,,Live,Live
+choicely_contest_state_finished,finished,,Results,Tulokset
+choicely_contest_state_announced,,,Announced,Ilmoitettu
+,ResultsAnnouncedIn,,Results announced in:,Tulokset julkaistaan:
+choicely_contest_state_all,All,,All,Kaikki
+choicely_contest_state_setup,,,Setup,Valmistele
+choicely_contest_type_vote_only,VotingContestTitle,,Voting,Äänestys
+,VotingStartsIn,,Voting starts in:,Äänestys alkaa:
+choicely_contest_type_vote_only_description,,,You add your photos and people vote,"Sinä lisäät kuvat, ja muut äänestävät"
+,VotingContestDescription,,Add a set of photos to vote for,"Lisää kuvat, joita käyttäjät äänestävät"
+choicely_contest_type_image_participate_description,,,People can add their own photos,Muut voivat lisätä omia kuviaan
+,PhotoContestDescription,,Users,Kaikki voivat osallistua kilpailuun omilla kuvillaan
+choicely_contest_type_choices_description,,,You add your photos and people choose from available choices,"Sinä lisäät kuvasi, ja muut valitsevat vaihtoehtojen joukosta"
+choicely_show_contest_result_breakdown,ShowContestResultsBreakdown,,Show contest result breakdown,Näytä kilpailun tulokset
+,showContestResultsBreakdown,,,Näytä kilpailun tulosten erittely
+choicely_rating,,,Rating,Arvostelu
+choicely_challenge,PhotoContestTitle,,Challenge,Haaste
+choicely_contest_ad_already_watched,,,Video already watched,Olet jo katsonut tämän videon
+choicely_survey,,,Survey,Kysely
+choicely_contest_voting_features,VotingFeatures,,Voting features,Äänestyksen ominaisuudet
+choicely_contest_voting_features_free_votes,FreeVotes,,Free votes,Ilmaiset äänet
+choicely_contest_voting_features_limit_per_contestant,VotesPerContestant,,Votes\nlimit / contestant,Äänet\nraja / kilpailija
+choicely_contest_voting_earn_votes,EarnVotes,,Earn votes,Ansaitse ääniä
+choicely_contest_voting_unvotes,Unvote,,Unvote,Poista ääni
+choicely_contest_voting_premium_votes,PremiumVotes,,Premium votes,Premium-äänet
+,paidVotesLeft,,My premium votes,Premium äänet
+choicely_contest_voting_premium_limit_per_voter,,,Premium votes\nLimit / voter,Premium-äänet\nRaja / äänestäjä
+choicely_contest_voting_premium_limit_per_contestant,,,Premium votes\nlimit / contestant,Näkyvissä äänestämisen jälkeen
+,MaxPaidVotesParticipant,,Limit number of paid votes per participant,Rajoitus kullekin kilpailijalle annettaville maksullisille äänille
+choicely_contest_voting_results_visible,resultsVisible,,Results visible,Tulokset näkyvissä
+,resultsVisible,,,Tulosten näkyvyys
+choicely_contest_voting_results_visible_after,,,After vote,Äänestyksen jälkeen
+,hidden_until_vote,,Shown after voting,
+choicely_contest_voting_results_visible_tba,,,To be announced,Ilmoitetaan myöhemmin
+,Kilpailun tulokset julkaistaan myöhemmin.,,Contest results will be visible later.,
+choicely_contest_voting_results_visible_always,,,Always,Aina
+,Shown,,Always,Näkyvissä
+,shown,,Always,Näkyvissä
+choicely_contest_voting_results_visible_after_end,,,After contest end,Kun kilpailu loppuu
+choicely_create_contest_warning_vote_reset,,,Warning: vote reset,Varoitus: äänien nollaaminen
+choicely_create_contest_subrating_vote_reset_warning,SubratingVoteResetWarning,,"Adding, removing or changing advanced rating weights will reset all contest votes","Edistyneiden arvioiden painojen lisääminen, poistaminen ja muuttaminen nollaa kaikki kilpailun äänet!"
+choicely_contest_download_failed,,,Contest download failed,Kilpailun lataaminen epäonnistui
+,ContestUpdateFailed,,Contest update failed.,Kilpailua ei voitu päivittää.
+choicely_contest_choices,Choices,,Choices,Vaihtoehdot
+choicely_contest_people,People,,People,Ihmiset
+choicely_contest_stars,Stars,,Stars,Tähdet
+,YourStars,,Your stars,Tähtesi
+choicely_thank_you_for_your_vote,ThanksForYourVote,,Thank you for your vote!,Kiitos äänestäsi!
+choicely_n_answers,,,%1$d answers,%1$d vastausta
+,,,,
+choicely_votes,,,Votes,Äänet
+,voters,,voters,äänestäjiä
+,total votes,,total votes,ääniä yhteensä
+choicely_vote_failed,,,Voting failed. Please try again later.,Äänestys epäonnistui. Kokeile myöhemmin uudestaan.
+choicely_swipe_guide_message,AreYouReadyToSwipe,,"Ready? Right if you're interested, left to pass","Valmiina? Oikealle, jos sinä olet kiinnostunut, vasemmalle skipataksesi"
+choicely_no_participants_to_swipe,,,Contest has no participants,Kilpailulla ei ole kilpailijoita
+choicely_no_more_participants,NoMoreParticipantsToSwipe,,There are no more participants,Ei enempää kilpailijoita
+choicely_swipe_voting_not_available,,,Swipe voting not available,Swipe-äänestys ei saatavilla
+,,,,
+choicely_vote_service_not_enough_votes,,,Not enough votes,Ei tarpeeksi ääniä
+choicely_vote_service_not_enough_earn_silvers,,,You have already used up all free votes.\n\nIf you want to vote more you can watch an ad to earn more.,You have already used up all free votes.\n\nIf you want to vote more you can watch an ad to earn more.
+,SilverStar,,Silver Star,Hopeatähti
+,SilverStars,,Silver Stars,Hopeatähteä
+,EarnSilverStarsByWatchingThisVideo,,Earn %d silver star(s) by watching this video,Ansaitse %d hopeatähteä katsomalla tämä video
+,EarnVotes,,Earn votes,
+choicely_vote_service_not_enough_free_votes,,,Not enough free votes,Ei tarpeeksi ilmaisia ääniä
+choicely_vote_service_not_enough_free_buy_stars,,,You have already used up all free votes.\n\nIf you want to vote more you can buy stars here.,"Olet käyttänyt kaikki ilmaiset äänesi.\n\nJos haluat antaa lisää ääniä, voit ostaa tähtiä täältä."
+,freeVoteCountExceeded,,Free vote limit exceeded,Ilmaisia ääniä ei enää jäljellä
+,starVoteCountExceeded,,Star vote limit exceeded,Maksullisiä ääniä ei enää jäljellä
+choicely_vote_service_not_enough_free_remove_votes,,,You have already used up all free votes. You can remove votes from other participants.,Olet käyttänyt kaikki ilmaiset äänesi. Voit poistaa antamiasi ääniä muilta kilpailijoilta.
+choicely_vote_service_not_enough_free_no_remove_allowed,,,You have already used up all free votes.,Olet käyttänyt kaikki ilmaiset äänesi.
+choicely_vote_service_contest_ended_title,,,Contest has ended,Kilpailu on päättynyt
+,ContestEnds,,Ends,Loppuu:
+choicely_vote_service_contest_starts_in,,,Contest start %1$s,Kilpailu alkaa %1$s
+,ContestStarts,,Starts,Alkaa
+,,,,
+choicely_title,,,Title,Otsikko
+choicely_description,,,Description,Kuvaus
+choicely_image_text,,,Image text,Kuvateksti
+,LogoText,,Choose wisely.,
+choicely_upload_photo,,,Upload photo,Lähetä kuva
+,,,,
+choicely_survey_this_field_is_required,ThisFieldIsRequired,,This field is required,Pakollinen kenttä
+choicely_survey_all_required_fields_not_filled,,,All required survey fields not filled,Kaikki pakolliset kentät eivät ole täytettyjä
+,,,,
+choicely_shop_fragment_header_default_title,,,Support {participant_title},Tue {participant_title}
+choicely_shop_fragment_header_default_description,,,"Get more votes, {user_name}!","Hanki lisää ääniä, {user_name}!"
+choicely_shop_save_money,,,SAVE %d%%,Säästä %d%%
+choicely_get_votes,,,Get votes,Hanki ääniä
+,GetMoreVotes,,Get more votes,Hanki lisää
+choicely_buy,Buy,,Buy,Osta
+choicely_purchase_failed,,,Purchase failed!,Ostos epäonnistui!
+choicely_purchase_succeeded,,,Purchase succesful!,Ostos onnistui!
+choicely_buy_more,,,Buy more,Osta lisää
+choicely_restore_purchase,RestorePurchases,,Restore purchase,Palauta ostos
+,RestorePurchases,,Restore Purchases,Palauta ostokset
+choicely_restore_purchase_description,,,You own this subscription on another account. You can restore the purchase to this account but it means that you will lose access on that another account.\nRestore purchase?,"Omistat tämän tilauksen toisella tilillä. Voit palauttaa ostoksen tälle tilille, mutta tulet menettämään oikeusen sisältöön toisella tilllä.\nPalauta ostos?"
+choicely_manage_subcriptions,,,Manage subscriptions,Hallitse tilauksia
+choicely_open_content,,,Open content,Avaa sisältö
+,OpenSettings,,Open settings,Avaa asetukset
+choicely_renews_on,,,Renews on: %s\n%s,Seuraava maksu: %s\n%s
+choicely_expires_on,,,Expires on: %s\nRenew %s,Vanhentuu: %s\nJatka tilausta %s
+,SubscriptionExpired,,Subscription has expired,
+choicely_problem_with_your_payment,,,Problem with your payment!,Maksuhäiriö!
+choicely_change_the_plan,,,Change the plan,Muuta laskutusaikaa
+choicely_subscription_plan_text,,,%s\n%s / %s,"(%s /kk, Säästä %s%%)"
+choicely_subscription_plan_bottom_text,,,"(%s /mo, Save %s%%)",
+choicely_purchase_restored,,,Purchase restored!,Ostos palautettu!
+choicely_subscription_my_plan,,,My plan,Tilaukseni
+,,,,
+choicely_participant_counter,,,,
+choicely_lorem,,,,
+choicely_lorem_short,,,,
+choicely_lorem_long,,,,
+,,,,
+,photos,,photos,kuvia
+,you,,you,sinä
+,brands,,brands,Brändejä
+,users,,Users,Käyttäjiä
+,tags,,Tags,Tageja
+,images,,Images,Kuvia
+,change_profile_image,,Change profile image,Vaihda profiilikuvaa
+,CameraSource,,Select image source,Valitse kuvan lähde
+,ImageGallery,,Image Gallery,Galleria
+,Camera ,,Camera,Kamera
+,UploadedImages,,Uploaded,Lähetetyt
+,UsernamePlaceholder,,Username,Käyttäjänimi
+,FullnamePlaceholder,,Full name,Nimi
+,EmailPlaceholder,,Email,Sähköposti
+,CountryPlaceholder,,Country,Maa
+,BirthdayPlaceholder,,Birthday,Syntymäaika
+,ProfileSaveFailedError,,Failed to save profile,Profiilin tallennus epäonnistui
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,feedback,,Feedback,Palaute
+,FeedbackTitle,,"""Give us your thoughts on the application.","Kerro meille, mitä mieltä olet sovelluksesta."
+,FeedbackSend,,Send feedback,Lähetä palaute
+,FeedbackSentFailed,,Failed to send feedback.,Palautteen lähettäminen epäonnistui.
+,FeedbackSent,,Feedback sent. Thank you!,Palaute lähetetty. Kiitos!
+,,,,
+,VotingInstructions1,,Your total votes and maximum votes in the contest,Kokonaisäänimääräsi ja kilpailuun annettavien äänien maksimimäärä
+,VotingInstructions2,,Add votes to participant and see maximum votes for participant,Anna ääniä kilpailijalle ja näe kilpailijakohtaisten äänien maksimimäärä
+,VotingInstructions3,,Unvote this contest participant,Poista ääniä kilpailijalta
+,,,,
+,terms1,,By signing up to Choicely you have read and accepted,"Kirjautumalla Choicelyyn osoitat, että olet tutustunut ja hyväksynyt sovelluksen"
+,terms2,,the terms of use,käyttöehdot
+,terms3,,We will never post anything without your permission,Emme koskaan julkaise mitään ilman lupaasi.
+,terms,,Terms of use,Käyttöehdot
+,,,,
+,votingFinished,,Voting for this contest is finished.,Kilpailussa ei voi enää äänestää.
+,,,,
+,ReportImage,,Report image,Raportoi kuva
+,ReportAdditionalContent,,Additional information,Lisätietoa
+,SendReport,,Send report,Lähetä
+,ReportSendFailed,,Report sending failed.,Raportin lähettäminen epäonnistui.
+,ReportSent,,Report sent. Thank you!,Raportti lähetetty. Kiitos!
+,OpenMailApp,,Open mail app,Avaa sähköpostisovellus
+,inviteFriends,,Invite friends,Kutsu ystäviä mukaan
+,Create,,Create,Luo
+,Create Contest,,CreateContest,Luo kilpailu
+,contestNamePlaceholder,,Contest name goes here,Anna kilpailulle nimi
+,AddContestants,,Add contestants,Lisää kilpailun kuvat
+,participated_to_contest,,participated to contest,osallistui kilpailuun
+,message_placeholder,,What's on your mind?,Mitä mieltä?
+,UploadingImage,,Uploading image,Lähetetään kuvaa
+,,,,
+,delete_event,,Delete my update,Poista päivitys
+,ConfirmDelete,,Are you sure you want to delete contest?,Haluatko varmasti poistaa kilpailun?
+,ContestDeleteFailed,,Couldn't delete contest!,Kilpailua ei voitu poistaa!
+,,,,
+,ShortTitle,,Short title,Lyhyt kuvaus
+,Story,,Story,Kuvan tarina
+,SelectImage,,Select image,Valitse kuva
+,SelectImages,,Select images,Valitse kuvat
+,my_feed_key,,My Feed,Oma Seinä
+,contests_key,,Contests,Kilpailut
+,my_contests_key,,My Contests,Omat Kilpailut
+,,,,
+,ContestDescriptionPlaceholder,,,Kerro kilpailusta lisää
+,,,,
+,Email,,Describe the contest here,
+,ContestCreated,,Contest succesfully created.,Kilpailu luotu.
+,,,,
+,,,,
+,hidden,,Hidden,Piilotettu
+,,,,
+,hidden_until_end,,Shown when contest is finished,Näkyvissä kilpailun päättyessä
+,,,,
+,,,,
+,SearchHelpTitle,,Search for interesting things,Etsi kiinnostavia asioita
+,SearchHelpText,,Search for what's happening right now on Choicely. Follow interesting brands and people to get notified of their future contests.,Etsi mitä Choicelyssä on juuri nyt käynnissä. Seuraa kiinnostavia brändejä ja ihmisiä saadaksesi ilmoituksia heidän tulevista kilpailuistaan.
+,SearchHelpButton,,"OK, got it",Selvä
+,ContestUpdated,,Contest updated.,Kilpailu päivitetty.
+,,,,
+,DeleteContestConfirmation,,Delete contest?,Poista kilpailu?
+,,,,
+,,,,
+,,,,
+,VotingOptionsTitle,,Show voting options,Äänestystulosten näkyminen
+,BackgroundImageText,,Tap to add Contest background image,Lisää kuvia painamalla
+,ParticipateSuccess,,Photo sent.,Kuva lähetetty.
+,ParticipateFailed,,Photo sending failed.,Kuvan lähettäminen epäonnistui.
+,MyImagesTitle,,My images,Valitut kuvat
+,notifications,,Notifications,Ilmoitukset
+,,,,
+,ThankYouForVotingTitle,,Thank you for voting!,Kiitos äänestämisestä!
+,ThankYouForVotingSubtitle,,If you want to know immediately when user publishes something similar follow them.,Seuraa käyttäjää saadaksesi ilmoituksia heidän uusista kilpailuistaan.
+,,,,
+,failedToGetProducts,,Failed to get products,Tuotteiden haku epäonnisui
+,paidVotesNotAvailable,,Not available,Ei saatavilla
+,UploadingImages,,Uploading images,Lähetetään kuvia
+,DownloadingImages,,Downloading images,Ladataan kuvia
+,ConfirmDeleteImage,,Are you sure you want to delete the image?,Haluatko varmasti poistaa kuvan?
+,,,,
+,AreYouSure,,Are you sure?,Oletko varma?
+,AllVotesOnThisImageWillBeLost,,All votes on this image will be lost,Kaikki kuvan äänet menetetään
+,YourChangesWillBeLost,,Your changes will be lost,Tekemäsi muutokset menetetään
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,Play,,Play,Toista
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,WantMoreVotes,,Want more votes?,Haluatko enemmän ääniä?
+,GetMoreVotesAndSupportYourFavorites,,Get more votes and support your favourites to win!,Hanki lisää ääniä ja auta suosikkisi voittoon!
+,StarsCanBeUsedButDoNotIncreaseChances,,Stars can be used in any contest in Choicely but do not increase your chance of winning any prizes.,"Tähtiä voi käyttää missä tahansa Choicely-kilpailussa, mutta ne eivät paranna mahdollisuuksiasi voittaa palkintoja."
+,ChangeProfilePicture,,Change profile picture,Vaihda profiilikuvaa
+,,,,
+,NoVotesToRemove,,No votes to remove,No votes to remove
+,NoVotesLeftOnThisParticipant,,You have no votes left to spend on this participant,Sinulla ei ole jäljellä ääniä tälle kilpailijalle annettavaksi
+,,,,
+,Profile,,Profile,Profiili
+,Post,,Post,Julkaise
+,YouHaveNotPostedAnythingToYourFeed,,You have not posted anything to your feed yet,You have not posted anything to your feed yet
+,TheUsersFeedIsEmpty,,The user's feed is empty,
+,TheUserHasNotUploadedAnyImagesToChoicely,,The user has not uploaded any images to Choicely,Käyttäjä ei ole viellä ladannut yhtään kuvaa Choicelyyn
+,TheUserHasNotCreatedAContestInChoicelyYet,,The user has not created a contest in Choicely yet,The user has not created a contest in Choicely yet
+,,,,
+,Participated,,Participated,Osallistuttu
+,Created,,Created,Luotu
+,ParticipatedVoteMonkeyHeader,,Contests you have participated in,"Kilpailut, joihin olet osallistunut"
+,ParticipatedVoteMonkeyDesc,,All the contests you have participated in on Choicely can be found here. Take a look at all the exciting things you have been a part of.,"Kaikki kilpailut, joihin olet osallistunut löytyvät täältä. Katso, mihin kaikkeen jännittävään olet ollut osallisena."
+,CreatedVoteMonkeyHeader,,Your contests are here,Luomasi kilpailut
+,CreatedVoteMonkeyDesc,,All contests you have created on Choicely can be found here. You can also make new contests by clicking the 'create contest' button.,Kaikki luomasi kilpailut löytyvät täältä. Voit myös luoda uusia kilpailuja painamalla 'Luo kilpailu' -painiketta.
+,GotIt,,"Ok, got it",Selvä
+,Error,,Error,Virhe
+,titleEmptyError,,Contest title cannot be empty,Kilpailulla täytyy olla nimi
+,noVotingImagesError,,Voting and rating contest has to include participant images,Äänestys -ja luokituskilpailuun täytyy sisällyttää ehdokaskuvat
+,noBackgroundImageError,,Contest needs to have a background image,Kilpailulla täytyy olla taustakuva
+,endBeforeStartError,,Contest cannot end before it starts,"Kilpailu ei voi päättyä, ennen kuin se alkaa"
+,CreateAccount,,Create account,Luo tili
+,checkUsername,,Check username,Tarkista käyttäjänimi
+,usernameNotLongEnough,,Your username needs to be at least 2 characters long,Käyttäjänimen on oltava vähintään kaksi merkkiä pitkä
+,emailEmpty,,You need to provide an email address,Sinun on annettava sähköpostiosoitteesi
+,noValuesGiven,,Your profile cannot be empty,Käyttäjäprofiilisi ei voi olla tyhjä
+,userIDEmpty,,User ID is empty,Käyttäjätunniste tyhjä
+,imageIDEmpty,,ImageID is empty,Kuvatunniste tyhjä
+,PasswordNotValid,,Password must be 6 – 100 letters long,Password must be 6 – 100 letters long
+,CheckUsername,,Please check username,Please check username
+,EmailVerificationExplanation,,We have sent you a confirmation email to %@ at %@. Please go click the link so we know we can contact you when you win something.,"Lähetimme sinulle sähköpostivarmennuksen osoitteeseen %@ %@. Klikkaa sähköpostin linkkiä, jotta voimme varmistaa sähköpostiosoitteesi."
+,CommunicationError,,Communication error,Communication error
+,,,,
+,ContinueToChoicely,,Continue to Choicely,Jatka Choicelyyn
+,IncorrectPassword,,Incorrect password,
+,IncorrectUsernameOrEmail,,Incorrect username or email,
+,,,,
+,ForgotPasswordHelp,,Type your Choicely username or e-mail here and we will send you e-mail instructions for resetting your password.,"Kirjoita Choicely käyttäjätunnuksesi tai sähköpostiosoitteesi tähän, niin lähetämme sinulle ohjeet sähköpostiisi salasanan uusimiseen."
+,ResetPassword,,Reset password,Vaihda salasana
+,TapToSelect,,Tap to select,Napauta valitaksesi
+,,,,
+,FailedToOpenApplicationSettings,,Failed to open application settings,Asetusten avaaminen epäonnistui
+,ResendVerificationEmail,,Resend verification email,Lähetä vahvistusviesti uudelleen
+,EmailUpdated,,Email updated,Sähköpostisi on päivitetty
+,WeHaventGotYourEmailAddress,,We haven't got your email address yet. Please type it in to the textfield below!,Meillä ei vielä ole sähköpostiosoitettasi. Ole hyvä ja kirjoita se alla olevaan tekstikenttään.
+,EmailNotVerifiedYet,,The email address is not verified yet!,Sähköpostiosoitteesi on vahvistamatta
+,,,,
+,,,,
+,ShouldBeSmallerThanOrEqualTo,,Value should be smaller than or equal to %d,Arvon tulee olla pienempi tai yhtä suuri kuin %d
+,ShouldBeGreaterThanOrEqualTo,,Value should be greater than or equal to %d,Arvon tulee olla suurempi tai yhtä suuri kuin %d
+,ShouldBeBetween,,Value should be between %d and %d,Arvon tulee sijoittua %d ja %d välille
+,AdvancedSettings,,Advanced settings,Lisäasetukset
+,,,,
+,Participate,,Participate in this contest,Osallistu tähän kilpailuun
+,Countries,,Countries,Maat
+,ContestAvailableLocation,,Where will the contest be available?,Missä maissa kilpailu on saatavilla?
+,GlobalContest,,Global contest,Maailmanlaajuinen kilpailu
+,SelectCountries,,Select eligible countries,Valitse maat
+,CanUsersRemoveVotes,,Can users remove their votes before the contest ends?,Voivatko käyttäjät poistaa antamansa äänet ennen kilpailun päättymistä?
+,NumberFreeVotes,,Number of free votes,Maksuttomien äänien määrä
+,NumberPaidVotes,,Number of paid votes,Maksullisten äänien määrä
+,MaxFreeVotesContest,,Max free votes each user can give in this contest,"Suurin määrä maksuttomia ääniä, jonka kukin käyttäjä voi antaa"
+,MaxFreeVotesParticipant,,Limit number of free votes per participant,Rajoitus kullekin kilpailijalle annettaville maksuttomille äänille
+,MaxPaidVotesContest,,Max paid votes each user can give in this contest,"Suurin määrä maksullisia ääniä, jonka kukin käyttäjä voi antaa"
+,,,,
+,Unlimited,,Unlimited,Rajaton
+,,,,
+,SelectCountry,,Select country,Valitse maa
+,,,,
+,SelectState,,Select state,Valitse maakunta
+,,,,
+,LastAnswerDate,,Last answer date,LastAnswerDate
+,InvalidEmailOrUsername,,Invalid email or username,Sähköposti tai käyttäjänimi ei ole kelvollinen
+,,,,
+,ReportTitle,,Please explain why are you reporting this content to us!,Please explain why are you reporting this content to us!
+,FeedbackMessageCannotBeEmpty,,Feedback message cannot be empty!,Palautteen viesti ei voi olla tyhjä!
+,ThisParticipantHasNoStory,,This participant has no story,Tarinaa ei löydy
+,AddSubratingsDescription,,Users can vote by different qualities. Define qualities and set weight for each.,Users can vote by different qualities. Define qualities and set weight for each.
+,,,,
+,UseAdvancedRating,,Use advanced rating,(ei suomennosta)
+,MyBrands,,My Brands,Minun brändit
+,YouAreNotAdminOfAnyBrands,,You are not admin of any brands,Et ole tällä hetkellä minkään brändin ylläpitäjä
+,AdvancedRating,,Advanced rating,Lisäluokitukset
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,SignUp,,Sign up,Rekisteröidy
+,,,,
+,,,,
+,,,,
+,,,,
+,OneVsOneMustHaveTwoParticipants,,1 vs 1 contests must have only two participants,
+,OneVsOneChoose,,Choose,
+,OneVsOneOr,,or,
+,UserSessionIsRequiredToVote,,User session is required to vote,
+,PollAnswers,,answers,vastausta
+,LoginError,,Incorrect email or password. Try again.,Sähköpostiosoite tai salasana on virheellinen. Yritä uudelleen.
+,loginTitle,,Login to vote,Kirjaudu äänestääksesi:
+,loginSubtitle,,Use your C More or MTV account,Voit käyttää C More tai mtv-palvelun tunnuksiasi
+,,,,
+,passwordPlaceholder,,Password,Salasana
+,termsReadingConfirmation,,I have read and accept Choicely terms of use.,"Palvelun käyttö edellyttää rekisteröitymistä. Käyttäjien henkilötietoja käsitellään palveluun rekisteröitymiseksi ja palvelun käyttämiseksi, kuten esimerkiksi äänestyksiin osallistumiseksi, äänestysjakaumien muodostamiseksi ja äänestystulosten varmentamiseksi. Lisäksi käyttäjien henkilötietoja voidaan käsitellä MTV:n tietosuojalausekkeen mukaisesti esimerkiksi mainonnan ja asiakasviestinnän kohdentamiseen."
+,loginButton,,Login,Kirjaudu
+,registerText,,Register new account in mtv.fi.,"Jos olet uusi käyttäjä, luo maksuton tunnus osoitteessa mtv.fi."
+,profileTitle,,Your Love Island profile,Love Island profiilisi
+,,,,
+,adLoadError,,Ad is not available at this time,Mainosta ei saatavilla
+,,,,
+,followButtonFollowing,,following,seuraa
+,viewmore,,View more,Katso lisää
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,,,,
+,ShowResults,,Show results,Näytä tulokset
+,EnterPhoneNumber,,Enter phone number,Syötä puhelinnumero
+,SaveProfile,,Save Profile,Tallenna profiili
+,ChangePassword,,Change password,Vaihda salasana
+,EmailAlreadyInUse,,Email is already in use,Sähköpostiosoite on jo käytössä
+,CityPlaceholder,,City,Kaupunki
+,OldPasswordPlaceholder,,Old password,Vanha salasana
+,NewPasswordPlaceholder,,New password,Uusi salasana

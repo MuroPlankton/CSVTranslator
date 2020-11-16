@@ -17,6 +17,7 @@ class TranslatorUI {
     private JButton closeButton;
     private JLabel filePath;
     List<String> languages = new ArrayList<>();
+    private JLabel result;
 
     private JTextField textToMatch;
     private JComboBox<String> languageToSearch;
@@ -93,9 +94,7 @@ class TranslatorUI {
         languageToSearch = new JComboBox<>();
         languageToSearch.addItem("lang");
         JButton findMatchButton = new JButton("Find match");
-        JLabel result = new JLabel("The best match will display here.");
-
-        matchingPanel.add(textToMatch);
+        result = new JLabel("The best match will display here.");
         result.setAlignmentX(JPanel.CENTER_ALIGNMENT);
         result.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         mainPanel.add(textToMatch);
@@ -167,10 +166,16 @@ class TranslatorUI {
 
 
     public void findBestMatch() {
-        String sentence1 = textToMatch.getText();
+        clearScreen();
 
+        String sentence1 = textToMatch.getText();
         csvHandler.matchSentence(sentence1);
+        result.setText(csvHandler.getBestMatch());
+
     }
 
-
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
 }
