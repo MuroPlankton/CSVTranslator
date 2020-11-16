@@ -169,7 +169,7 @@ class TranslatorUI {
         clearScreen();
 
         String sentence1 = textToMatch.getText();
-        csvHandler.matchSentence(sentence1);
+        csvHandler.matchSentence(sentence1, languageToSearch.getSelectedItem().toString());
         result.setText(csvHandler.getBestMatch());
 
     }
