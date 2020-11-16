@@ -133,11 +133,10 @@ public class CsvHandler {
     private double highestMatch = 0;
     private int highestMatchLine = 0;
 
-    public void matchSentence(String sentence1) {
+    public void matchSentence(String sentence1, String language) {
         matchSentenceLineNumber = 0;
         readCSV(line -> {
             matchSentenceLineNumber += 1;
-
 
             // TODO for loop languages, get sentence2 from each language
 
@@ -153,11 +152,13 @@ public class CsvHandler {
 
             // TODO get langs from this CSV line
 
-            int fiIndex = 4;
+            int languageIndex = firstLineAsList.indexOf(language);
+
+            //int fiIndex = 4;
             String fiSentence = null;
 
-            if (wordList2.size() > 4) {
-                fiSentence = wordList2.get(4);
+            if (wordList2.size() > languageIndex) {
+                fiSentence = wordList2.get(languageIndex);
                 List<String> fiWordList = Arrays.asList(fiSentence.split(","));
 
                 double rowSimilarity = 0;
