@@ -63,7 +63,6 @@ public class CsvHandler {
                     translation = cellList.get(langIndex);
                 }
 
-
                 CsvWriter writer = writerMap.get(pair);
                 if (writer != null && isNotEmpty(osKey) && isNotEmpty(translation)) {
                     switch (pair.getKey()) {
@@ -139,11 +138,9 @@ public class CsvHandler {
         matchSentenceLineNumber = 0;
         readCSV(line -> {
             matchSentenceLineNumber += 1;
-            // TODO get langs from this CSV line
+
 
             // TODO for loop languages, get sentence2 from each language
-
-
 
             String sentence2 = line;
             System.out.println("line: " + line);
@@ -151,34 +148,47 @@ public class CsvHandler {
             List<String> wordList = Arrays.asList(sentence1.split(" "));
             List<String> wordList2 = Arrays.asList(sentence2.split(","));
 
-            System.out.println(wordList);
-            System.out.println(wordList2);
-            System.out.println();
-            LevenshteinAlgorithm algorithm = new LevenshteinAlgorithm();
+            // TODO get langs from this CSV line
 
-            double rowSimilarity = 0;
-            double wordComparisonCount = 0;
-            for (int i = 0; i < wordList.size(); i++) {
-                for (int j = 0; j < wordList2.size(); j++) {
+            int fiIndex = 4;
+            String fiSentence = null;
 
-                    double wordSimilarity = algorithm.similarity(wordList.get(i), wordList2.get (j));
-                    if(wordSimilarity > 0.25d){
-                        rowSimilarity += wordSimilarity;
+            if(wordList2.size() > 4){
+                fiSentence = wordList2.get(4);
+                List<String> fiWordList = Arrays.asList(fiSentence.split(","));
+
+                System.out.println(wordList);
+                System.out.println(fiWordList/*wordList2*/);
+                System.out.println();
+                LevenshteinAlgorithm algorithm = new LevenshteinAlgorithm();
+
+                double rowSimilarity = 0;
+                double wordComparisonCount = 0;
+                for (int i = 0; i < wordList.size(); i++) {
+                    for (int j = 0; j < fiWordList.size()/*wordList2.size()*/; j++) {
+
+                        double wordSimilarity = algorithm.similarity(wordList.get(i), fiWordList.get(j)/*wordList2.get (j)*/);
+                        if(wordSimilarity > 0.25d){
+                            rowSimilarity += wordSimilarity;
+                        }
+                        wordComparisonCount += 1;
                     }
-                    wordComparisonCount += 1;
                 }
-            }
 
-            double match = rowSimilarity / wordComparisonCount;
-            if(match > highestMatch) {
-                highestMatch = match;
-                highestMatchLine = matchSentenceLineNumber;
+                double match = rowSimilarity / wordComparisonCount;
+                if(match > highestMatch) {
+                    highestMatch = match;
+                    highestMatchLine = matchSentenceLineNumber;
+                }
+                System.out.println(String.format("Line %d Similarity: %.4f", matchSentenceLineNumber, match));
+                // todo best match:
+                System.out.println(String.format("Highest match: %d", highestMatchLine));
+            } else{
+                System.out.println("Error!");
             }
-            System.out.println(String.format("Line %d Similarity: %.4f", matchSentenceLineNumber, match));
         });
 
-        // todo best match:
-        System.out.println(String.format("Highest match: %d", highestMatchLine));
+
     }
 
 }
