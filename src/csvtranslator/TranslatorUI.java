@@ -66,11 +66,7 @@ class TranslatorUI {
         choosingPanel.add(filePanel);
 
         findFileButton.addActionListener(e -> {
-            try {
                 fileChooser();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
             System.out.println("search button pressed");
         });
 
@@ -90,9 +86,9 @@ class TranslatorUI {
         JPanel matchingPanel = new JPanel();
 
         matchingPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
-        JTextField textToMatch = new JTextField("Key or value");
+        textToMatch = new JTextField("Key or value");
         textToMatch.setColumns(20);
-        JComboBox<String> languageToSearch = new JComboBox<>();
+        languageToSearch = new JComboBox<>();
         languageToSearch.addItem("lang");
         JButton findMatchButton = new JButton("Find match");
         JLabel result = new JLabel("The best match will display here.");
@@ -136,7 +132,7 @@ class TranslatorUI {
     }
 
 
-    private void fileChooser() throws IOException {
+    private void fileChooser(){
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("CSV files only", "csv"));
         String currentDir = System.getProperty("user.dir");
@@ -161,6 +157,7 @@ class TranslatorUI {
         String sentence1 = textToMatch.getText();
 
         csvHandler.matchSentence(sentence1);
+
     }
 
 

@@ -2,8 +2,6 @@ package csvtranslator;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author s1800870
@@ -15,7 +13,7 @@ public class CSVTranslator {
 
     private static CsvHandler csvHandler;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
 
 

@@ -19,11 +19,7 @@ public class LevenshteinAlgorithm {
 /* // If you have Apache Commons Text, you can use it to calculate the edit distance:
 LevenshteinDistance levenshteinDistance = new LevenshteinDistance();
 return (longerLength - levenshteinDistance.apply(longer, shorter)) / (double) longerLength; */
-        System.out.println("similarity: " + (longerLength - editDistance(longer, shorter)) / (double) longerLength);
-
-
         return (longerLength - editDistance(longer, shorter)) / (double) longerLength;
-
     }
 
     // Example implementation of the Levenshtein Edit Distance

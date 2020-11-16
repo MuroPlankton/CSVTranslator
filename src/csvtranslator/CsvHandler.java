@@ -130,36 +130,55 @@ public class CsvHandler {
         }
     }
 
+    private int matchSentenceLineNumber = 0;
+
+    private double highestMatch = 0;
+    private int highestMatchLine = 0;
 
     public void matchSentence(String sentence1) {
-
+        matchSentenceLineNumber = 0;
         readCSV(line -> {
+            matchSentenceLineNumber += 1;
             // TODO get langs from this CSV line
 
-            // TODO for loop languages, get sentence2 from each langage
+            // TODO for loop languages, get sentence2 from each language
 
-            String sentence2 = "Koirat ovat parempia kuin kissat";
+
+
+            String sentence2 = line;
+            System.out.println("line: " + line);
 
             List<String> wordList = Arrays.asList(sentence1.split(" "));
-            List<String> wordList2 = Arrays.asList(sentence2.split(" "));
+            List<String> wordList2 = Arrays.asList(sentence2.split(","));
 
             System.out.println(wordList);
             System.out.println(wordList2);
             System.out.println();
             LevenshteinAlgorithm algorithm = new LevenshteinAlgorithm();
 
+            double rowSimilarity = 0;
+            double wordComparisonCount = 0;
             for (int i = 0; i < wordList.size(); i++) {
                 for (int j = 0; j < wordList2.size(); j++) {
 
-                    System.out.println(String.format("Word 1: %s, Word 2: %s", wordList.get(i), wordList2.get(j)));
-                    algorithm.similarity(wordList.get(i), wordList2.get (j));
-                    System.out.println();
-
+                    double wordSimilarity = algorithm.similarity(wordList.get(i), wordList2.get (j));
+                    if(wordSimilarity > 0.25d){
+                        rowSimilarity += wordSimilarity;
+                    }
+                    wordComparisonCount += 1;
                 }
-
             }
 
+            double match = rowSimilarity / wordComparisonCount;
+            if(match > highestMatch) {
+                highestMatch = match;
+                highestMatchLine = matchSentenceLineNumber;
+            }
+            System.out.println(String.format("Line %d Similarity: %.4f", matchSentenceLineNumber, match));
         });
+
+        // todo best match:
+        System.out.println(String.format("Highest match: %d", highestMatchLine));
     }
 
 }
