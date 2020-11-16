@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 class TranslatorUI {
 
@@ -14,6 +16,7 @@ class TranslatorUI {
     private JButton createButton;
     private JButton closeButton;
     private JLabel filePath;
+    List<String> languages = new ArrayList<>();
     private JLabel result;
 
     private JTextField textToMatch;
@@ -145,6 +148,15 @@ class TranslatorUI {
             csvHandler.setFileName(chosenPath);
             filePath.setText(chosenPath);
             System.out.println(chosenPath);
+            languages = csvHandler.findLanguages(chosenPath);
+            addLanguagesToDropDown();
+        }
+    }
+
+    private void addLanguagesToDropDown() {
+        languageToSearch.removeAllItems();
+        for (String lang : languages) {
+            languageToSearch.addItem(lang);
         }
     }
 
