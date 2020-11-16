@@ -73,7 +73,7 @@ public class CsvHandler {
                             writer.writeOneRow(String.format("\"%s\" = \"%s\";", osKey, translation));
                             break;
                         case WEB_INDEX:
-                            writer.writeOneRow("WEB STUFF");
+                            writer.writeOneRow(String.format("\"%s\" : \"%s\"", osKey, translation));
                     }
                 }
             }
