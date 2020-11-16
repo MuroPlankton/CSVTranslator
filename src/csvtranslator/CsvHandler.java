@@ -96,7 +96,7 @@ public class CsvHandler {
         });
     }
 
-    public void readCSV(CsvLineHandlerInterface lineHandler){
+    public void readCSV(CsvLineHandlerInterface lineHandler) {
         BufferedReader br = null;
         String line = "";
 
@@ -144,8 +144,8 @@ public class CsvHandler {
             // TODO for loop languages, get sentence2 from each language
 
 
-
             String sentence2 = line;
+            System.out.println();
             System.out.println("line: " + line);
 
             List<String> wordList = Arrays.asList(sentence1.split(" "));
@@ -153,7 +153,7 @@ public class CsvHandler {
 
             System.out.println(wordList);
             System.out.println(wordList2);
-            System.out.println();
+
             LevenshteinAlgorithm algorithm = new LevenshteinAlgorithm();
 
             double rowSimilarity = 0;
@@ -161,8 +161,8 @@ public class CsvHandler {
             for (int i = 0; i < wordList.size(); i++) {
                 for (int j = 0; j < wordList2.size(); j++) {
 
-                    double wordSimilarity = algorithm.similarity(wordList.get(i), wordList2.get (j));
-                    if(wordSimilarity > 0.25d){
+                    double wordSimilarity = algorithm.similarity(wordList.get(i), wordList2.get(j));
+                    if (wordSimilarity > 0.25d) {
                         rowSimilarity += wordSimilarity;
                     }
                     wordComparisonCount += 1;
@@ -170,7 +170,7 @@ public class CsvHandler {
             }
 
             double match = rowSimilarity / wordComparisonCount;
-            if(match > highestMatch) {
+            if (match > highestMatch) {
                 highestMatch = match;
                 highestMatchLine = matchSentenceLineNumber;
             }
@@ -181,4 +181,7 @@ public class CsvHandler {
         System.out.println(String.format("Highest match: %d", highestMatchLine));
     }
 
+    public String getBestMatch() {
+        return String.format("Highest match: %d", highestMatchLine);
+    }
 }
