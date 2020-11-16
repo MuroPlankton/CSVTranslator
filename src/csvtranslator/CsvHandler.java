@@ -11,10 +11,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class CsvHandler {
@@ -25,6 +22,8 @@ public class CsvHandler {
     private final int ANDROID_INDEX = 0;
     private final int IOS_INDEX = 1;
     private final int WEB_INDEX = 2;
+
+    private List<String> firstLineAsList;
 
     private String fileName;
 
@@ -96,7 +95,7 @@ public class CsvHandler {
         });
     }
 
-    public void readCSV(CsvLineHandlerInterface lineHandler){
+    public void readCSV(CsvLineHandlerInterface lineHandler) {
         BufferedReader br = null;
         String line = "";
 
@@ -151,7 +150,7 @@ public class CsvHandler {
                 for (int j = 0; j < wordList2.size(); j++) {
 
                     System.out.println(String.format("Word 1: %s, Word 2: %s", wordList.get(i), wordList2.get(j)));
-                    algorithm.similarity(wordList.get(i), wordList2.get (j));
+                    algorithm.similarity(wordList.get(i), wordList2.get(j));
                     System.out.println();
 
                 }
@@ -161,4 +160,34 @@ public class CsvHandler {
         });
     }
 
+    public List<String> findLanguages(String pathToFile) {
+        BufferedReader firstLineReader = null;
+        String firstLineText = "";
+
+        try {
+            firstLineReader = new BufferedReader(new FileReader(pathToFile));
+            firstLineText = firstLineReader.readLine();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                firstLineReader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        firstLineAsList = Arrays.asList(firstLineText.split(","));
+
+        List<String> languages = new ArrayList<>();
+        for (String columnOfLine : firstLineAsList) {
+            if (columnOfLine.length() < 3) {
+                languages.add(columnOfLine);
+            }
+        }
+
+        return languages;
+    }
 }
