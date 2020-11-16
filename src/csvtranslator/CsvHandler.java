@@ -149,6 +149,9 @@ public class CsvHandler {
             List<String> wordList = Arrays.asList(sentence1.split(" "));
             List<String> wordList2 = Arrays.asList(sentence2.split(","));
 
+            System.out.println(wordList);
+            System.out.println(wordList2);
+
             // TODO get langs from this CSV line
 
             int fiIndex = 4;
@@ -158,15 +161,10 @@ public class CsvHandler {
                 fiSentence = wordList2.get(4);
                 List<String> fiWordList = Arrays.asList(fiSentence.split(","));
 
-                System.out.println(wordList);
-                System.out.println(fiWordList/*wordList2*/);
-                System.out.println();
-                LevenshteinAlgorithm algorithm = new LevenshteinAlgorithm();
-                System.out.println(wordList);
-                System.out.println(wordList2);
-
                 double rowSimilarity = 0;
                 double wordComparisonCount = 0;
+                LevenshteinAlgorithm algorithm = new LevenshteinAlgorithm();
+
                 for (int i = 0; i < wordList.size(); i++) {
                     for (int j = 0; j < fiWordList.size()/*wordList2.size()*/; j++) {
 
@@ -186,7 +184,7 @@ public class CsvHandler {
                 // todo best match:
                 System.out.println(String.format("Highest match: %d", highestMatchLine));
             } else {
-                System.out.println("Error!");
+                System.out.println("Similarity couldn't be found!");
             }
         });
     }
