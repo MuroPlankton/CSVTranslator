@@ -187,7 +187,7 @@ public class CsvHandler {
                 }
                 System.out.println(String.format("Line %d Similarity: %.4f", matchSentenceLineNumber, match));
                 // todo best match:
-                System.out.println(String.format("Highest match: %d", highestMatchLine));
+                System.out.println(String.format("Highest match: %d|%s", highestMatchLine, highestMatch));
             } else {
                 System.out.println("Similarity couldn't be found!");
             }
