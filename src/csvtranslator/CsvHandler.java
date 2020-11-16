@@ -141,6 +141,7 @@ public class CsvHandler {
             // TODO for loop languages, get sentence2 from each language
 
             String sentence2 = line;
+            sentence2 = sentence2.toLowerCase();
             System.out.println();
             System.out.println("line: " + line);
 
@@ -155,20 +156,20 @@ public class CsvHandler {
             int languageIndex = firstLineAsList.indexOf(language);
 
             //int fiIndex = 4;
-            String fiSentence = null;
+            String langToFindIndexOf = null;
 
             if (wordList2.size() > languageIndex) {
-                fiSentence = wordList2.get(languageIndex);
-                List<String> fiWordList = Arrays.asList(fiSentence.split(","));
+                langToFindIndexOf = wordList2.get(languageIndex);
+                List<String> selectedLangValuesList = Arrays.asList(langToFindIndexOf.split(","));
 
                 double rowSimilarity = 0;
                 double wordComparisonCount = 0;
                 LevenshteinAlgorithm algorithm = new LevenshteinAlgorithm();
 
                 for (int i = 0; i < wordList.size(); i++) {
-                    for (int j = 0; j < fiWordList.size()/*wordList2.size()*/; j++) {
+                    for (int j = 0; j < selectedLangValuesList.size()/*wordList2.size()*/; j++) {
 
-                        double wordSimilarity = algorithm.similarity(wordList.get(i), fiWordList.get(j)/*wordList2.get (j)*/);
+                        double wordSimilarity = algorithm.similarity(wordList.get(i), selectedLangValuesList.get(j)/*wordList2.get (j)*/);
                         if (wordSimilarity > 0.25d) {
                             rowSimilarity += wordSimilarity;
                         }
