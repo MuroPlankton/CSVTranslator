@@ -66,7 +66,7 @@ class TranslatorUI {
         choosingPanel.add(filePanel);
 
         findFileButton.addActionListener(e -> {
-                fileChooser();
+            fileChooser();
             System.out.println("search button pressed");
         });
 
@@ -112,7 +112,7 @@ class TranslatorUI {
         });
 
         createButton.addActionListener(e -> {
-                handleCsvToTranslateFiles();
+            handleCsvToTranslateFiles();
         });
 
         closeButton.addActionListener(e -> {
@@ -132,7 +132,7 @@ class TranslatorUI {
     }
 
 
-    private void fileChooser(){
+    private void fileChooser() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("CSV files only", "csv"));
         String currentDir = System.getProperty("user.dir");

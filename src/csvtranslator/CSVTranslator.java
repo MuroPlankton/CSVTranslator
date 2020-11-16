@@ -1,7 +1,6 @@
 package csvtranslator;
 
 import javax.swing.*;
-import java.io.IOException;
 
 /**
  * @author s1800870
