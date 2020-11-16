@@ -168,7 +168,7 @@ class TranslatorUI {
     public void findBestMatch() {
         clearScreen();
 
-        String sentence1 = textToMatch.getText();
+        String sentence1 = textToMatch.getText().toLowerCase();
         csvHandler.matchSentence(sentence1, languageToSearch.getSelectedItem().toString());
         result.setText(csvHandler.getBestMatch());
 

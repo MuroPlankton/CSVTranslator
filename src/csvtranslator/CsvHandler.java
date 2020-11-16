@@ -166,17 +166,21 @@ public class CsvHandler {
                 double wordComparisonCount = 0;
                 LevenshteinAlgorithm algorithm = new LevenshteinAlgorithm();
 
-                for (int i = 0; i < wordList.size(); i++) {
-                    for (int j = 0; j < selectedLangValuesList.size()/*wordList2.size()*/; j++) {
+                double match = algorithm.similarity(sentence1, wordList2.get(languageIndex));
+                if (match < 0.9d) {
+                    for (int i = 0; i < wordList.size(); i++) {
+                        for (int j = 0; j < selectedLangValuesList.size()/*wordList2.size()*/; j++) {
 
-                        double wordSimilarity = algorithm.similarity(wordList.get(i), selectedLangValuesList.get(j)/*wordList2.get (j)*/);
-                        if (wordSimilarity > 0.25d) {
-                            rowSimilarity += wordSimilarity;
+                            double wordSimilarity = algorithm.similarity(wordList.get(i), selectedLangValuesList.get(j)/*wordList2.get (j)*/);
+                            if (wordSimilarity > 0.25d) {
+                                rowSimilarity += wordSimilarity;
+                            }
+                            wordComparisonCount += 1;
                         }
-                        wordComparisonCount += 1;
                     }
+                    match = rowSimilarity / wordComparisonCount;
                 }
-                double match = rowSimilarity / wordComparisonCount;
+
                 if (match > highestMatch) {
                     highestMatch = match;
                     highestMatchLine = matchSentenceLineNumber;
