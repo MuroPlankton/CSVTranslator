@@ -21,7 +21,9 @@ public class CsvHandler {
 
     private final int ANDROID_INDEX = 0;
     private final int IOS_INDEX = 1;
-    private final int WEB_INDEX = 2;
+    private final int WEB_ADMIN_INDEX = 2;
+    private final int WEB_MAIN_INDEX = 3;
+    private final int WEB_WIDGET_INDEX = 4;
 
     private List<String> firstLineAsList;
 
@@ -37,17 +39,17 @@ public class CsvHandler {
 
     public void handleTranslateData(String line) {
         List<String> cellList = Arrays.asList(line.split(","));
-        System.out.println(cellList + String.format(" has %s values", cellList.size()));
 
         if (linesHandled == 0) {
-            for (int langIndex = 3; langIndex < cellList.size(); langIndex++) {
+            for (int langIndex = 5; langIndex < cellList.size(); langIndex++) {
                 //in this for loop we go trough every language
                 String lang = cellList.get(langIndex);
 
                 writerMap.put(new Pair<>(ANDROID_INDEX, langIndex), new CsvWriter("android", lang));
                 writerMap.put(new Pair<>(IOS_INDEX, langIndex), new CsvWriter("ios", lang));
-                writerMap.put(new Pair<>(WEB_INDEX, langIndex), new CsvWriter("web", lang));
-
+                writerMap.put(new Pair<>(WEB_ADMIN_INDEX, langIndex), new CsvWriter("web-admin", lang));
+                writerMap.put(new Pair<>(WEB_MAIN_INDEX, langIndex), new CsvWriter("web-main", lang));
+                writerMap.put(new Pair<>(WEB_WIDGET_INDEX, langIndex), new CsvWriter("web-widget", lang));
             }
         } else if (!cellList.isEmpty()) {
             for (Pair<Integer, Integer> pair : writerMap.keySet()) {
@@ -55,9 +57,11 @@ public class CsvHandler {
                 int langIndex = pair.getValue();
                 String translation = null;
                 String osKey = null;
+
                 if (cellList.size() > osIndex) {
                     osKey = cellList.get(osIndex);
                 }
+
                 if (cellList.size() > langIndex) {
                     translation = cellList.get(langIndex);
                 }
@@ -66,13 +70,20 @@ public class CsvHandler {
                 if (writer != null && isNotEmpty(osKey) && isNotEmpty(translation)) {
                     switch (pair.getKey()) {
                         case ANDROID_INDEX:
-                            writer.writeOneRow(String.format("\t<string name=\"%s\">%s</string>", osKey, translation));
+                            writer.writeOneRow(String.format("\t<string name=\"%s\">%s</string>", osKey, translation), null, true);
                             break;
                         case IOS_INDEX:
-                            writer.writeOneRow(String.format("\"%s\" = \"%s\";", osKey, translation));
+                            writer.writeOneRow(String.format("\"%s\" = \"%s\";", osKey, translation), null, true);
                             break;
-                        case WEB_INDEX:
-                            writer.writeOneRow(String.format("\"%s\" : \"%s\"", osKey, translation));
+                        case WEB_ADMIN_INDEX:
+                        case WEB_MAIN_INDEX:
+                        case WEB_WIDGET_INDEX:
+                            String comma = ",";
+                            if (!writer.isFirstLineWritten()) {
+                                comma = null;
+                            }
+                            writer.writeOneRow(String.format("\"%s\" : \"%s\"", osKey, translation), comma, true);
+                            break;
                     }
                 }
             }
@@ -105,6 +116,7 @@ public class CsvHandler {
             while ((line = br.readLine()) != null) {
                 lineHandler.handleCsvLine(line);
             }
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -118,8 +130,6 @@ public class CsvHandler {
                 }
             }
         }
-
-
     }
 
     private void finishWriterWriting() {
@@ -140,8 +150,6 @@ public class CsvHandler {
         readCSV(line -> {
             matchSentenceLineNumber += 1;
 
-            // TODO for loop languages, get sentence2 from each language
-
             String sentence2 = line.toLowerCase();
             System.out.println();
             System.out.println("line: " + line);
@@ -152,11 +160,8 @@ public class CsvHandler {
             System.out.println(wordList);
             System.out.println(wordList2);
 
-            // TODO get langs from this CSV line
-
             int languageIndex = firstLineAsList.indexOf(language);
 
-            //int fiIndex = 4;
             String langToFindIndexOf = null;
 
             if (wordList2.size() > languageIndex) {
@@ -168,16 +173,16 @@ public class CsvHandler {
                 LevenshteinAlgorithm algorithm = new LevenshteinAlgorithm();
 
                 double match;
-                if(sentence1.equals(sentence2)) {
+                if (sentence1.equals(sentence2)) {
                     match = 1d;
                 } else {
                     match = algorithm.similarity(sentence1, wordList2.get(languageIndex));
                 }
                 if (match < 0.9d) {
                     for (int i = 0; i < wordList.size(); i++) {
-                        for (int j = 0; j < selectedLangValuesList.size()/*wordList2.size()*/; j++) {
+                        for (int j = 0; j < selectedLangValuesList.size(); j++) {
 
-                            double wordSimilarity = algorithm.similarity(wordList.get(i), selectedLangValuesList.get(j)/*wordList2.get (j)*/);
+                            double wordSimilarity = algorithm.similarity(wordList.get(i), selectedLangValuesList.get(j));
                             if (wordSimilarity > 0.75d) {
                                 rowSimilarity += wordSimilarity;
                                 wordComparisonCount += 1;

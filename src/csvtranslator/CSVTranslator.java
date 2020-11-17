@@ -14,8 +14,6 @@ public class CSVTranslator {
 
     public static void main(String[] args) {
 
-
-
         translatorUI = new TranslatorUI();
         SwingUtilities.invokeLater(translatorUI.getRunUI());
     }

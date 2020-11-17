@@ -7,3 +7,10 @@ out/
 nbproject/
 en.lproj/Localizable.strings
 fi.lproj/Localizable.strings
+admin-web/
+de.lproj/
+es.lproj/Localizable.strings
+it.lproj/Localizable.strings
+main-web/
+*.strings
+widget-web/
