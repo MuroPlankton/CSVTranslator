@@ -5,7 +5,7 @@
  */
 package csvtranslator;
 
-import javafx.util.Pair;
+import csvtranslator.util.Pair;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
