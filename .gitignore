@@ -10,3 +10,4 @@ Localizable.strings
 *.strings
 *.lproj/
 values-*/
+desktop.ini
