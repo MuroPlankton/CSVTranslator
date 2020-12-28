@@ -5,12 +5,8 @@ strings.xml
 out/
 *.iml
 nbproject/
-en.lproj/Localizable.strings
-fi.lproj/Localizable.strings
-admin-web/
-de.lproj/
-es.lproj/Localizable.strings
-it.lproj/Localizable.strings
-main-web/
+Localizable.strings
+*-web/
 *.strings
-widget-web/
+*.lproj/
+values-*/

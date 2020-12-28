@@ -12,9 +12,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class CsvHandler {
+
+    private static final String DELIMITER = "^\\s*\"?\\s*(.*?)\\s*\"?\\s*$";
+    private static final Pattern CSV_PATTERN = Pattern.compile("\\s*(?:\"[^\"]*\"|(?:^|(?<=,))[^,]*)");
 
     private int linesHandled = 0;
     private Map<Pair<Integer, Integer>, CsvWriter> writerMap = new HashMap<>();
@@ -38,7 +43,7 @@ public class CsvHandler {
     }
 
     public void handleTranslateData(String line) {
-        List<String> cellList = Arrays.asList(line.split(","));
+        List<String> cellList = splitCSVLine(line);
 
         if (linesHandled == 0) {
             for (int langIndex = 5; langIndex < cellList.size(); langIndex++) {
@@ -155,7 +160,7 @@ public class CsvHandler {
             System.out.println("line: " + line);
 
             List<String> wordList = Arrays.asList(sentence1.split(" "));
-            List<String> wordList2 = Arrays.asList(sentence2.split(","));
+            List<String> wordList2 = splitCSVLine(sentence2);
 
             System.out.println(wordList);
             System.out.println(wordList2);
@@ -166,7 +171,7 @@ public class CsvHandler {
 
             if (wordList2.size() > languageIndex) {
                 langToFindIndexOf = wordList2.get(languageIndex);
-                List<String> selectedLangValuesList = Arrays.asList(langToFindIndexOf.split(","));
+                List<String> selectedLangValuesList = splitCSVLine(langToFindIndexOf);
 
                 double rowSimilarity = 0;
                 double wordComparisonCount = 0;
@@ -224,7 +229,7 @@ public class CsvHandler {
             }
         }
 
-        firstLineAsList = Arrays.asList(firstLineText.split(","));
+        firstLineAsList = splitCSVLine(firstLineText);
 
         List<String> languages = new ArrayList<>();
         for (String columnOfLine : firstLineAsList) {
@@ -238,5 +243,14 @@ public class CsvHandler {
 
     public String getBestMatch() {
         return String.format("Highest match: %d", highestMatchLine);
+    }
+
+    private List<String> splitCSVLine(String text) {
+        final List<String> cells = new ArrayList<>();
+        final Matcher matcher = CSV_PATTERN.matcher(text);
+        while (matcher.find()) {
+            cells.add(matcher.group().replaceAll(DELIMITER, "$1"));
+        }
+        return cells;
     }
 }
