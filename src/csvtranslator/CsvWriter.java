@@ -8,8 +8,8 @@ public class CsvWriter {
 
     private FileWriter writer;
 
-    private String os;
-    private String lang;
+    private final String os;
+    private final String lang;
 
     private final String ANDROID = "android";
     private final String IOS = "ios";

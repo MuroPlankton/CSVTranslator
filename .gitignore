@@ -11,3 +11,4 @@ Localizable.strings
 *.lproj/
 values-*/
 desktop.ini
+last_csv_path.txt

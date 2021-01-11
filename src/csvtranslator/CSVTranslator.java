@@ -1,6 +1,9 @@
 package csvtranslator;
 
 import javax.swing.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 /**
  * @author s1800870
@@ -17,5 +20,6 @@ public class CSVTranslator {
         translatorUI = new TranslatorUI();
         SwingUtilities.invokeLater(translatorUI.getRunUI());
     }
+
 
 }

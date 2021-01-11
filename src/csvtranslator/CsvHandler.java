@@ -22,7 +22,7 @@ public class CsvHandler {
     private static final Pattern CSV_PATTERN = Pattern.compile("\\s*(?:\"[^\"]*\"|(?:^|(?<=,))[^,]*)");
 
     private int linesHandled = 0;
-    private Map<Pair<Integer, Integer>, CsvWriter> writerMap = new HashMap<>();
+    private final Map<Pair<Integer, Integer>, CsvWriter> writerMap = new HashMap<>();
 
     private final int ANDROID_INDEX = 0;
     private final int IOS_INDEX = 1;
@@ -86,8 +86,9 @@ public class CsvHandler {
                             String comma = ",";
                             if (!writer.isFirstLineWritten()) {
                                 comma = null;
+
+                                writer.writeOneRow(String.format("\"%s\" : \"%s\"", osKey, translation), comma, true);
                             }
-                            writer.writeOneRow(String.format("\"%s\" : \"%s\"", osKey, translation), comma, true);
                             break;
                     }
                 }
@@ -105,9 +106,7 @@ public class CsvHandler {
     }
 
     public void readCsvAndCreateTranslateFiles() {
-        readCSV(line -> {
-            handleTranslateData(line);
-        });
+        readCSV(this::handleTranslateData);
         finishWriterWriting();
     }
 
