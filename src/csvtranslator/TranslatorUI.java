@@ -1,13 +1,19 @@
 package csvtranslator;
 
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 class TranslatorUI {
 
@@ -17,6 +23,7 @@ class TranslatorUI {
     private JButton findFileButton;
     private JButton createButton;
     private JLabel filePath;
+
     List<String> languages = new ArrayList<>();
 
     private JComboBox<String> languageToSearch;
@@ -24,6 +31,7 @@ class TranslatorUI {
     private Runnable runUI = () -> {
         startUI();
     };
+
 
     TranslatorUI() {
     }
@@ -33,11 +41,27 @@ class TranslatorUI {
     }
 
     private void startUI() {
+        checkForLastCsvPath();
         csvHandler = new CsvHandler();
-
         createUIComponents();
     }
+    private void checkForLastCsvPath() {
 
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(new File("last_csv_path.txt"));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if (!scanner.hasNext()) {
+            System.out.println("file empty, no previous paths found");
+        } else {
+            System.out.println(scanner.nextLine());
+        }
+        scanner.close();
+
+    }
     private void createUIComponents() {
         mainFrame = new JFrame("Translator");
 
@@ -77,6 +101,7 @@ class TranslatorUI {
 
 
         languageToSearch = new JComboBox<>();
+        languageToSearch.addItem("Available languages");
         languageToSearch.setBackground(Color.white);
         languageToSearch.setPreferredSize(new Dimension(80, 40));
         languageToSearch.addItem("(all)");
@@ -110,9 +135,7 @@ class TranslatorUI {
         bottomPanel.add(createButton);
         mainPanel.add(bottomPanel);
 
-        createButton.addActionListener(e -> {
-            handleCsvToTranslateFiles();
-        });
+        createButton.addActionListener(e -> handleCsvToTranslateFiles());
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -128,21 +151,45 @@ class TranslatorUI {
         mainFrame.setVisible(true);
     }
 
+
     private void fileChooser() {
+
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("CSV files only", "csv"));
         String currentDir = System.getProperty("user.dir");
         fileChooser.setCurrentDirectory(new File(currentDir));
+        System.out.println(currentDir);
+
         int returnVal = fileChooser.showOpenDialog(mainFrame);
 
-        if (returnVal == fileChooser.APPROVE_OPTION) {
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             String chosenPath = file.getAbsolutePath();
             csvHandler.setFileName(chosenPath);
-            filePath.setText(chosenPath);
-            System.out.println(chosenPath);
+
+            saveLastCsvPath(chosenPath);
+
             languages = csvHandler.findLanguages(chosenPath);
             addLanguagesToDropDown();
+        }
+    }
+
+
+    private void saveLastCsvPath(String chosenPath) {
+        File saveFile = new File("last_csv_path.txt");
+
+        try {
+            FileWriter fileWriter = new FileWriter(saveFile);
+            fileWriter.write(chosenPath);
+            fileWriter.close();
+            filePath.setText(chosenPath);
+
+            Scanner fileReader = new Scanner(saveFile);
+            System.out.println(String.format("This is the path of the last visited location: " + fileReader.nextLine()));
+            fileReader.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
