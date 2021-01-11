@@ -87,7 +87,7 @@ class TranslatorUI {
 
         matchingPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
         languageToSearch = new JComboBox<>();
-        languageToSearch.addItem("lang");
+        languageToSearch.addItem("(all)");
         matchingPanel.add(languageToSearch);
         mainPanel.add(matchingPanel);
 
@@ -138,12 +138,13 @@ class TranslatorUI {
 
     private void addLanguagesToDropDown() {
         languageToSearch.removeAllItems();
+        languageToSearch.addItem("(all)");
         for (String lang : languages) {
             languageToSearch.addItem(lang);
         }
     }
 
     private void handleCsvToTranslateFiles() {
-        csvHandler.readCsvAndCreateTranslateFiles();
+        csvHandler.readCsvAndCreateTranslateFiles(languageToSearch.getSelectedItem().toString());
     }
 }
