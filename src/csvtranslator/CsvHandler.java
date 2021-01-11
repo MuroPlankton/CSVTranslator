@@ -33,6 +33,8 @@ public class CsvHandler {
     private List<String> firstLineAsList;
 
     private String fileName;
+    private String selectedLang;
+    private static final String DEFAULT_SELECTED_LANG_VALUE = "(all)";
 
     public CsvHandler() {
 
@@ -46,16 +48,17 @@ public class CsvHandler {
         List<String> cellList = splitCSVLine(line);
 
         if (linesHandled == 0) {
-            for (int langIndex = 5; langIndex < cellList.size(); langIndex++) {
-                //in this for loop we go trough every language
-                String lang = cellList.get(langIndex);
-
-                writerMap.put(new Pair<>(ANDROID_INDEX, langIndex), new CsvWriter("android", lang));
-                writerMap.put(new Pair<>(IOS_INDEX, langIndex), new CsvWriter("ios", lang));
-                writerMap.put(new Pair<>(WEB_ADMIN_INDEX, langIndex), new CsvWriter("web-admin", lang));
-                writerMap.put(new Pair<>(WEB_MAIN_INDEX, langIndex), new CsvWriter("web-main", lang));
-                writerMap.put(new Pair<>(WEB_WIDGET_INDEX, langIndex), new CsvWriter("web-widget", lang));
+            if (selectedLang.equals(DEFAULT_SELECTED_LANG_VALUE)) {
+                for (int langIndex = 5; langIndex < cellList.size(); langIndex++) {
+                    //in this for loop we go trough every language
+                    String lang = cellList.get(langIndex);
+                    addWritersToWriterMap(langIndex, lang);
+                }
+            } else {
+                int langIndex = cellList.indexOf(selectedLang);
+                addWritersToWriterMap(langIndex, selectedLang);
             }
+
         } else if (!cellList.isEmpty()) {
             for (Pair<Integer, Integer> pair : writerMap.keySet()) {
                 int osIndex = pair.getKey();
@@ -97,6 +100,14 @@ public class CsvHandler {
         linesHandled++;
     }
 
+    private void addWritersToWriterMap(int langIndex, String lang) {
+        writerMap.put(new Pair<>(ANDROID_INDEX, langIndex), new CsvWriter("android", lang));
+        writerMap.put(new Pair<>(IOS_INDEX, langIndex), new CsvWriter("ios", lang));
+        writerMap.put(new Pair<>(WEB_ADMIN_INDEX, langIndex), new CsvWriter("web-admin", lang));
+        writerMap.put(new Pair<>(WEB_MAIN_INDEX, langIndex), new CsvWriter("web-main", lang));
+        writerMap.put(new Pair<>(WEB_WIDGET_INDEX, langIndex), new CsvWriter("web-widget", lang));
+    }
+
     private boolean isNotEmpty(String text) {
         return text != null && text.length() > 0;
     }
@@ -105,8 +116,12 @@ public class CsvHandler {
         void handleCsvLine(String line);
     }
 
-    public void readCsvAndCreateTranslateFiles() {
-        readCSV(this::handleTranslateData);
+    public void readCsvAndCreateTranslateFiles(String selectedLang) {
+        this.selectedLang = selectedLang;
+
+        readCSV(line -> {
+            handleTranslateData(line);
+        });
         finishWriterWriting();
     }
 

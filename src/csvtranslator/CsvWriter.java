@@ -23,6 +23,7 @@ public class CsvWriter {
         this.os = os;
         this.lang = lang;
 
+        String upperDir = "./translations";
         String dir;
         String fileName;
 
@@ -50,12 +51,15 @@ public class CsvWriter {
                 break;
         }
 
-        File file = new File(dir, fileName);
-        File dirFile = new File(dir);
+        File file = new File(upperDir, dir);
 
         try {
-            dirFile.mkdirs();
-            writer = new FileWriter(file);
+            file.mkdirs();
+            if(file.exists()){
+                File langDir = new File(file, fileName);
+                writer = new FileWriter(langDir);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,7 +72,8 @@ public class CsvWriter {
         }
     }
 
-    //previousLineAppendic: what character do you want to add to the previous line, newLine: should there be a line before this row
+    //previousLineAppendic: what character do you want to add to the previous line
+    // newLine: should there be a line before this row
     public void writeOneRow(String row, String previousLineAppendic, boolean newLine) {
         isFirstLineWritten = true;
         internalWriteOneRow(row, previousLineAppendic, newLine);

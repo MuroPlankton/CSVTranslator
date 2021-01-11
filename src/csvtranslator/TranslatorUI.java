@@ -20,7 +20,6 @@ class TranslatorUI {
     private JFrame mainFrame;
     private JButton findFileButton;
     private JButton createButton;
-    private JButton closeButton;
     private JLabel filePath;
 
     List<String> languages = new ArrayList<>();
@@ -35,7 +34,7 @@ class TranslatorUI {
     TranslatorUI() {
     }
 
-    public Runnable getRunUI() {
+    public Runnable RunUI() {
         return runUI;
     }
 
@@ -71,56 +70,70 @@ class TranslatorUI {
         mainPanel.setLayout(mainLayout);
 
         JLabel title = new JLabel("CSV Translator");
-        title.setFont(title.getFont().deriveFont(20.0f));
+        title.setFont(title.getFont().deriveFont(50.0f));
         title.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        title.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        title.setBorder(BorderFactory.createEmptyBorder(30, 50, 40, 50));
         mainPanel.add(title);
 
-        JPanel choosingPanel = new JPanel();
-        BoxLayout layout = new BoxLayout(choosingPanel, BoxLayout.Y_AXIS);
-        choosingPanel.setLayout(layout);
-
         JPanel filePanel = new JPanel();
-        JLabel chooseFile = new JLabel("Choose file:");
-        findFileButton = new JButton("Search");
-
-        filePanel.add(chooseFile);
+        findFileButton = new JButton("Choose file");
+        findFileButton.setFont(new Font("Arial", Font.PLAIN, 30));
+        findFileButton.setBackground(Color.white);
         filePanel.add(findFileButton);
-        choosingPanel.add(filePanel);
-
-        findFileButton.addActionListener(e -> fileChooser());
-
-        filePanel.add(chooseFile);
-        filePanel.add(findFileButton);
-        choosingPanel.add(filePanel);
 
         filePath = new JLabel();
         filePath.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
+        JPanel choosingPanel = new JPanel();
+        BoxLayout layout = new BoxLayout(choosingPanel, BoxLayout.Y_AXIS);
+        choosingPanel.setLayout(layout);
+        choosingPanel.add(filePanel);
         choosingPanel.add(filePath);
-
         choosingPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
-
         mainPanel.add(choosingPanel);
 
-        JPanel matchingPanel = new JPanel();
+        findFileButton.addActionListener(e -> {
+            fileChooser();
+            System.out.println("search button pressed");
+        });
 
-        matchingPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+
         languageToSearch = new JComboBox<>();
         languageToSearch.addItem("Available languages");
-        matchingPanel.add(languageToSearch);
-        mainPanel.add(matchingPanel);
+        languageToSearch.setBackground(Color.white);
+        languageToSearch.setPreferredSize(new Dimension(80, 40));
+        languageToSearch.addItem("(all)");
+
+        JPanel languagePanel = new JPanel();
+        languagePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0));
+        languagePanel.add(languageToSearch);
+        mainPanel.add(languagePanel);
+
+        JCheckBox folderSelectorEnabler = new JCheckBox("Change output directory");
+        folderSelectorEnabler.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+
+        JButton folderChooserButton = new JButton("Select directory");
+        folderChooserButton.setFont(new Font("Arial", Font.PLAIN, 20));
+        folderChooserButton.setBackground(Color.white);
+        folderChooserButton.setVisible(false);
+
+        JPanel folderSelectionPanel = new JPanel();
+        folderSelectionPanel.setLayout(new BoxLayout(folderSelectionPanel, BoxLayout.X_AXIS));
+        folderSelectionPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+        folderSelectionPanel.add(folderSelectorEnabler);
+        folderSelectionPanel.add(folderChooserButton);
+        mainPanel.add(folderSelectionPanel);
+
+        createButton = new JButton("Create");
+        createButton.setFont(new Font("Arial", Font.PLAIN, 20));
+        createButton.setBackground(Color.white);
 
         JPanel bottomPanel = new JPanel();
-        createButton = new JButton("Create");
-        closeButton = new JButton("Close");
+        bottomPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         bottomPanel.add(createButton);
-        bottomPanel.add(closeButton);
         mainPanel.add(bottomPanel);
 
         createButton.addActionListener(e -> handleCsvToTranslateFiles());
-
-        closeButton.addActionListener(e -> mainFrame.dispose());
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -178,12 +191,13 @@ class TranslatorUI {
 
     private void addLanguagesToDropDown() {
         languageToSearch.removeAllItems();
+        languageToSearch.addItem("(all)");
         for (String lang : languages) {
             languageToSearch.addItem(lang);
         }
     }
 
     private void handleCsvToTranslateFiles() {
-        csvHandler.readCsvAndCreateTranslateFiles();
+        csvHandler.readCsvAndCreateTranslateFiles(languageToSearch.getSelectedItem().toString());
     }
 }
