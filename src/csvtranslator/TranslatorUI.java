@@ -2,6 +2,7 @@ package csvtranslator;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -17,11 +18,6 @@ class TranslatorUI {
     private JButton closeButton;
     private JLabel filePath;
     List<String> languages = new ArrayList<>();
-    private JLabel result;
-
-    private JTextField textToMatch;
-    private JComboBox<String> languageToSearch;
-    private JButton findMatchButton;
 
     private Runnable runUI = () -> {
         startUI();
@@ -42,7 +38,7 @@ class TranslatorUI {
 
     private void createUIComponents() {
         mainFrame = new JFrame("Translator");
-//        mainFrame.setPreferredSize(new Dimension(400, 350));
+        mainFrame.setPreferredSize(new Dimension(250, 250));
 
         JPanel mainPanel = new JPanel();
         BoxLayout mainLayout = new BoxLayout(mainPanel, BoxLayout.Y_AXIS);
@@ -86,33 +82,12 @@ class TranslatorUI {
 
         mainPanel.add(choosingPanel);
 
-        JPanel matchingPanel = new JPanel();
-
-        matchingPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
-        textToMatch = new JTextField("");
-        textToMatch.setColumns(20);
-        languageToSearch = new JComboBox<>();
-        languageToSearch.addItem("lang");
-        JButton findMatchButton = new JButton("Find match");
-        result = new JLabel("The best match will display here.");
-        result.setAlignmentX(JPanel.CENTER_ALIGNMENT);
-        result.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
-        mainPanel.add(textToMatch);
-        matchingPanel.add(languageToSearch);
-        matchingPanel.add(findMatchButton);
-        mainPanel.add(matchingPanel);
-        mainPanel.add(result);
-
         JPanel bottomPanel = new JPanel();
         createButton = new JButton("Create");
         closeButton = new JButton("Close");
         bottomPanel.add(createButton);
         bottomPanel.add(closeButton);
         mainPanel.add(bottomPanel);
-
-        findMatchButton.addActionListener(e -> {
-            findBestMatch();
-        });
 
         createButton.addActionListener(e -> {
             handleCsvToTranslateFiles();
@@ -149,33 +124,11 @@ class TranslatorUI {
             filePath.setText(chosenPath);
             System.out.println(chosenPath);
             languages = csvHandler.findLanguages(chosenPath);
-            addLanguagesToDropDown();
         }
     }
 
-    private void addLanguagesToDropDown() {
-        languageToSearch.removeAllItems();
-        for (String lang : languages) {
-            languageToSearch.addItem(lang);
-        }
-    }
 
     private void handleCsvToTranslateFiles() {
         csvHandler.readCsvAndCreateTranslateFiles();
-    }
-
-
-    public void findBestMatch() {
-        clearScreen();
-
-        String sentence1 = textToMatch.getText().toLowerCase();
-        csvHandler.matchSentence(sentence1, languageToSearch.getSelectedItem().toString());
-        result.setText(csvHandler.getBestMatch());
-
-    }
-
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
     }
 }

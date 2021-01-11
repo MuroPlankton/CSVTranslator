@@ -144,72 +144,6 @@ public class CsvHandler {
         }
     }
 
-    private int matchSentenceLineNumber = 0;
-
-    private double highestMatch = 0;
-    private int highestMatchLine = 0;
-
-    public void matchSentence(String sentence1, String language) {
-        matchSentenceLineNumber = 0;
-        highestMatch = 0;
-        readCSV(line -> {
-            matchSentenceLineNumber += 1;
-
-            String sentence2 = line.toLowerCase();
-            System.out.println();
-            System.out.println("line: " + line);
-
-            List<String> wordList = Arrays.asList(sentence1.split(" "));
-            List<String> wordList2 = splitCSVLine(sentence2);
-
-            System.out.println(wordList);
-            System.out.println(wordList2);
-
-            int languageIndex = firstLineAsList.indexOf(language);
-
-            String langToFindIndexOf = null;
-
-            if (wordList2.size() > languageIndex) {
-                langToFindIndexOf = wordList2.get(languageIndex);
-                List<String> selectedLangValuesList = splitCSVLine(langToFindIndexOf);
-
-                double rowSimilarity = 0;
-                double wordComparisonCount = 0;
-                LevenshteinAlgorithm algorithm = new LevenshteinAlgorithm();
-
-                double match;
-                if (sentence1.equals(sentence2)) {
-                    match = 1d;
-                } else {
-                    match = algorithm.similarity(sentence1, wordList2.get(languageIndex));
-                }
-                if (match < 0.9d) {
-                    for (int i = 0; i < wordList.size(); i++) {
-                        for (int j = 0; j < selectedLangValuesList.size(); j++) {
-
-                            double wordSimilarity = algorithm.similarity(wordList.get(i), selectedLangValuesList.get(j));
-                            if (wordSimilarity > 0.75d) {
-                                rowSimilarity += wordSimilarity;
-                                wordComparisonCount += 1;
-                            }
-                        }
-                    }
-                    match = rowSimilarity / Math.max(wordComparisonCount, wordList.size());
-                }
-
-                if (match > highestMatch) {
-                    highestMatch = match;
-                    highestMatchLine = matchSentenceLineNumber;
-                }
-                System.out.println(String.format("Line %d Similarity: %.4f", matchSentenceLineNumber, match));
-                // todo best match:
-                System.out.println(String.format("Highest match: %d|%s", highestMatchLine, highestMatch));
-            } else {
-                System.out.println("Similarity couldn't be found!");
-            }
-        });
-    }
-
     public List<String> findLanguages(String pathToFile) {
         BufferedReader firstLineReader = null;
         String firstLineText = "";
@@ -239,10 +173,6 @@ public class CsvHandler {
         }
 
         return languages;
-    }
-
-    public String getBestMatch() {
-        return String.format("Highest match: %d", highestMatchLine);
     }
 
     private List<String> splitCSVLine(String text) {
