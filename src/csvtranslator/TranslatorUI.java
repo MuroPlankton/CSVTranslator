@@ -2,7 +2,6 @@ package csvtranslator;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -18,6 +17,8 @@ class TranslatorUI {
     private JButton closeButton;
     private JLabel filePath;
     List<String> languages = new ArrayList<>();
+
+    private JComboBox<String> languageToSearch;
 
     private Runnable runUI = () -> {
         startUI();
@@ -38,7 +39,7 @@ class TranslatorUI {
 
     private void createUIComponents() {
         mainFrame = new JFrame("Translator");
-        mainFrame.setPreferredSize(new Dimension(250, 250));
+//        mainFrame.setPreferredSize(new Dimension(400, 350));
 
         JPanel mainPanel = new JPanel();
         BoxLayout mainLayout = new BoxLayout(mainPanel, BoxLayout.Y_AXIS);
@@ -82,6 +83,14 @@ class TranslatorUI {
 
         mainPanel.add(choosingPanel);
 
+        JPanel matchingPanel = new JPanel();
+
+        matchingPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+        languageToSearch = new JComboBox<>();
+        languageToSearch.addItem("lang");
+        matchingPanel.add(languageToSearch);
+        mainPanel.add(matchingPanel);
+
         JPanel bottomPanel = new JPanel();
         createButton = new JButton("Create");
         closeButton = new JButton("Close");
@@ -109,7 +118,6 @@ class TranslatorUI {
         mainFrame.setVisible(true);
     }
 
-
     private void fileChooser() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("CSV files only", "csv"));
@@ -124,9 +132,16 @@ class TranslatorUI {
             filePath.setText(chosenPath);
             System.out.println(chosenPath);
             languages = csvHandler.findLanguages(chosenPath);
+            addLanguagesToDropDown();
         }
     }
 
+    private void addLanguagesToDropDown() {
+        languageToSearch.removeAllItems();
+        for (String lang : languages) {
+            languageToSearch.addItem(lang);
+        }
+    }
 
     private void handleCsvToTranslateFiles() {
         csvHandler.readCsvAndCreateTranslateFiles();
