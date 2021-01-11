@@ -3,6 +3,8 @@ package csvtranslator;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +86,7 @@ class TranslatorUI {
         languagePanel.add(languageToSearch);
         mainPanel.add(languagePanel);
 
-        JCheckBox folderSelectorEnabler = new JCheckBox("Change output directory");
+        JCheckBox folderSelectorEnabler = new JCheckBox("Change what folder files will go to");
         folderSelectorEnabler.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 
         JButton folderChooserButton = new JButton("Select directory");
@@ -117,6 +119,8 @@ class TranslatorUI {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        folderSelectorEnabler.addActionListener(e -> folderChooserButton.setVisible(folderSelectorEnabler.isSelected()));
 
         mainFrame.add(mainPanel);
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
