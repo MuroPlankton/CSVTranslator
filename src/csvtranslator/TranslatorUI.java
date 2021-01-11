@@ -84,6 +84,21 @@ class TranslatorUI {
         languagePanel.add(languageToSearch);
         mainPanel.add(languagePanel);
 
+        JCheckBox folderSelectorEnabler = new JCheckBox("Change output directory");
+        folderSelectorEnabler.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+
+        JButton folderChooserButton = new JButton("Select directory");
+        folderChooserButton.setFont(new Font("Arial", Font.PLAIN, 20));
+        folderChooserButton.setBackground(Color.white);
+        folderChooserButton.setVisible(false);
+
+        JPanel folderSelectionPanel = new JPanel();
+        folderSelectionPanel.setLayout(new BoxLayout(folderSelectionPanel, BoxLayout.X_AXIS));
+        folderSelectionPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+        folderSelectionPanel.add(folderSelectorEnabler);
+        folderSelectionPanel.add(folderChooserButton);
+        mainPanel.add(folderSelectionPanel);
+
         createButton = new JButton("Create");
         createButton.setFont(new Font("Arial", Font.PLAIN, 20));
         createButton.setBackground(Color.white);
