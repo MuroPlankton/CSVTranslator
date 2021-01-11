@@ -72,7 +72,8 @@ public class CsvWriter {
         }
     }
 
-    //previousLineAppendic: what character do you want to add to the previous line, newLine: should there be a line before this row
+    //previousLineAppendic: what character do you want to add to the previous line
+    // newLine: should there be a line before this row
     public void writeOneRow(String row, String previousLineAppendic, boolean newLine) {
         isFirstLineWritten = true;
         internalWriteOneRow(row, previousLineAppendic, newLine);

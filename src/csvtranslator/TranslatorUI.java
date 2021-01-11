@@ -26,7 +26,7 @@ class TranslatorUI {
     TranslatorUI() {
     }
 
-    public Runnable getRunUI() {
+    public Runnable RunUI() {
         return runUI;
     }
 
