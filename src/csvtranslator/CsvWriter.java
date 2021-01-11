@@ -23,6 +23,7 @@ public class CsvWriter {
         this.os = os;
         this.lang = lang;
 
+        String upperDir = "./translations";
         String dir;
         String fileName;
 
@@ -50,12 +51,15 @@ public class CsvWriter {
                 break;
         }
 
-        File file = new File(dir, fileName);
-        File dirFile = new File(dir);
+        File file = new File(upperDir, dir);
 
         try {
-            dirFile.mkdirs();
-            writer = new FileWriter(file);
+            file.mkdirs();
+            if(file.exists()){
+                File langDir = new File(file, fileName);
+                writer = new FileWriter(langDir);
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
