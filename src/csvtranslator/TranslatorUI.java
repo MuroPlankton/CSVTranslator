@@ -199,8 +199,7 @@ class TranslatorUI {
         int returnVal = directoryChooser.showOpenDialog(mainFrame);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File outputDir = directoryChooser.getCurrentDirectory();
-
+            File outputDir = directoryChooser.getSelectedFile();
             String chosenPath = outputDir.getAbsolutePath();
             csvHandler.setOutputDir(chosenPath);
             outputDirLabel.setText(chosenPath);
