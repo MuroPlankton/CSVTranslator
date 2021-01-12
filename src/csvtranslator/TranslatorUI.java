@@ -4,8 +4,6 @@ package csvtranslator;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -21,6 +19,8 @@ class TranslatorUI {
     private JFrame mainFrame;
     private JButton findFileButton;
     private JButton createButton;
+    private File saveFile;
+    private boolean saveFileExists;
 
     List<String> languages = new ArrayList<>();
 
@@ -38,23 +38,28 @@ class TranslatorUI {
     private void startUI() {
         checkForLastCsvPath();
         csvHandler = new CsvHandler();
+
+        checkForLastCsvPath();
         createUIComponents();
+
     }
 
     private void checkForLastCsvPath() {
-        Scanner scanner = null;
-        try {
-            scanner = new Scanner(new File("last_csv_path.txt"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
 
-        if (!scanner.hasNext()) {
-            System.out.println("file empty, no previous paths found");
+        if (saveFileExists) {
+            System.out.println("File exists");
+
+            Scanner fileReader = null;
+            try {
+                fileReader = new Scanner(saveFile);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            System.out.println(String.format("This is the path of the last visited location: " + fileReader.nextLine()));
+            fileReader.close();
         } else {
-            System.out.println(scanner.nextLine());
+            createSaveFile();
         }
-        scanner.close();
     }
 
     private void createUIComponents() {
@@ -175,6 +180,16 @@ class TranslatorUI {
         }
     }
 
+    private void createSaveFile() {
+        saveFile = new File("last_csv_path.txt");
+        try {
+            saveFile.createNewFile();
+            saveFileExists = saveFile.exists();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void dirChooser(JLabel outputDirLabel, JCheckBox customDirChosen) {
         JFileChooser directoryChooser = new JFileChooser();
         directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -193,18 +208,12 @@ class TranslatorUI {
     }
 
     private void saveLastCsvPath(String chosenPath, JLabel filePath) {
-        File saveFile = new File("last_csv_path.txt");
-
+        System.out.println("Save file exists: " + saveFileExists);
         try {
             FileWriter fileWriter = new FileWriter(saveFile);
             fileWriter.write(chosenPath);
             fileWriter.close();
             filePath.setText(chosenPath);
-
-            Scanner fileReader = new Scanner(saveFile);
-            System.out.println(String.format("This is the path of the last visited location: " + fileReader.nextLine()));
-            fileReader.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
