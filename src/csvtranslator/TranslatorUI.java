@@ -27,10 +27,7 @@ class TranslatorUI {
 
     private JComboBox<String> languageToSearch;
 
-    private Runnable runUI = () -> {
-        startUI();
-    };
-
+    private final Runnable runUI = this::startUI;
 
     TranslatorUI() {
     }
@@ -44,8 +41,8 @@ class TranslatorUI {
         csvHandler = new CsvHandler();
         createUIComponents();
     }
-    private void checkForLastCsvPath() {
 
+    private void checkForLastCsvPath() {
         Scanner scanner = null;
         try {
             scanner = new Scanner(new File("last_csv_path.txt"));
@@ -59,8 +56,8 @@ class TranslatorUI {
             System.out.println(scanner.nextLine());
         }
         scanner.close();
-
     }
+
     private void createUIComponents() {
         mainFrame = new JFrame("Translator");
 
@@ -96,7 +93,6 @@ class TranslatorUI {
             fileChooser(filePath);
             System.out.println("search button pressed");
         });
-
 
         languageToSearch = new JComboBox<>();
         languageToSearch.addItem("Available languages");
@@ -160,9 +156,7 @@ class TranslatorUI {
         mainFrame.setVisible(true);
     }
 
-
     private void fileChooser(JLabel filePath) {
-
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("CSV files only", "csv"));
         String currentDir = System.getProperty("user.dir");

@@ -23,6 +23,7 @@ public class CsvWriter {
         this.os = os;
         this.lang = lang;
 
+        //TODO: if user puts upperDir it takes that directory else upperDir is translations
         String upperDir = "./translations";
         String dir;
         String fileName;
@@ -55,11 +56,10 @@ public class CsvWriter {
 
         try {
             file.mkdirs();
-            if(file.exists()){
+            if (file.exists()) {
                 File langDir = new File(file, fileName);
                 writer = new FileWriter(langDir);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
