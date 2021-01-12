@@ -4,6 +4,8 @@ package csvtranslator;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -136,14 +138,11 @@ class TranslatorUI {
             e.printStackTrace();
         }
 
-        folderSelectorEnabler.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (folderSelectorEnabler.isSelected()) {
-                    dirChooser(outputDirLabel);
-                } else {
-                    csvHandler.setOutputDir(null);
-                }
+        folderSelectorEnabler.addActionListener(e -> {
+            if (folderSelectorEnabler.isSelected()) {
+                dirChooser(outputDirLabel);
+            } else {
+                csvHandler.setOutputDir(null);
             }
         });
 
@@ -184,9 +183,9 @@ class TranslatorUI {
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File outputDir = directoryChooser.getCurrentDirectory();
-            String choserPath = outputDir.getAbsolutePath();
-            csvHandler.setOutputDir(choserPath);
-            outputDirLabel.setText(choserPath);
+            String chosenPath = outputDir.getAbsolutePath();
+            csvHandler.setOutputDir(chosenPath);
+            outputDirLabel.setText(chosenPath);
         }
     }
 
