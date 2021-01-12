@@ -3,8 +3,9 @@ package csvtranslator;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -22,19 +23,14 @@ class TranslatorUI {
     private JFrame mainFrame;
     private JButton findFileButton;
     private JButton createButton;
-    private JLabel filePath;
     private File saveFile;
     private boolean saveFileExists;
-
 
     List<String> languages = new ArrayList<>();
 
     private JComboBox<String> languageToSearch;
 
-    private Runnable runUI = () -> {
-        startUI();
-    };
-
+    private final Runnable runUI = this::startUI;
 
     TranslatorUI() {
     }
@@ -90,22 +86,20 @@ class TranslatorUI {
         findFileButton.setBackground(Color.white);
         filePanel.add(findFileButton);
 
-        filePath = new JLabel();
+        JLabel filePath = new JLabel();
         filePath.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
-        JPanel choosingPanel = new JPanel();
-        BoxLayout layout = new BoxLayout(choosingPanel, BoxLayout.Y_AXIS);
-        choosingPanel.setLayout(layout);
-        choosingPanel.add(filePanel);
-        choosingPanel.add(filePath);
-        choosingPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
-        mainPanel.add(choosingPanel);
+        JPanel fileChoosingPanel = new JPanel();
+        fileChoosingPanel.setLayout(new BoxLayout(fileChoosingPanel, BoxLayout.Y_AXIS));
+        fileChoosingPanel.add(filePanel);
+        fileChoosingPanel.add(filePath);
+        fileChoosingPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+        mainPanel.add(fileChoosingPanel);
 
         findFileButton.addActionListener(e -> {
-            fileChooser();
+            fileChooser(filePath);
             System.out.println("search button pressed");
         });
-
 
         languageToSearch = new JComboBox<>();
         languageToSearch.addItem("Available languages");
@@ -118,20 +112,22 @@ class TranslatorUI {
         languagePanel.add(languageToSearch);
         mainPanel.add(languagePanel);
 
-        JCheckBox folderSelectorEnabler = new JCheckBox("Change output directory");
-        folderSelectorEnabler.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
-
-        JButton folderChooserButton = new JButton("Select directory");
-        folderChooserButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        folderChooserButton.setBackground(Color.white);
-        folderChooserButton.setVisible(false);
+        JCheckBox folderSelectorEnabler = new JCheckBox("Choose translation folder (optional)");
+        folderSelectorEnabler.setFont(new Font("Arial", Font.PLAIN, 20));
 
         JPanel folderSelectionPanel = new JPanel();
-        folderSelectionPanel.setLayout(new BoxLayout(folderSelectionPanel, BoxLayout.X_AXIS));
-        folderSelectionPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
+        folderSelectionPanel.setLayout(new BoxLayout(folderSelectionPanel, BoxLayout.Y_AXIS));
         folderSelectionPanel.add(folderSelectorEnabler);
-        folderSelectionPanel.add(folderChooserButton);
-        mainPanel.add(folderSelectionPanel);
+
+        JLabel outputDirLabel = new JLabel();
+        outputDirLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+
+        JPanel dirChoosingPanel = new JPanel();
+        dirChoosingPanel.setLayout(new BoxLayout(dirChoosingPanel, BoxLayout.Y_AXIS));
+        dirChoosingPanel.add(folderSelectionPanel);
+        dirChoosingPanel.add(outputDirLabel);
+        dirChoosingPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
+        mainPanel.add(dirChoosingPanel);
 
         createButton = new JButton("Create");
         createButton.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -150,14 +146,21 @@ class TranslatorUI {
             e.printStackTrace();
         }
 
+        folderSelectorEnabler.addActionListener(e -> {
+            if (folderSelectorEnabler.isSelected()) {
+                dirChooser(outputDirLabel);
+            } else {
+                csvHandler.setOutputDir(null);
+            }
+        });
+
         mainFrame.add(mainPanel);
         mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainFrame.pack();
         mainFrame.setVisible(true);
     }
 
-    private void fileChooser() {
-
+    private void fileChooser(JLabel filePath) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("CSV files only", "csv"));
         String currentDir = System.getProperty("user.dir");
@@ -170,8 +173,9 @@ class TranslatorUI {
             File file = fileChooser.getSelectedFile();
             String chosenPath = file.getAbsolutePath();
             csvHandler.setFileName(chosenPath);
+            filePath.setText(chosenPath);
 
-            saveLastCsvPath(chosenPath);
+            saveLastCsvPath(chosenPath, filePath);
 
             languages = csvHandler.findLanguages(chosenPath);
             addLanguagesToDropDown();
@@ -189,7 +193,23 @@ class TranslatorUI {
         }
     }
 
-    private void saveLastCsvPath(String chosenPath) {
+    private void dirChooser(JLabel outputDirLabel) {
+        JFileChooser directoryChooser = new JFileChooser();
+        directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        directoryChooser.setAcceptAllFileFilterUsed(false);
+
+        int returnVal = directoryChooser.showOpenDialog(mainFrame);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File outputDir = directoryChooser.getCurrentDirectory();
+            String choserPath = outputDir.getAbsolutePath();
+            csvHandler.setOutputDir(choserPath);
+            outputDirLabel.setText(choserPath);
+        }
+    }
+
+    private void saveLastCsvPath(String chosenPath, JLabel filePath) {
+
         System.out.println("Save file exists: " + saveFileExists);
         try {
             FileWriter fileWriter = new FileWriter(saveFile);

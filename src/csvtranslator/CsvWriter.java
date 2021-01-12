@@ -23,9 +23,12 @@ public class CsvWriter {
         this.os = os;
         this.lang = lang;
 
-        String upperDir = "./translations";
+        String upperDir;
         String dir;
         String fileName;
+
+        //TODO: if (user puts upperDir) {it takes that directory} else {upperDir is translations}
+        upperDir = "./translations";
 
         switch (os) {
             default:
@@ -55,11 +58,12 @@ public class CsvWriter {
 
         try {
             file.mkdirs();
-            if(file.exists()){
+            if (file.exists()) {
                 File langDir = new File(file, fileName);
                 writer = new FileWriter(langDir);
+            } else {
+                System.out.println("Directory couldn't be created.");
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -72,7 +76,7 @@ public class CsvWriter {
         }
     }
 
-    //previousLineAppendic: what character do you want to add to the previous line
+    // previousLineAppendic: what character do you want to add to the previous line
     // newLine: should there be a line before this row
     public void writeOneRow(String row, String previousLineAppendic, boolean newLine) {
         isFirstLineWritten = true;
