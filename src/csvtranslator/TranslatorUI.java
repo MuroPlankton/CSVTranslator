@@ -20,7 +20,7 @@ class TranslatorUI {
     private JButton findFileButton;
     private JButton createButton;
     private JLabel filePath;
-    private File saveFile = new File("last_csv_path.txt");
+    private static final File saveFile = new File("last_csv_path.txt");
     private boolean saveFileExists = false;
 
     List<String> languages = new ArrayList<>();
@@ -37,7 +37,6 @@ class TranslatorUI {
     }
 
     private void startUI() {
-        checkForLastCsvPath();
         csvHandler = new CsvHandler();
         checkForLastCsvPath();
         createUIComponents();
@@ -49,7 +48,7 @@ class TranslatorUI {
         try {
             fileReader = new Scanner(saveFile);
             System.out.println(String.format("This is the path of the last visited location: " + fileReader.nextLine()));
-            filePath.setText(fileReader.nextLine());
+//            filePath.setText(fileReader.nextLine());
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
         }
