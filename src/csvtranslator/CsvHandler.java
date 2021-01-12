@@ -36,12 +36,18 @@ public class CsvHandler {
     private String selectedLang;
     private static final String DEFAULT_SELECTED_LANG_VALUE = "(all)";
 
+    private String outputDir;
+
     public CsvHandler() {
 
     }
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public void setOutputDir(String chosenPath) {
+        this.outputDir = chosenPath;
     }
 
     public void handleTranslateData(String line) {
