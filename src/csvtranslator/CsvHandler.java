@@ -123,6 +123,8 @@ public class CsvHandler {
     }
 
     public void readCsvAndCreateTranslateFiles(String selectedLang) {
+        writerMap.clear();
+        linesHandled = 0;
         this.selectedLang = selectedLang;
 
         readCSV(this::handleTranslateData);
