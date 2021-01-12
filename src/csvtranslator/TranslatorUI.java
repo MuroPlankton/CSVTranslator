@@ -4,14 +4,10 @@ package csvtranslator;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -41,6 +37,7 @@ class TranslatorUI {
     }
 
     private void startUI() {
+        checkForLastCsvPath();
         csvHandler = new CsvHandler();
         checkForLastCsvPath();
         createUIComponents();
@@ -140,15 +137,12 @@ class TranslatorUI {
             e.printStackTrace();
         }
 
-        folderSelectorEnabler.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (folderSelectorEnabler.isSelected()) {
-                    dirChooser(outputDirLabel, folderSelectorEnabler);
-                } else {
-                    csvHandler.setOutputDir(null);
-                    outputDirLabel.setText("");
-                }
+        folderSelectorEnabler.addActionListener(e -> {
+            if (folderSelectorEnabler.isSelected()) {
+                dirChooser(outputDirLabel, folderSelectorEnabler);
+            } else {
+                csvHandler.setOutputDir(null);
+                outputDirLabel.setText("");
             }
         });
 
