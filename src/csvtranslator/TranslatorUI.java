@@ -4,6 +4,8 @@ package csvtranslator;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -34,7 +36,7 @@ class TranslatorUI {
     }
 
     private void startUI() {
-//        checkForLastCsvPath();
+        checkForLastCsvPath();
         csvHandler = new CsvHandler();
         createUIComponents();
     }
@@ -136,15 +138,12 @@ class TranslatorUI {
             e.printStackTrace();
         }
 
-        folderSelectorEnabler.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (folderSelectorEnabler.isSelected()) {
-                    dirChooser(outputDirLabel, folderSelectorEnabler);
-                } else {
-                    csvHandler.setOutputDir(null);
-                    outputDirLabel.setText("");
-                }
+        folderSelectorEnabler.addActionListener(e -> {
+            if (folderSelectorEnabler.isSelected()) {
+                dirChooser(outputDirLabel, folderSelectorEnabler);
+            } else {
+                csvHandler.setOutputDir(null);
+                outputDirLabel.setText("");
             }
         });
 
@@ -169,7 +168,7 @@ class TranslatorUI {
             csvHandler.setFileName(chosenPath);
             filePath.setText(chosenPath);
 
-//            saveLastCsvPath(chosenPath, filePath);
+            saveLastCsvPath(chosenPath, filePath);
 
             languages = csvHandler.findLanguages(chosenPath);
             addLanguagesToDropDown();
