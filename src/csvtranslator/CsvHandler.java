@@ -119,9 +119,7 @@ public class CsvHandler {
     public void readCsvAndCreateTranslateFiles(String selectedLang) {
         this.selectedLang = selectedLang;
 
-        readCSV(line -> {
-            handleTranslateData(line);
-        });
+        readCSV(this::handleTranslateData);
         finishWriterWriting();
     }
 
@@ -136,8 +134,6 @@ public class CsvHandler {
                 lineHandler.handleCsvLine(line);
             }
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -165,8 +161,6 @@ public class CsvHandler {
         try {
             firstLineReader = new BufferedReader(new FileReader(pathToFile));
             firstLineText = firstLineReader.readLine();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
