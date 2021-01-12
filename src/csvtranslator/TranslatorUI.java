@@ -80,10 +80,11 @@ class TranslatorUI {
         title.setBorder(BorderFactory.createEmptyBorder(30, 50, 40, 50));
         mainPanel.add(title);
 
-        JPanel filePanel = new JPanel();
         findFileButton = new JButton("Choose file");
         findFileButton.setFont(new Font("Arial", Font.PLAIN, 30));
         findFileButton.setBackground(Color.white);
+
+        JPanel filePanel = new JPanel();
         filePanel.add(findFileButton);
 
         JLabel filePath = new JLabel();
@@ -116,7 +117,6 @@ class TranslatorUI {
         folderSelectorEnabler.setFont(new Font("Arial", Font.PLAIN, 20));
 
         JPanel folderSelectionPanel = new JPanel();
-        folderSelectionPanel.setLayout(new BoxLayout(folderSelectionPanel, BoxLayout.Y_AXIS));
         folderSelectionPanel.add(folderSelectorEnabler);
 
         JLabel outputDirLabel = new JLabel();
@@ -146,11 +146,15 @@ class TranslatorUI {
             e.printStackTrace();
         }
 
-        folderSelectorEnabler.addActionListener(e -> {
-            if (folderSelectorEnabler.isSelected()) {
-                dirChooser(outputDirLabel);
-            } else {
-                csvHandler.setOutputDir(null);
+        folderSelectorEnabler.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (folderSelectorEnabler.isSelected()) {
+                    dirChooser(outputDirLabel, folderSelectorEnabler);
+                } else {
+                    csvHandler.setOutputDir(null);
+                    outputDirLabel.setText("");
+                }
             }
         });
 
@@ -192,7 +196,7 @@ class TranslatorUI {
         }
     }
 
-    private void dirChooser(JLabel outputDirLabel) {
+    private void dirChooser(JLabel outputDirLabel, JCheckBox customDirChosen) {
         JFileChooser directoryChooser = new JFileChooser();
         directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         directoryChooser.setAcceptAllFileFilterUsed(false);
@@ -204,6 +208,8 @@ class TranslatorUI {
             String choserPath = outputDir.getAbsolutePath();
             csvHandler.setOutputDir(choserPath);
             outputDirLabel.setText(choserPath);
+        } else {
+            customDirChosen.setSelected(false);
         }
     }
 
