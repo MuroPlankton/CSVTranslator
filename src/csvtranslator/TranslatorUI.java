@@ -23,8 +23,9 @@ class TranslatorUI {
     private JFrame mainFrame;
     private JButton findFileButton;
     private JButton createButton;
-    private File saveFile;
-    private boolean saveFileExists;
+    private JLabel filePath;
+    private File saveFile = new File("last_csv_path.txt");
+    private boolean saveFileExists = false;
 
     List<String> languages = new ArrayList<>();
 
@@ -41,28 +42,21 @@ class TranslatorUI {
 
     private void startUI() {
         csvHandler = new CsvHandler();
-
         checkForLastCsvPath();
         createUIComponents();
-
     }
 
     private void checkForLastCsvPath() {
 
-        if (saveFileExists) {
-            System.out.println("File exists");
-
-            Scanner fileReader = null;
-            try {
-                fileReader = new Scanner(saveFile);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+        Scanner fileReader = null;
+        try {
+            fileReader = new Scanner(saveFile);
             System.out.println(String.format("This is the path of the last visited location: " + fileReader.nextLine()));
-            fileReader.close();
-        } else {
-            createSaveFile();
+            filePath.setText(fileReader.nextLine());
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
         }
+        fileReader.close();
     }
 
     private void createUIComponents() {
@@ -87,7 +81,7 @@ class TranslatorUI {
         JPanel filePanel = new JPanel();
         filePanel.add(findFileButton);
 
-        JLabel filePath = new JLabel();
+        filePath = new JLabel();
         filePath.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
         JPanel fileChoosingPanel = new JPanel();
@@ -180,6 +174,7 @@ class TranslatorUI {
             filePath.setText(chosenPath);
 
             saveLastCsvPath(chosenPath, filePath);
+            createSaveFile();
 
             languages = csvHandler.findLanguages(chosenPath);
             addLanguagesToDropDown();
@@ -187,7 +182,6 @@ class TranslatorUI {
     }
 
     private void createSaveFile() {
-        saveFile = new File("last_csv_path.txt");
         try {
             saveFile.createNewFile();
             saveFileExists = saveFile.exists();
