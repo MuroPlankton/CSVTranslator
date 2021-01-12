@@ -21,6 +21,9 @@ class TranslatorUI {
     private JFrame mainFrame;
     private JButton findFileButton;
     private JButton createButton;
+    private JLabel filePath;
+    private static final File saveFile = new File("last_csv_path.txt");
+    private boolean saveFileExists = false;
 
     List<String> languages = new ArrayList<>();
 
@@ -36,25 +39,22 @@ class TranslatorUI {
     }
 
     private void startUI() {
-//        checkForLastCsvPath();
         csvHandler = new CsvHandler();
+        checkForLastCsvPath();
         createUIComponents();
     }
 
     private void checkForLastCsvPath() {
-        Scanner scanner = null;
-        try {
-            scanner = new Scanner(new File("last_csv_path.txt"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
 
-        if (!scanner.hasNext()) {
-            System.out.println("file empty, no previous paths found");
-        } else {
-            System.out.println(scanner.nextLine());
+        Scanner fileReader = null;
+        try {
+            fileReader = new Scanner(saveFile);
+            System.out.println(String.format("This is the path of the last visited location: " + fileReader.nextLine()));
+//            filePath.setText(fileReader.nextLine());
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
         }
-        scanner.close();
+        fileReader.close();
     }
 
     private void createUIComponents() {
@@ -72,13 +72,14 @@ class TranslatorUI {
         title.setBorder(BorderFactory.createEmptyBorder(30, 50, 40, 50));
         mainPanel.add(title);
 
-        JPanel filePanel = new JPanel();
         findFileButton = new JButton("Choose file");
         findFileButton.setFont(new Font("Arial", Font.PLAIN, 30));
         findFileButton.setBackground(Color.white);
+
+        JPanel filePanel = new JPanel();
         filePanel.add(findFileButton);
 
-        JLabel filePath = new JLabel();
+        filePath = new JLabel();
         filePath.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
         JPanel fileChoosingPanel = new JPanel();
@@ -108,7 +109,6 @@ class TranslatorUI {
         folderSelectorEnabler.setFont(new Font("Arial", Font.PLAIN, 20));
 
         JPanel folderSelectionPanel = new JPanel();
-        folderSelectionPanel.setLayout(new BoxLayout(folderSelectionPanel, BoxLayout.Y_AXIS));
         folderSelectionPanel.add(folderSelectorEnabler);
 
         JLabel outputDirLabel = new JLabel();
@@ -140,9 +140,10 @@ class TranslatorUI {
 
         folderSelectorEnabler.addActionListener(e -> {
             if (folderSelectorEnabler.isSelected()) {
-                dirChooser(outputDirLabel);
+                dirChooser(outputDirLabel, folderSelectorEnabler);
             } else {
                 csvHandler.setOutputDir(null);
+                outputDirLabel.setText("");
             }
         });
 
@@ -167,14 +168,24 @@ class TranslatorUI {
             csvHandler.setFileName(chosenPath);
             filePath.setText(chosenPath);
 
-//            saveLastCsvPath(chosenPath, filePath);
+            saveLastCsvPath(chosenPath, filePath);
+            createSaveFile();
 
             languages = csvHandler.findLanguages(chosenPath);
             addLanguagesToDropDown();
         }
     }
 
-    private void dirChooser(JLabel outputDirLabel) {
+    private void createSaveFile() {
+        try {
+            saveFile.createNewFile();
+            saveFileExists = saveFile.exists();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void dirChooser(JLabel outputDirLabel, JCheckBox customDirChosen) {
         JFileChooser directoryChooser = new JFileChooser();
         directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         directoryChooser.setAcceptAllFileFilterUsed(false);
@@ -183,25 +194,22 @@ class TranslatorUI {
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File outputDir = directoryChooser.getCurrentDirectory();
+
             String chosenPath = outputDir.getAbsolutePath();
             csvHandler.setOutputDir(chosenPath);
             outputDirLabel.setText(chosenPath);
+        } else {
+            customDirChosen.setSelected(false);
         }
     }
 
     private void saveLastCsvPath(String chosenPath, JLabel filePath) {
-        File saveFile = new File("last_csv_path.txt");
-
+        System.out.println("Save file exists: " + saveFileExists);
         try {
             FileWriter fileWriter = new FileWriter(saveFile);
             fileWriter.write(chosenPath);
             fileWriter.close();
             filePath.setText(chosenPath);
-
-            Scanner fileReader = new Scanner(saveFile);
-            System.out.println(String.format("This is the path of the last visited location: " + fileReader.nextLine()));
-            fileReader.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
