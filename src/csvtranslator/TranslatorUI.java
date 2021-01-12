@@ -184,7 +184,6 @@ class TranslatorUI {
 
     private void createSaveFile() {
         saveFile = new File("last_csv_path.txt");
-
         try {
             saveFile.createNewFile();
             saveFileExists = saveFile.exists();
@@ -209,18 +208,15 @@ class TranslatorUI {
     }
 
     private void saveLastCsvPath(String chosenPath, JLabel filePath) {
-
         System.out.println("Save file exists: " + saveFileExists);
         try {
             FileWriter fileWriter = new FileWriter(saveFile);
             fileWriter.write(chosenPath);
             fileWriter.close();
             filePath.setText(chosenPath);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private void addLanguagesToDropDown() {
