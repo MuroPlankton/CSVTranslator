@@ -48,7 +48,6 @@ class TranslatorUI {
         try {
             fileReader = new Scanner(saveFile);
             System.out.println(String.format("This is the path of the last visited location: " + fileReader.nextLine()));
-//            filePath.setText(fileReader.nextLine());
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
         }
