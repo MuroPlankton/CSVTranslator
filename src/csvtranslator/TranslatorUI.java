@@ -47,11 +47,16 @@ class TranslatorUI {
         Scanner fileReader = null;
         try {
             fileReader = new Scanner(saveFile);
-            System.out.println(String.format("This is the path of the last visited location: " + fileReader.nextLine()));
+            System.out.println("This is the path of the last visited location: " + fileReader.nextLine());
+            String fileName = fileReader.nextLine();
+            System.out.println("This is the path of the last visited location: " + fileName);
+            csvHandler.setFileName(fileName);
+            languages = (csvHandler.findLanguages(fileName));
+//            filePath.setText(fileReader.nextLine());
+            fileReader.close();
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
         }
-        fileReader.close();
     }
 
     private void createUIComponents() {
@@ -92,10 +97,13 @@ class TranslatorUI {
         });
 
         languageToSearch = new JComboBox<>();
-        languageToSearch.addItem("Available languages");
         languageToSearch.setBackground(Color.white);
         languageToSearch.setPreferredSize(new Dimension(80, 40));
         languageToSearch.addItem("(all)");
+
+        if (languages.size() > 0) {
+            addLanguagesToDropDown();
+        }
 
         JPanel languagePanel = new JPanel();
         languagePanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 40, 0));
@@ -190,10 +198,10 @@ class TranslatorUI {
         int returnVal = directoryChooser.showOpenDialog(mainFrame);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File outputDir = directoryChooser.getCurrentDirectory();
-            String choserPath = outputDir.getAbsolutePath();
-            csvHandler.setOutputDir(choserPath);
-            outputDirLabel.setText(choserPath);
+            File outputDir = directoryChooser.getSelectedFile();
+            String chosenPath = outputDir.getAbsolutePath();
+            csvHandler.setOutputDir(chosenPath);
+            outputDirLabel.setText(chosenPath);
         } else {
             customDirChosen.setSelected(false);
         }

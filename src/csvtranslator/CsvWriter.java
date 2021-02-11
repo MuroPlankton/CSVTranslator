@@ -19,7 +19,7 @@ public class CsvWriter {
 
     private boolean isFirstLineWritten = false;
 
-    public CsvWriter(String os, String lang) {
+    public CsvWriter(String os, String lang, String translationFolder) {
         this.os = os;
         this.lang = lang;
 
@@ -27,8 +27,12 @@ public class CsvWriter {
         String dir;
         String fileName;
 
-        //TODO: if (user puts upperDir) {it takes that directory} else {upperDir is translations}
-        upperDir = "./translations";
+        // if (user puts upperDir) {it takes that directory} else {upperDir is translations}
+        if (translationFolder != null) {
+            upperDir = translationFolder;
+        } else {
+            upperDir = "./translations";
+        }
 
         switch (os) {
             default:

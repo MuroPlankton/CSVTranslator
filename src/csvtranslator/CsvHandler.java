@@ -107,11 +107,11 @@ public class CsvHandler {
     }
 
     private void addWritersToWriterMap(int langIndex, String lang) {
-        writerMap.put(new Pair<>(ANDROID_INDEX, langIndex), new CsvWriter("android", lang));
-        writerMap.put(new Pair<>(IOS_INDEX, langIndex), new CsvWriter("ios", lang));
-        writerMap.put(new Pair<>(WEB_ADMIN_INDEX, langIndex), new CsvWriter("web-admin", lang));
-        writerMap.put(new Pair<>(WEB_MAIN_INDEX, langIndex), new CsvWriter("web-main", lang));
-        writerMap.put(new Pair<>(WEB_WIDGET_INDEX, langIndex), new CsvWriter("web-widget", lang));
+        writerMap.put(new Pair<>(ANDROID_INDEX, langIndex), new CsvWriter("android", lang, outputDir));
+        writerMap.put(new Pair<>(IOS_INDEX, langIndex), new CsvWriter("ios", lang, outputDir));
+        writerMap.put(new Pair<>(WEB_ADMIN_INDEX, langIndex), new CsvWriter("web-admin", lang, outputDir));
+        writerMap.put(new Pair<>(WEB_MAIN_INDEX, langIndex), new CsvWriter("web-main", lang, outputDir));
+        writerMap.put(new Pair<>(WEB_WIDGET_INDEX, langIndex), new CsvWriter("web-widget", lang, outputDir));
     }
 
     private boolean isNotEmpty(String text) {
@@ -123,6 +123,8 @@ public class CsvHandler {
     }
 
     public void readCsvAndCreateTranslateFiles(String selectedLang) {
+        writerMap.clear();
+        linesHandled = 0;
         this.selectedLang = selectedLang;
 
         readCSV(this::handleTranslateData);
