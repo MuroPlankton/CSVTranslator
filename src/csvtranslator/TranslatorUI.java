@@ -47,12 +47,10 @@ class TranslatorUI {
         Scanner fileReader = null;
         try {
             fileReader = new Scanner(saveFile);
-            System.out.println("This is the path of the last visited location: " + fileReader.nextLine());
             String fileName = fileReader.nextLine();
             System.out.println("This is the path of the last visited location: " + fileName);
             csvHandler.setFileName(fileName);
             languages = (csvHandler.findLanguages(fileName));
-//            filePath.setText(fileReader.nextLine());
             fileReader.close();
         } catch (FileNotFoundException e) {
             System.out.println("File not found");
