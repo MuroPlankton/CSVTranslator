@@ -3,15 +3,27 @@ package csvtranslator;
 import javax.swing.*;
 
 public class CsvAppUiClass {
-    private JPanel panel1;
-    private JList list1;
-    private JTextField libraryNameTextfield;
-    private JList textList;
+    private JPanel basePanel;
+    private JButton importButton;
+    private JButton profileButton;
+
+    private JList librariesList;
+    private JLabel librariesLabel;
+
+    private JTextField libraryNameTextField;
+    private JList textsList;
+
     private JPanel langAddingPanel;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JButton button1;
-    private JButton button2;
+    private JTextField langCodeField;
+    private JTextField langNameField;
+    private JButton langAddingButton;
+    private JLabel langAmountLabel;
+    private JButton newTextButton;
+    private JButton exportOptionsButton;
+    private JPopupMenu exportOptionsMenu;
+    private JMenuItem currentDirExportOption;
+    private JMenuItem customDirExportOption;
+
     private JTextField textNameField;
     private JTextArea textDescArea;
     private JTextField webKeyField;
