@@ -6,6 +6,7 @@
 package csvtranslator;
 
 import csvtranslator.util.Pair;
+import okhttp3.OkHttp;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
