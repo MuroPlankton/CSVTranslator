@@ -9,11 +9,11 @@ import java.io.IOException;
 public class FireBaseRequests {
 
 
+    private final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private final OkHttpClient client = new OkHttpClient();
 
-    public String put(String url, String jsonBody) {
+    public String putDataToUserLibraries(String url, String jsonBody) {
 
-        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-        OkHttpClient client = new OkHttpClient();
         RequestBody body = RequestBody.create(JSON, jsonBody);
 
         Request request = new Request.Builder()
