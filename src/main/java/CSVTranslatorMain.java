@@ -7,7 +7,6 @@ public class CSVTranslatorMain {
         TranslatorUI translatorUI = new TranslatorUI();
         SwingUtilities.invokeLater(translatorUI.RunUI());
 
-
         AuthHelper.signNewUserIn("mirovaino@gmail.com", "Muro_Plankton", "kauppakoti");
 
         FireBaseRequests fireBaseRequests = new FireBaseRequests();

@@ -3,11 +3,10 @@ import okhttp3.*;
 import java.io.IOException;
 
 /**
- * @author s1800870
+ * @author s1800885
  */
 
 public class FireBaseRequests {
-
 
     private final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private final OkHttpClient client = new OkHttpClient();
@@ -22,8 +21,8 @@ public class FireBaseRequests {
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-            System.out.println(response.body().toString());
-            return response.body().toString();
+            System.out.println(response.toString());
+            return response.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
