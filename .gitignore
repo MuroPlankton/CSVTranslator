@@ -11,8 +11,6 @@ Localizable.strings
 *.lproj/
 values-*/
 desktop.ini
-<<<<<<< HEAD
 last_csv_path.txt
-=======
 *.csv
->>>>>>> 3ac30b5a39455b6a5a7d6e2a40cdcffe909afc75
+

@@ -39,7 +39,6 @@ public class TranslatorUI {
     }
 
     private void checkForLastCsvPath() {
-
         Scanner fileReader = null;
         try {
             fileReader = new Scanner(saveFile);

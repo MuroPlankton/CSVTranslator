@@ -23,14 +23,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6d4d1415-b666-428d-b2f2-525f76f3ad59" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/csvtranslator/CSVTranslator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/csvtranslator/CsvAppUiClass.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/csvtranslator/CsvAppUiForm.form" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/csvtranslator/CsvHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/csvtranslator/CsvWriter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/csvtranslator/TranslatorUI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/csvtranslator/util/Pair.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CSVTranslatorMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CSVTranslatorMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CreateAccount.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CreateAccount.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CreateAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CreateAccount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CsvHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CsvHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/CsvWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CsvWriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/FireBaseRequests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/FireBaseRequests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TranslatorUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TranslatorUI.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,21 +120,25 @@
       <screen x="1920" y="-316" width="1920" height="1040" />
     </state>
     <state x="2609" y="6" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1536.824/1920.-316.1920.1040@1920.-316.1920.1040" timestamp="1613377895793" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1613379099002">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1613380896555">
       <screen x="1920" y="-316" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.-316.1920.1040@1920.-316.1920.1040" timestamp="1613379099002" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1613379099002">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.-316.1920.1040@1920.-316.1920.1040" timestamp="1613380896555" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1613380896555">
       <screen x="1920" y="-316" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1536.824/1920.-316.1920.1040@1920.-316.1920.1040" timestamp="1613379099002" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1613379099002">
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1536.824/1920.-316.1920.1040@1920.-316.1920.1040" timestamp="1613380896555" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1613380896555">
       <screen x="1920" y="-316" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1536.824/1920.-316.1920.1040@1920.-316.1920.1040" timestamp="1613379099002" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1613379099002">
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1536.824/1920.-316.1920.1040@1920.-316.1920.1040" timestamp="1613380896555" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1613380896555">
       <screen x="1920" y="-316" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1536.824/1920.-316.1920.1040@1920.-316.1920.1040" timestamp="1613379099002" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1536.824/1920.-316.1920.1040@1920.-316.1920.1040" timestamp="1613380896555" />
+    <state x="2695" y="-18" key="chooseDestDirectoryDialog" timestamp="1613379818745">
+      <screen x="1920" y="-316" width="1920" height="1040" />
+    </state>
+    <state x="2695" y="-18" key="chooseDestDirectoryDialog/0.0.1536.824/1920.-316.1920.1040@1920.-316.1920.1040" timestamp="1613379818745" />
   </component>
 </project>
