@@ -36,6 +36,7 @@ public class TranslatorUI {
         csvHandler = new CsvHandler();
         checkForLastCsvPath();
         createUIComponents();
+
     }
 
     private void checkForLastCsvPath() {
