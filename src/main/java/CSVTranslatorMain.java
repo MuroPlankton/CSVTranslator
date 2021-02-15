@@ -12,7 +12,5 @@ public class CSVTranslatorMain {
 //                "  \"fjldskjfsdjgfjsd\": \"sgfsdkjfhkds\",\n" +
 //                "  \"sfasdfdsfsdf\":\"sfdadsfsfds\"\n" +
 //                "}");
-
-        AuthHelper.signNewUserIn("mirovaino@gmail.com", "Muro_Plankton", "kauppakoti");
     }
 }
