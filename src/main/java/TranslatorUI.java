@@ -1,6 +1,3 @@
-package csvtranslator;
-
-
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
@@ -12,8 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-class TranslatorUI {
-
+public class TranslatorUI {
     private static CsvHandler csvHandler;
 
     private JFrame mainFrame;

@@ -1,11 +1,8 @@
-package csvtranslator;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class CsvWriter {
-
     private FileWriter writer;
 
     private final String os;
