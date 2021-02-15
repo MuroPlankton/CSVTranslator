@@ -13,4 +13,5 @@ values-*/
 desktop.ini
 last_csv_path.txt
 *.csv
+.gradle/
 
