@@ -3,6 +3,7 @@ package csvtranslator;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 public class CreateAccount {
 
@@ -17,6 +18,15 @@ public class CreateAccount {
     private JButton SignInBtn;
 
     public CreateAccount() {
+        String userName = userNameTextField.getText();
+        String email = emailTextField.getText();
+
+        if (Arrays.equals(passwordField1.getPassword(), passwordField2.getPassword())) {
+            char[] password = passwordField1.getPassword();
+        } else {
+            System.out.println("Passwords don't match!");
+        }
+
         SignInBtn.addActionListener(e -> {
 
         });
