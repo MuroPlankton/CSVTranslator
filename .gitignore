@@ -1,7 +1,7 @@
-/build/
-/dist/
+build/
+dist/
 strings.xml
-/idea/
+idea/
 out/
 *.iml
 nbproject/
@@ -13,7 +13,4 @@ values-*/
 desktop.ini
 last_csv_path.txt
 *.csv
-/.gradle/
-/gradle/
-
-.idea/uiDesigner.xml
+gradle/
