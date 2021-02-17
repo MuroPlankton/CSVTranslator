@@ -1,5 +1,3 @@
-package csvtranslator;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +24,8 @@ public class CreateAccount {
         } else {
             System.out.println("Passwords don't match!");
         }
+
+//        SignInBtn.setVisible(false);
 
         SignInBtn.addActionListener(e -> {
 
