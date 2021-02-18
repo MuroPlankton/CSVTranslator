@@ -48,3 +48,5 @@ settings.gradle
 .gradle/checksums/md5-checksums.bin
 .gradle/checksums/sha1-checksums.bin
 .idea/uiDesigner.xml
+.gradle/
+.idea/
