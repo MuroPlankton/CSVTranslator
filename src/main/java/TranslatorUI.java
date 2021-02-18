@@ -1,11 +1,6 @@
-package csvtranslator;
-
-
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -14,8 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-class TranslatorUI {
-
+public class TranslatorUI {
     private static CsvHandler csvHandler;
 
     private JFrame mainFrame;
@@ -42,18 +36,17 @@ class TranslatorUI {
         csvHandler = new CsvHandler();
         checkForLastCsvPath();
         createUIComponents();
+
     }
 
     private void checkForLastCsvPath() {
-
         Scanner fileReader = null;
         try {
             fileReader = new Scanner(saveFile);
             String fileName = fileReader.nextLine();
-            System.out.println(String.format("This is the path of the last visited location: " + fileName));
+            System.out.println("This is the path of the last visited location: " + fileName);
             csvHandler.setFileName(fileName);
             languages = (csvHandler.findLanguages(fileName));
-//            filePath.setText(fileReader.nextLine());
             fileReader.close();
         } catch (FileNotFoundException e) {
             System.out.println("File not found");

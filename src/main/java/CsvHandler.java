@@ -1,23 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package csvtranslator;
-
-import csvtranslator.util.Pair;
+import util.Pair;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class CsvHandler {
-
     private static final String DELIMITER = "^\\s*\"?\\s*(.*?)\\s*\"?\\s*$";
     private static final Pattern CSV_PATTERN = Pattern.compile("\\s*(?:\"[^\"]*\"|(?:^|(?<=,))[^,]*)");
 
@@ -37,10 +30,6 @@ public class CsvHandler {
     private static final String DEFAULT_SELECTED_LANG_VALUE = "(all)";
 
     private String outputDir;
-
-    public CsvHandler() {
-
-    }
 
     public void setFileName(String fileName) {
         this.fileName = fileName;

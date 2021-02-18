@@ -1,14 +1,11 @@
-package csvtranslator;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class CsvWriter {
-
     private FileWriter writer;
 
-    private final String os;
+    private final String fileType/*os*/;
     private final String lang;
 
     private final String ANDROID = "android";
@@ -16,11 +13,12 @@ public class CsvWriter {
     private final String WEB_ADMIN = "web-admin";
     private final String WEB_MAIN = "web-main";
     private final String WEB_WIDGET = "web-widget";
+    private final String CSV = "csv";
 
     private boolean isFirstLineWritten = false;
 
-    public CsvWriter(String os, String lang, String translationFolder) {
-        this.os = os;
+    public CsvWriter(String fileType/*os*/, String lang, String translationFolder) {
+        this.fileType = fileType/*os*/;
         this.lang = lang;
 
         String upperDir;
@@ -34,7 +32,7 @@ public class CsvWriter {
             upperDir = "./translations";
         }
 
-        switch (os) {
+        switch (fileType) {
             default:
             case ANDROID:
                 dir = "./values-" + lang;
@@ -56,6 +54,10 @@ public class CsvWriter {
                 dir = "./widget-web";
                 fileName = String.format("./%s.json", lang);
                 break;
+            case CSV:
+                dir = "./csv";
+                fileName = "library name...";
+                break;
         }
 
         File file = new File(upperDir, dir);
@@ -63,8 +65,8 @@ public class CsvWriter {
         try {
             file.mkdirs();
             if (file.exists()) {
-                File langDir = new File(file, fileName);
-                writer = new FileWriter(langDir);
+                File fileDir = new File(file, fileName);
+                writer = new FileWriter(fileDir);
             } else {
                 System.out.println("Directory couldn't be created.");
             }
@@ -72,10 +74,10 @@ public class CsvWriter {
             e.printStackTrace();
         }
 
-        if (ANDROID.equals(os)) {
+        if (ANDROID.equals(fileType)) {
             internalWriteOneRow("<resources>", null, false);
         }
-        if (WEB_ADMIN.equals(os) || WEB_MAIN.equals(os) || WEB_WIDGET.equals(os)) {
+        if (WEB_ADMIN.equals(fileType) || WEB_MAIN.equals(fileType) || WEB_WIDGET.equals(fileType)) {
             internalWriteOneRow("{", null, false);
         }
     }
@@ -102,11 +104,11 @@ public class CsvWriter {
     }
 
     public void stopWriting() {
-        if (ANDROID.equals(os)) {
+        if (ANDROID.equals(fileType)) {
             writeOneRow("</resources>", null, true);
         }
 
-        if (WEB_ADMIN.equals(os) || WEB_MAIN.equals(os) || WEB_WIDGET.equals(os)) {
+        if (WEB_ADMIN.equals(fileType) || WEB_MAIN.equals(fileType) || WEB_WIDGET.equals(fileType)) {
             writeOneRow("}", null, true);
         }
         try {
