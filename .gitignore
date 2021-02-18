@@ -38,3 +38,12 @@ settings.gradle
 .gradle/buildOutputCleanup/cache.properties
 .gradle/checksums/checksums.lock
 .gradle/vcs-1/gc.properties
+.gradle/6.3/executionHistory/executionHistory.bin
+.gradle/6.3/fileContent/fileContent.lock
+.gradle/6.3/fileHashes/fileHashes.bin
+.gradle/6.3/javaCompile/classAnalysis.bin
+.gradle/6.3/javaCompile/javaCompile.lock
+.gradle/6.3/javaCompile/taskHistory.bin
+.gradle/buildOutputCleanup/outputFiles.bin
+.gradle/checksums/md5-checksums.bin
+.gradle/checksums/sha1-checksums.bin
