@@ -1,3 +1,4 @@
+#commented first line
 build/
 dist/
 strings.xml
@@ -14,3 +15,26 @@ desktop.ini
 last_csv_path.txt
 *.csv
 gradle/
+build.gradle
+gradlew
+gradlew.bat
+settings.gradle
+.idea/vcs.xml
+.idea/misc.xml
+.idea/jarRepositories.xml
+.idea/gradle.xml
+.idea/compiler.xml
+.gradle/6.3/executionHistory/executionHistory.lock
+.gradle/6.3/fileChanges/last-build.bin
+.gradle/6.3/fileHashes/fileHashes.lock
+.gradle/6.3/gc.properties
+.gradle/6.5/executionHistory/executionHistory.bin
+.gradle/6.5/executionHistory/executionHistory.lock
+.gradle/6.5/fileChanges/last-build.bin
+.gradle/6.5/fileHashes/fileHashes.bin
+.gradle/6.5/fileHashes/fileHashes.lock
+.gradle/6.5/gc.properties
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+.gradle/buildOutputCleanup/cache.properties
+.gradle/checksums/checksums.lock
+.gradle/vcs-1/gc.properties
