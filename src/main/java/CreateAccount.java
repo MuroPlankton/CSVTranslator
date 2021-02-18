@@ -1,11 +1,9 @@
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Arrays;
 
-public class CreateAccount {
+public class CreateAccount{
 
-    private JPanel MainPanel;
+    private JPanel mainPanel/* = new JPanel()*/;
     private JTextField userNameTextField;
     private JTextField emailTextField;
     private JPasswordField passwordField2;
@@ -13,28 +11,33 @@ public class CreateAccount {
     private JLabel userNameLabel;
     private JLabel emailLabel;
     private JLabel passwordLabel;
-    private JButton SignInBtn;
+    private JButton signInBtn;
 
     public CreateAccount() {
-        String userName = userNameTextField.getText();
-        String email = emailTextField.getText();
+        signInBtn.addActionListener(e -> {
+            String userName;
+            String email;
+            char[] password;
 
-        if (Arrays.equals(passwordField1.getPassword(), passwordField2.getPassword())) {
-            char[] password = passwordField1.getPassword();
-        } else {
-            System.out.println("Passwords don't match!");
-        }
+            if(userNameTextField.getText() != null && emailTextField.getText() != null) {
+                userName = userNameTextField.getText();
+                email = emailTextField.getText();
 
-//        SignInBtn.setVisible(false);
-
-        SignInBtn.addActionListener(e -> {
-
+                if (passwordField1.getPassword() != null && passwordField2.getPassword() != null) {
+                    if (Arrays.equals(passwordField1.getPassword(), passwordField2.getPassword())) {
+                        password = passwordField1.getPassword();
+                        System.out.println(userName + "\n" + email + "\n" + Arrays.toString(password));
+                    } else {
+                        System.out.println("Passwords don't match!");
+                    }
+                }
+            }
         });
     }
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Create Account");
-        frame.setContentPane(new CreateAccount().MainPanel);
+        frame.setContentPane(new CreateAccount().mainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
