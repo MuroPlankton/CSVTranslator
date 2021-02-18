@@ -47,3 +47,4 @@ settings.gradle
 .gradle/buildOutputCleanup/outputFiles.bin
 .gradle/checksums/md5-checksums.bin
 .gradle/checksums/sha1-checksums.bin
+.gradle/
