@@ -28,20 +28,21 @@ public class MainView {
     private JSpinner languageSpinner;
     private JTextField translationNameTextField2;
     private JButton saveButton;
+    private JLabel languageCountLabe;
+    private JLabel languageCodeLabel;
+    private JLabel LanguageNameLabel;
+    private JLabel translationNameLabel;
+    private JLabel translationDescriptionLabel;
+    private JLabel iosKeyLabel;
+    private JLabel webKeyLabel;
+    private JLabel languageSpinnerLabel;
+    private JLabel translationsLabel;
+    private JLabel androidKeyLabel;
 
     private int buttonTracker;
 
     public MainView() {
-//        ActionListener actionListener = new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//
-//            }
-//        };
-//
-//        addButton.addActionListener(actionListener);
-//        importButton.addActionListener(actionListener);
-//        profileButton.addActionListener(actionListener);
+
         importButton.addActionListener(e -> {
             System.out.println("import pressed");
         });

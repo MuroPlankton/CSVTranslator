@@ -17,7 +17,7 @@ public class FireBaseRequests {
 
         Request request = new Request.Builder()
                 .url(url)
-                .put(body)
+                .patch(body)
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
