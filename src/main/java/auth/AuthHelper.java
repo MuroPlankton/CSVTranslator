@@ -3,10 +3,7 @@ package auth;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
+import okhttp3.*;
 
 import java.io.IOException;
 
@@ -39,55 +36,33 @@ public class AuthHelper {
         String signInJson = String.format("{\"email\":\"%s\",\"password\":\"%s\",\"returnSecureToken\":true}",
                 email, password);
         RequestBody signInBody = RequestBody.create(signInJson, MediaType.parse("application/json"));
+
         Request signInRequest = new Request.Builder()
                 .url(String.format("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s", PROJECT_API_KEY))
                 .post(signInBody).build();
-        JsonObject signInObject = null;
         try {
-            JsonElement signInElement = JsonParser.parseString(client.newCall(signInRequest).execute().body().string());
-            signInObject = signInElement.getAsJsonObject();
+            setTokenInfoAndUID(JsonParser.parseString(client.newCall(signInRequest).execute().body().string()).getAsJsonObject());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        tokenExpiryTime = System.currentTimeMillis() + 3600;
-        idToken = signInObject.get("idToken").getAsString();
-        refreshToken = signInObject.get("refreshToken").getAsString();
-        userID = signInObject.get("localId").getAsString();
 
         setNewDisplayName(displayName);
-
-        String addUserToRealtimeJson = String.format("{\"%s\":\"%s\"}", userID, displayName);
-        RequestBody addRealtimeUserRB = RequestBody.create(addUserToRealtimeJson, MediaType.parse("application/json"));
-        Request addRealtimeUserRequest = new Request.Builder()
-                .url(String.format("https://%s.firebaseio.com/users.json?auth=%s", PROJECT_ID, idToken))
-                .patch(addRealtimeUserRB).build();
-        try {
-            client.newCall(addRealtimeUserRequest).execute().body().string();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void logExistingUserIn(String email, String password) {
         String signInJson = String.format("{\"email\":\"%s\",\"password\":\"%s\",\"returnSecureToken\":true}",
                 email, password);
         RequestBody signInBody = RequestBody.create(signInJson, MediaType.parse("application/json"));
+
         Request signInRequest = new Request.Builder()
-                .url(String.format("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s", PROJECT_API_KEY))
-                .post(signInBody).build();
-        JsonObject signInObject = null;
+                .url(String.format("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s",
+                        PROJECT_API_KEY)).post(signInBody).build();
         try {
-            JsonElement signInElement = JsonParser.parseString(client.newCall(signInRequest).execute().body().string());
-            signInObject = signInElement.getAsJsonObject();
+            setTokenInfoAndUID(JsonParser.parseString(client.newCall(signInRequest).execute()
+                    .body().string()).getAsJsonObject());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        tokenExpiryTime = System.currentTimeMillis() + 3600;
-        idToken = signInObject.get("idToken").getAsString();
-        refreshToken = signInObject.get("refreshToken").getAsString();
-        userID = signInObject.get("localId").getAsString();
     }
 
     public String getIDToken() {
@@ -97,14 +72,14 @@ public class AuthHelper {
             String tokenRefreshRBString = String.format("grant_type=refresh_token&refresh_token=%s", refreshToken);
             RequestBody tokenRefreshRB = RequestBody.create(tokenRefreshRBString,
                     MediaType.parse("application/x-www-form-urlencoded"));
+
             Request tokenRefreshRequest = new Request.Builder()
                     .url(String.format("https://securetoken.googleapis.com/v1/token?key=%s", PROJECT_API_KEY))
                     .post(tokenRefreshRB).build();
             try {
-                String responseBodyString = JsonParser.parseString(
+                return JsonParser.parseString(
                         client.newCall(tokenRefreshRequest).execute().body().string())
                         .getAsJsonObject().get("id_token").getAsString();
-                return responseBodyString;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -120,8 +95,8 @@ public class AuthHelper {
     public void setNewDisplayName(String displayName) {
         String setNameJson = String.format("{\"idToken\":\"%s\",\"displayName\":\"%s\",\"returnSecureToken\":false}",
                 getIDToken(), displayName);
-        System.out.println(setNameJson);
         RequestBody setNameBody = RequestBody.create(setNameJson, MediaType.parse("application/json"));
+
         Request setNameRequest = new Request.Builder()
                 .url(String.format("https://identitytoolkit.googleapis.com/v1/accounts:update?key=%s", PROJECT_API_KEY))
                 .post(setNameBody).build();
@@ -130,5 +105,55 @@ public class AuthHelper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        String addToRealtimeUsersJson = String.format("{\"%s\":\"%s\"}", userID, displayName);
+        RequestBody addRealtimeUserRB = RequestBody.create(addToRealtimeUsersJson, MediaType.parse("application/json"));
+
+        Request addRealtimeUserRequest = new Request.Builder()
+                .url(String.format("https://%s.firebaseio.com/users.json?auth=%s", PROJECT_ID, getIDToken()))
+                .patch(addRealtimeUserRB).build();
+        try {
+            client.newCall(addRealtimeUserRequest).execute().body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Request userLibrariesRequest = new Request.Builder()
+                .url(String.format("https://%s.firebaseio.com/user_libraries/%s.json?auth=%s", PROJECT_ID, userID, getIDToken()))
+                .get().build();
+
+        try {
+            Response userLibrariesResponse = client.newCall(userLibrariesRequest).execute();
+
+            if (userLibrariesResponse.isSuccessful()) {
+                JsonObject userLibrariesObject = JsonParser.parseString(userLibrariesResponse.body().string()).getAsJsonObject();
+                int amountOfUserLibraries = userLibrariesObject.size();
+                int index = 0;
+
+                String changeUserInLibrariesJson = "{\n";
+                for (String userLibraryKey : userLibrariesObject.keySet()) {
+                    changeUserInLibrariesJson += String.format("\"%s/users/%s\":\"%s\"%s", userLibraryKey, userID,
+                            displayName, (index < amountOfUserLibraries - 1) ? ",\n" : "\n");
+                    index++;
+                }
+                changeUserInLibrariesJson += "}";
+
+                RequestBody userInLibrariesRB = RequestBody.create(changeUserInLibrariesJson, MediaType.parse("application/json"));
+                
+                Request userInLibrariesRequest = new Request.Builder()
+                        .url(String.format("https://%s.firebaseio.com/libraries.json?auth=%s", PROJECT_ID, getIDToken()))
+                        .patch(userInLibrariesRB).build();
+                System.out.println(client.newCall(userInLibrariesRequest).execute().body().string());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setTokenInfoAndUID(JsonObject object) {
+        tokenExpiryTime = System.currentTimeMillis() + 3600;
+        idToken = object.get("idToken").getAsString();
+        refreshToken = object.get("refreshToken").getAsString();
+        userID = object.get("localId").getAsString();
     }
 }
