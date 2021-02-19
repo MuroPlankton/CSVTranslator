@@ -1,7 +1,4 @@
 import javax.swing.*;
-import javax.swing.text.View;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainView {
     private JPanel mainPanel;
@@ -25,7 +22,6 @@ public class MainView {
     private JTextField androidKeyTextField;
     private JTextField iosKeyTextField;
     private JTextField webKeyTextField;
-    private JSpinner languageSpinner;
     private JTextField translationNameTextField2;
     private JButton saveButton;
     private JLabel languageCountLabe;
@@ -38,8 +34,9 @@ public class MainView {
     private JLabel languageSpinnerLabel;
     private JLabel translationsLabel;
     private JLabel androidKeyLabel;
+    private JComboBox languagesDropDown;
 
-    private int buttonTracker;
+    private int languageCount;
 
     public MainView() {
 
@@ -61,7 +58,17 @@ public class MainView {
         saveButton.addActionListener(e -> {
             System.out.println("save pressed");
         });
+        addLanguageToDropDown("suomi");
+        addLanguageToDropDown("english");
+        addLanguageToDropDown("svenska");
 
+        languagesDropDown.addActionListener(e -> System.out.println(languagesDropDown.getItemAt(languagesDropDown.getSelectedIndex()).toString()));
+
+        languageCountLabe.setText(String.format("amount of languages: $d", languageCount));
+    }
+
+    public void addLanguageToDropDown(String language) {
+        languagesDropDown.addItem(language);
     }
 
     public static void main(String[] args) {

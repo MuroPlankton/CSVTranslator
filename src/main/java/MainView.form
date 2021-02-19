@@ -299,12 +299,6 @@
                           <text value=""/>
                         </properties>
                       </component>
-                      <component id="6deae" class="javax.swing.JSpinner" binding="languageSpinner">
-                        <constraints>
-                          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties/>
-                      </component>
                       <component id="ace7f" class="javax.swing.JTextField" binding="translationNameTextField2">
                         <constraints>
                           <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
@@ -353,6 +347,16 @@
                         </constraints>
                         <properties>
                           <text value="Languages"/>
+                        </properties>
+                      </component>
+                      <component id="5ad1" class="javax.swing.JComboBox" binding="languagesDropDown">
+                        <constraints>
+                          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <editable value="false"/>
+                          <model/>
+                          <name value=""/>
                         </properties>
                       </component>
                     </children>
