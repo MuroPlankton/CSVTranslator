@@ -7,7 +7,7 @@ public class MainView {
     private JPanel mainView;
     private JLabel librariesLabel;
     private JList libraryList;
-    private JPanel thirdPane;
+    private JPanel editTranslationsPane;
     private JLabel libraryNameLabel;
     private JList libraryAdapter;
     private JPanel libraryActionsPane;
@@ -15,8 +15,6 @@ public class MainView {
     private JTextField languageName;
     private JTextField languageCode;
     private JButton addButton;
-    private JButton importButton;
-    private JButton profileButton;
     private JTextField translationNameTextField;
     private JTextField translationDescrpitionTextField;
     private JTextField androidKeyTextField;
@@ -40,17 +38,10 @@ public class MainView {
 
     public MainView() {
 
-        importButton.addActionListener(e -> {
-            System.out.println("import pressed");
-        });
-
         addButton.addActionListener(e -> {
             System.out.println("add pressed");
         });
 
-        profileButton.addActionListener(e -> {
-            System.out.println("profile pressed");
-        });
         newTranslation.addActionListener(e -> {
             System.out.println("new translation pressed");
         });
@@ -67,6 +58,20 @@ public class MainView {
         languageCountLabe.setText(String.format("amount of languages: $d", languageCount));
     }
 
+    private static void makeJMenu(JFrame frame) {
+        JMenu jMenu = new JMenu("Options");
+        JMenuItem importFile = new JMenuItem("Import");
+        JMenuItem profile = new JMenuItem("Profile");
+        JMenuItem addNewFile = new JMenuItem("Add new file");
+        JMenuBar jMenuBar = new JMenuBar();
+
+        jMenu.add(addNewFile);
+        jMenu.add(profile);
+        jMenu.add(importFile);
+        jMenuBar.add(jMenu);
+        frame.setJMenuBar(jMenuBar);
+    }
+
     public void addLanguageToDropDown(String language) {
         languagesDropDown.addItem(language);
     }
@@ -74,6 +79,7 @@ public class MainView {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Main view");
         frame.setContentPane(new MainView().mainPanel);
+        makeJMenu(frame);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setResizable(false);
