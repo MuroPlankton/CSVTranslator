@@ -1,6 +1,7 @@
 import javax.swing.*;
 
 public class MainView {
+
     private JPanel mainPanel;
     private JPanel secondPanel;
     private JSplitPane splitPane;
@@ -18,13 +19,13 @@ public class MainView {
     private JButton importButton;
     private JButton profileButton;
     private JTextField translationNameTextField;
-    private JTextField translationDescrpitionTextField;
+    private JTextField translationDescriptionTextField;
     private JTextField androidKeyTextField;
     private JTextField iosKeyTextField;
     private JTextField webKeyTextField;
     private JTextField translationNameTextField2;
     private JButton saveButton;
-    private JLabel languageCountLabe;
+    private JLabel languageCountLabel;
     private JLabel languageCodeLabel;
     private JLabel LanguageNameLabel;
     private JLabel translationNameLabel;
@@ -38,8 +39,22 @@ public class MainView {
 
     private int languageCount;
 
-    public MainView() {
+    private final Runnable runUI = this::createUI;
 
+    public Runnable runUI(){
+        return runUI;
+    }
+
+    public void createUI(){
+        JFrame frame = new JFrame("Main view");
+        frame.setContentPane(mainPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setResizable(false);
+        frame.setVisible(true);
+    }
+
+    public MainView() {
         importButton.addActionListener(e -> {
             System.out.println("import pressed");
         });
@@ -64,21 +79,19 @@ public class MainView {
 
         languagesDropDown.addActionListener(e -> System.out.println(languagesDropDown.getItemAt(languagesDropDown.getSelectedIndex()).toString()));
 
-        languageCountLabe.setText(String.format("amount of languages: $d", languageCount));
+        languageCountLabel.setText(String.format("amount of languages: $d", languageCount));
     }
 
     public void addLanguageToDropDown(String language) {
         languagesDropDown.addItem(language);
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Main view");
-        frame.setContentPane(new MainView().mainPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setResizable(false);
-        frame.setVisible(true);
-    }
-
-
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame("Main view");
+//        frame.setContentPane(new MainView().mainPanel);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.pack();
+//        frame.setResizable(false);
+//        frame.setVisible(true);
+//    }
 }

@@ -1,10 +1,10 @@
 package auth;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import okhttp3.*;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class AuthHelper {
@@ -20,7 +20,7 @@ public class AuthHelper {
 
     private String userID;
 
-    private OkHttpClient client = new OkHttpClient();
+    private final OkHttpClient client = new OkHttpClient();
 
     private AuthHelper() {
     }
@@ -49,20 +49,39 @@ public class AuthHelper {
         setNewDisplayName(displayName);
     }
 
-    public void logExistingUserIn(String email, String password) {
-        String signInJson = String.format("{\"email\":\"%s\",\"password\":\"%s\",\"returnSecureToken\":true}",
-                email, password);
-        RequestBody signInBody = RequestBody.create(signInJson, MediaType.parse("application/json"));
+    private OnLoggedInListener listener;
 
-        Request signInRequest = new Request.Builder()
+    public void logExistingUserIn(String email, String password) {
+        String logInJson = String.format("{\"email\":\"%s\",\"password\":\"%s\",\"returnSecureToken\":true}",
+                email, password);
+        RequestBody logInBody = RequestBody.create(logInJson, MediaType.parse("application/json"));
+
+        Request logInRequest = new Request.Builder()
                 .url(String.format("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s",
-                        PROJECT_API_KEY)).post(signInBody).build();
+                        PROJECT_API_KEY)).post(logInBody).build();
         try {
-            setTokenInfoAndUID(JsonParser.parseString(client.newCall(signInRequest).execute()
-                    .body().string()).getAsJsonObject());
+            Response logInResponse = client.newCall(logInRequest).execute();
+
+            if (logInResponse.isSuccessful()) {
+                setTokenInfoAndUID(JsonParser.parseString(logInResponse.body().string()).getAsJsonObject());
+
+                if (listener != null) {
+                    listener.onLoggedIn();
+                }
+            } else {
+                System.out.println("Response for log in wasn't successful");
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setOnLoggedInListener(OnLoggedInListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnLoggedInListener {
+        void onLoggedIn();
     }
 
     public String getIDToken() {
@@ -139,7 +158,7 @@ public class AuthHelper {
                 changeUserInLibrariesJson += "}";
 
                 RequestBody userInLibrariesRB = RequestBody.create(changeUserInLibrariesJson, MediaType.parse("application/json"));
-                
+
                 Request userInLibrariesRequest = new Request.Builder()
                         .url(String.format("https://%s.firebaseio.com/libraries.json?auth=%s", PROJECT_ID, getIDToken()))
                         .patch(userInLibrariesRB).build();

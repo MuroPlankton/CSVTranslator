@@ -1,12 +1,17 @@
+import auth.AuthHelper;
+import com.sun.tools.javac.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.Arrays;
 
 public class LogInAndSignIn {
 
     private JPanel mainPanel;
+    private JFrame frame;
     private JPanel signInPanel;
     private JPanel logInPanel;
 
@@ -27,10 +32,33 @@ public class LogInAndSignIn {
     private JTextField userNameOrEmailTextField;
     private JPasswordField logInPasswordField;
 
+    private final Runnable runUI = this::createUI;
+
+    public final Runnable runUI(){
+        return runUI;
+    }
+
+    private void createUI(){
+        frame = new JFrame("LogInAndSignIn");
+        frame.setContentPane(new LogInAndSignIn().mainPanel);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    private void dispose(){
+        frame.dispose();
+    }
+
     public LogInAndSignIn() {
-        {
             LogInBtn.addActionListener(actionEvent -> {
-                //TODO: call log in method
+                AuthHelper authHelper = AuthHelper.getInstance();
+
+                String email = userNameOrEmailTextField.getText();
+                String password = String.valueOf(logInPasswordField.getPassword());
+
+                authHelper.logExistingUserIn(email, password);
             });
 
             linkToSignIn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -41,15 +69,14 @@ public class LogInAndSignIn {
                     //TODO: see why the click doesn't always register
                     CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
                     cardLayout.next(mainPanel);
+
                     userNameOrEmailTextField.setText("");
                     logInPasswordField.setText("");
                 }
             });
-        }
 
-        {
             signInBtn.addActionListener(actionEvent -> {
-                //TODO: call sign in method
+                //TODO: call sign in -method
                 String userName;
                 String email;
                 char[] password;
@@ -78,20 +105,21 @@ public class LogInAndSignIn {
                     //TODO: see why the click doesn't always register
                     CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
                     cardLayout.next(mainPanel);
+
                     userNameTextField.setText("");
                     emailTextField.setText("");
                     passwordField1.setText("");
                     passwordField2.setText("");
                 }
             });
-        }
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("LogInAndSignIn");
-        frame.setContentPane(new LogInAndSignIn().mainPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-    }
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame("LogInAndSignIn");
+//        frame.setContentPane(new LogInAndSignIn().mainPanel);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setLocationRelativeTo(null);
+//        frame.pack();
+//        frame.setVisible(true);
+//    }
 }
