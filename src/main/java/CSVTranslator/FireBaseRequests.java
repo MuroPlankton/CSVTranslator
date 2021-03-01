@@ -1,3 +1,5 @@
+package CSVTranslator;
+
 import okhttp3.*;
 
 import java.io.IOException;
@@ -8,12 +10,11 @@ import java.io.IOException;
 
 public class FireBaseRequests {
 
-    private final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private final OkHttpClient client = new OkHttpClient();
 
-    public String addData(String url, String jsonBody) {
+    public String patchData(String url, String jsonBody, MediaType mediaType) {
 
-        RequestBody body = RequestBody.create(jsonBody, JSON);
+        RequestBody body = RequestBody.create(jsonBody, mediaType);
 
         Request request = new Request.Builder()
                 .url(url)
@@ -21,7 +22,7 @@ public class FireBaseRequests {
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-            System.out.println(response.toString());
+//            System.out.println(response.toString());
             return response.toString();
         } catch (IOException e) {
             e.printStackTrace();
@@ -37,7 +38,7 @@ public class FireBaseRequests {
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-            System.out.println(response.body().string());
+//            System.out.println(response.body().string());
             return response.body().string();
         } catch (IOException e) {
             e.printStackTrace();
@@ -53,7 +54,7 @@ public class FireBaseRequests {
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-            System.out.println(response.body().string());
+//            System.out.println(response.body().string());
             return response.body().string();
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,9 +62,9 @@ public class FireBaseRequests {
         return null;
     }
 
-    public String postData(String url, String jsonBody) {
+    public String postData(String url, String jsonBody, MediaType mediaType) {
 
-        RequestBody body = RequestBody.create(jsonBody, JSON);
+        RequestBody body = RequestBody.create(jsonBody, mediaType);
 
         Request request = new Request.Builder()
                 .url(url)
@@ -71,7 +72,7 @@ public class FireBaseRequests {
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-            System.out.println(response.body().string());
+//            System.out.println(response.body().string());
             return response.body().string();
         } catch (IOException e) {
             e.printStackTrace();

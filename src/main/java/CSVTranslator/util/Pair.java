@@ -1,4 +1,4 @@
-package util;
+package CSVTranslator.util;
 
 public final class Pair<K, V> {
     private final K key;

@@ -1,10 +1,14 @@
-import com.intellij.uiDesigner.compiler.StringPropertyCodeGenerator;
+package CSVTranslator;
+
+import CSVTranslator.auth.AuthHelper;
+import okhttp3.MediaType;
 
 import javax.swing.*;
 import java.util.UUID;
 
 public class MainView {
     FireBaseRequests fireBaseRequests = new FireBaseRequests();
+    AuthHelper authHelper = AuthHelper.getInstance();
 
     private JPanel mainPanel;
     private JPanel secondPanel;
@@ -42,7 +46,7 @@ public class MainView {
 
     private int languageCount;
     private final String userID = "feHvfGJ3Iwc8D565wQU7GHnH5hu2";
-    private final String userIDToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImM0ZWFhZjkxM2VlNWY0MDY0YmE2NjUzN2M0Njk3YzY5OGE3NGYwODIiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiamFybm8iLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vY3N2LWFuZHJvaWQtYXBwLWYwMzUzIiwiYXVkIjoiY3N2LWFuZHJvaWQtYXBwLWYwMzUzIiwiYXV0aF90aW1lIjoxNjE0NjAwNTA0LCJ1c2VyX2lkIjoiZmVIdmZHSjNJd2M4RDU2NXdRVTdHSG5INWh1MiIsInN1YiI6ImZlSHZmR0ozSXdjOEQ1NjV3UVU3R0huSDVodTIiLCJpYXQiOjE2MTQ2MDA1MDQsImV4cCI6MTYxNDYwNDEwNCwiZW1haWwiOiJyeWhhbmVuamFybm9AZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInJ5aGFuZW5qYXJub0BnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.RYKe5k8Gn4PB3ZIn45RdeTtnE0rZ6tWv1Rl6Ytu23AYf0qfSyypNXsb-6h1U_oHK_EnY90VU6hEik1gv6hQ7pWq786ruMTlcIdXXOxJTNl88X5iT4pZtUzoFXSoKfy6MI6QWM2bSBzjzoNd_hGCgNNvSd7tO4F36mzEmpYJoQlaNkewL2mVKu2_Fx8uGo4Iy3qYKG8eIWocVlW-MEVKzUR9rSillvIdSwwI4KeCrthNXiN9EcaTE5Dwpb7slHuR_NaFAYuA7IQ7BXPvZruyLihTFDakUlhAxdL18ph-hX7aYvxlsVTzpebk65s81OSTfQS7x6732SRgH4OwM0WM4IA";
+    private final String userIDToken = authHelper.getIDToken();
     private final String libraryID = "044fe665-821d-4e7e-be96-678125a40527";
     private String translationID = null;
 
@@ -94,7 +98,7 @@ public class MainView {
 
         String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + "/languages.json?auth=" + userIDToken;
 
-        fireBaseRequests.addData(url, jsonBody);
+        fireBaseRequests.patchData(url, jsonBody, MediaType.parse("application/json"));
     }
 
     private void addTranslationToLibraries() {
@@ -107,7 +111,7 @@ public class MainView {
         String translation = translationNameTextField2.getText();
         System.out.println("save pressed");
 
-       String libraryName = libraryNameTextField.getText();
+        String libraryName = libraryNameTextField.getText();
 
         String jsonBody = "{\n" +
                 "  \"android_key\":\"" + androidKey + "\",\n" +
@@ -123,15 +127,15 @@ public class MainView {
         String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + "/texts/" + translationID + ".json?auth=" + userIDToken;
         System.out.println(jsonBody);
         System.out.println(url);
-        fireBaseRequests.addData(url, jsonBody);
+        fireBaseRequests.patchData(url, jsonBody, MediaType.parse("application/json"));
 
         String userLibaryJsonBody = "{\n" +
-                "  \""+ libraryID +"\":\"" + libraryName +"\"\n" +
+                "  \"" + libraryID + "\":\"" + libraryName + "\"\n" +
                 "}";
 
         String userLibraryUrl = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/" + userID + ".json?auth=" + userIDToken;
 
-        fireBaseRequests.addData(userLibraryUrl, userLibaryJsonBody);
+        fireBaseRequests.patchData(userLibraryUrl, userLibaryJsonBody, MediaType.parse("application/json"));
     }
 
     private static void makeJMenu(JFrame frame) {
