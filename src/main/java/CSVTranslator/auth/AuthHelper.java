@@ -69,12 +69,11 @@ public class AuthHelper {
 
             if (logInResponse.isSuccessful()) {
                 setTokenInfoAndUID(JsonParser.parseString(logInResponse.body().string()).getAsJsonObject());
+                saveRefreshTokenToFile();
 
                 if (listener != null) {
                     listener.onLoggedIn();
                 }
-
-                saveRefreshTokenToFile();
             } else {
                 System.out.println("Response for log in wasn't successful");
             }

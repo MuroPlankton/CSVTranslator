@@ -8,15 +8,16 @@ public class MainView {
     FireBaseRequests fireBaseRequests = new FireBaseRequests();
 
     private JPanel mainPanel;
-    private JPanel secondPanel;
-    private JSplitPane splitPane;
     private JPanel mainView;
-    private JLabel librariesLabel;
-    private JList libraryList;
+    private JPanel secondPanel;
     private JPanel editTranslationsPane;
-    private JLabel libraryNameLabel;
-    private JList libraryAdapter;
+    private JLabel librariesLabel;
     private JPanel libraryActionsPane;
+    private JSplitPane splitPane;
+
+    private JList libraryList;
+    private JList libraryAdapter;
+    private JLabel libraryNameLabel;
     private JButton newTranslation;
     private JTextField languageNameTextField;
     private JTextField languageCodeTextField;
@@ -47,11 +48,9 @@ public class MainView {
 
     private final Runnable runUI = this::createUI;
 
-    public Runnable runUI(){
-        return runUI;
-    }
+    public Runnable runUI() { return runUI; }
 
-    public void createUI(){
+    public void createUI() {
         JFrame frame = new JFrame("Main view");
         frame.setContentPane(new MainView().mainPanel);
         makeJMenu(frame);
