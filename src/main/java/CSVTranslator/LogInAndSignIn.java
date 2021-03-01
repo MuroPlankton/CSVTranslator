@@ -1,11 +1,10 @@
-import auth.AuthHelper;
-import com.sun.tools.javac.Main;
+package CSVTranslator;
 
+import CSVTranslator.auth.AuthHelper;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.Arrays;
 
 public class LogInAndSignIn {
@@ -113,13 +112,4 @@ public class LogInAndSignIn {
                 }
             });
     }
-
-//    public static void main(String[] args) {
-//        JFrame frame = new JFrame("LogInAndSignIn");
-//        frame.setContentPane(new LogInAndSignIn().mainPanel);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setLocationRelativeTo(null);
-//        frame.pack();
-//        frame.setVisible(true);
-//    }
 }

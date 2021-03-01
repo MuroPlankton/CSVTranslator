@@ -1,4 +1,6 @@
-import util.Pair;
+package CSVTranslator;
+
+import CSVTranslator.util.Pair;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

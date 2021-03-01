@@ -50,3 +50,4 @@ settings.gradle
 .idea/uiDesigner.xml
 .gradle/
 .idea/
+refreshTokenFile.txt
