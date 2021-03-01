@@ -1,3 +1,5 @@
+package CSVTranslator;
+
 import javax.swing.*;
 
 public class MainView {

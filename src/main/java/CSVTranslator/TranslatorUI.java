@@ -1,3 +1,5 @@
+package CSVTranslator;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
@@ -17,7 +19,6 @@ public class TranslatorUI {
     private JButton createButton;
     private JLabel filePath;
     private static final File saveFile = new File("last_csv_path.txt");
-    private boolean saveFileExists = false;
 
     List<String> languages = new ArrayList<>();
 
@@ -166,20 +167,10 @@ public class TranslatorUI {
             csvHandler.setFileName(chosenPath);
             filePath.setText(chosenPath);
 
-            saveLastCsvPath(chosenPath, filePath);
-            createSaveFile();
+            saveLastCsvPath(chosenPath);
 
             languages = csvHandler.findLanguages(chosenPath);
             addLanguagesToDropDown();
-        }
-    }
-
-    private void createSaveFile() {
-        try {
-            saveFile.createNewFile();
-            saveFileExists = saveFile.exists();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -200,13 +191,11 @@ public class TranslatorUI {
         }
     }
 
-    private void saveLastCsvPath(String chosenPath, JLabel filePath) {
-        System.out.println("Save file exists: " + saveFileExists);
+    private void saveLastCsvPath(String chosenPath) {
         try {
             FileWriter fileWriter = new FileWriter(saveFile);
             fileWriter.write(chosenPath);
             fileWriter.close();
-            filePath.setText(chosenPath);
         } catch (IOException e) {
             e.printStackTrace();
         }
