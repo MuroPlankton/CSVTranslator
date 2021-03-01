@@ -5,11 +5,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import okhttp3.*;
 
-import javax.print.attribute.standard.Media;
+import javax.swing.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Scanner;
 
 public class AuthHelper {
@@ -51,6 +50,8 @@ public class AuthHelper {
 
         setNewDisplayName(displayName);
         saveRefreshTokenToFile();
+
+        SwingUtilities.invokeLater();
     }
 
     public void logExistingUserIn(String email, String password) {
@@ -182,5 +183,9 @@ public class AuthHelper {
             return false;
         }
         return false;
+    }
+
+    public String getUserID() {
+        return userID;
     }
 }
