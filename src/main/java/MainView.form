@@ -159,7 +159,7 @@
                                 <properties/>
                                 <border type="none"/>
                                 <children>
-                                  <component id="2588f" class="javax.swing.JTextField" binding="languageName">
+                                  <component id="2588f" class="javax.swing.JTextField" binding="languageNameTextField">
                                     <constraints>
                                       <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="1" fill="0" indent="0" use-parent-layout="false">
                                         <preferred-size width="150" height="-1"/>
@@ -169,7 +169,7 @@
                                       <opaque value="false"/>
                                     </properties>
                                   </component>
-                                  <component id="dbdac" class="javax.swing.JTextField" binding="languageCode">
+                                  <component id="dbdac" class="javax.swing.JTextField" binding="languageCodeTextField">
                                     <constraints>
                                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="1" fill="0" indent="0" use-parent-layout="false">
                                         <minimum-size width="0" height="0"/>
