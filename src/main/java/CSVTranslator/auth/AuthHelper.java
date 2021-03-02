@@ -22,13 +22,14 @@ public class AuthHelper {
 
     FireBaseRequests fireBaseRequests = new FireBaseRequests();
 
+    private OnLoggedInListener listener;
     private String refreshToken;
     private String idToken;
     private long tokenExpiryTime;
 
     private String userID;
 
-    private OkHttpClient client = new OkHttpClient();
+    private final OkHttpClient client = new OkHttpClient();
 
     private AuthHelper() {
     }
@@ -49,12 +50,11 @@ public class AuthHelper {
                 fireBaseRequests.postData(url, signInJson, MediaType.parse("application/json"));
         if (signInResponseInfo.getValue()) {
             setTokenInfoAndUID(JsonParser.parseString(signInResponseInfo.getKey()).getAsJsonObject());
+            setNewDisplayName(displayName);
+            saveRefreshTokenToFile();
         } else {
             //TODO: act accordingly to an unsuccessful response
         }
-
-        setNewDisplayName(displayName);
-        saveRefreshTokenToFile();
     }
 
     public void logExistingUserIn(String email, String password) {
@@ -67,11 +67,15 @@ public class AuthHelper {
                 fireBaseRequests.postData(logInURL, logInJson, MediaType.parse("application/json"));
         if (logInResponseInfo.getValue()) {
             setTokenInfoAndUID(JsonParser.parseString(logInResponseInfo.getKey()).getAsJsonObject());
+            saveRefreshTokenToFile();
+
+            if (listener != null) {
+                listener.onLoggedIn();
+            }
         } else {
             //TODO: act accordingly to an unsuccessful response
+            System.out.println("Response for log in wasn't successful");
         }
-
-        saveRefreshTokenToFile();
     }
 
     public String getIDToken() {
@@ -192,6 +196,14 @@ public class AuthHelper {
             return false;
         }
         return false;
+    }
+
+    public void setOnLoggedInListener(OnLoggedInListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnLoggedInListener {
+        void onLoggedIn();
     }
 
     public String getUserID() {

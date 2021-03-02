@@ -8,27 +8,28 @@ public class MainView {
     FireBaseRequests fireBaseRequests = new FireBaseRequests();
 
     private JPanel mainPanel;
-    private JPanel secondPanel;
-    private JSplitPane splitPane;
     private JPanel mainView;
-    private JLabel librariesLabel;
-    private JList libraryList;
+    private JPanel secondPanel;
     private JPanel editTranslationsPane;
-    private JLabel libraryNameLabel;
-    private JList libraryAdapter;
+    private JLabel librariesLabel;
     private JPanel libraryActionsPane;
+    private JSplitPane splitPane;
+
+    private JList libraryList;
+    private JList libraryAdapter;
+    private JLabel libraryNameLabel;
     private JButton newTranslation;
     private JTextField languageNameTextField;
     private JTextField languageCodeTextField;
     private JButton addButton;
     private JTextField translationNameTextField;
-    private JTextField translationDescrpitionTextField;
+    private JTextField translationDescriptionTextField;
     private JTextField androidKeyTextField;
     private JTextField iosKeyTextField;
     private JTextField webKeyTextField;
     private JTextField translationNameTextField2;
     private JButton saveButton;
-    private JLabel languageCountLabe;
+    private JLabel languageCountLabel;
     private JLabel languageCodeLabel;
     private JLabel LanguageNameLabel;
     private JLabel translationNameLabel;
@@ -45,8 +46,21 @@ public class MainView {
     private final String userIDToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImM0ZWFhZjkxM2VlNWY0MDY0YmE2NjUzN2M0Njk3YzY5OGE3NGYwODIiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiamFybm8iLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vY3N2LWFuZHJvaWQtYXBwLWYwMzUzIiwiYXVkIjoiY3N2LWFuZHJvaWQtYXBwLWYwMzUzIiwiYXV0aF90aW1lIjoxNjE0NjAwNTA0LCJ1c2VyX2lkIjoiZmVIdmZHSjNJd2M4RDU2NXdRVTdHSG5INWh1MiIsInN1YiI6ImZlSHZmR0ozSXdjOEQ1NjV3UVU3R0huSDVodTIiLCJpYXQiOjE2MTQ2MDA1MDQsImV4cCI6MTYxNDYwNDEwNCwiZW1haWwiOiJyeWhhbmVuamFybm9AZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbInJ5aGFuZW5qYXJub0BnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.RYKe5k8Gn4PB3ZIn45RdeTtnE0rZ6tWv1Rl6Ytu23AYf0qfSyypNXsb-6h1U_oHK_EnY90VU6hEik1gv6hQ7pWq786ruMTlcIdXXOxJTNl88X5iT4pZtUzoFXSoKfy6MI6QWM2bSBzjzoNd_hGCgNNvSd7tO4F36mzEmpYJoQlaNkewL2mVKu2_Fx8uGo4Iy3qYKG8eIWocVlW-MEVKzUR9rSillvIdSwwI4KeCrthNXiN9EcaTE5Dwpb7slHuR_NaFAYuA7IQ7BXPvZruyLihTFDakUlhAxdL18ph-hX7aYvxlsVTzpebk65s81OSTfQS7x6732SRgH4OwM0WM4IA";
     private final String libraryID = "044fe665-821d-4e7e-be96-678125a40527";
 
-    public MainView() {
+    private final Runnable runUI = this::createUI;
 
+    public Runnable runUI() { return runUI; }
+
+    public void createUI() {
+        JFrame frame = new JFrame("Main view");
+        frame.setContentPane(new MainView().mainPanel);
+        makeJMenu(frame);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setResizable(false);
+        frame.setVisible(true);
+    }
+
+    public MainView() {
         addButton.addActionListener(e -> addNewLanguage());
         newTranslation.addActionListener(e -> System.out.println("new translation pressed"));
 
@@ -58,7 +72,7 @@ public class MainView {
         addLanguageToDropDown("english");
         addLanguageToDropDown("svenska");
 
-        languageCountLabe.setText(String.format("amount of languages: $d", languageCount));
+        languageCountLabel.setText(String.format("amount of languages: $d", languageCount));
     }
 
     private void addNewLanguage() {
@@ -75,8 +89,8 @@ public class MainView {
     }
 
     private void addTranslationToLibraries() {
-        String translationName = translationDescrpitionTextField.getText();
-        String translationDescription = translationDescrpitionTextField.getText();
+        String translationName = translationDescriptionTextField.getText();
+        String translationDescription = translationDescriptionTextField.getText();
         String androidKey = androidKeyTextField.getText();
         String iosKey = iosKeyTextField.getText();
         String webKey = webKeyTextField.getText();
@@ -123,15 +137,5 @@ public class MainView {
 
     public void addLanguageToDropDown(String language) {
         languagesDropDown.addItem(language);
-    }
-
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Main view");
-        frame.setContentPane(new MainView().mainPanel);
-        makeJMenu(frame);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setResizable(false);
-        frame.setVisible(true);
     }
 }
