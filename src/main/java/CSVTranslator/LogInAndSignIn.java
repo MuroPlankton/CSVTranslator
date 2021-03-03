@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Arrays;
 
 public class LogInAndSignIn {
@@ -50,9 +51,9 @@ public class LogInAndSignIn {
     public void dispose() { frame.dispose(); }
 
     public LogInAndSignIn() {
-        LogInBtn.addActionListener(actionEvent -> {
-            AuthHelper authHelper = AuthHelper.getInstance();
+        AuthHelper authHelper = AuthHelper.getInstance();
 
+        LogInBtn.addActionListener(actionEvent -> {
             String email = userNameOrEmailTextField.getText();
             String password = String.valueOf(logInPasswordField.getPassword());
 
@@ -60,6 +61,32 @@ public class LogInAndSignIn {
         });
 
         linkToSignIn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//        linkToSignIn.addMouseListener(new MouseListener() {
+//            @Override
+//            public void mouseClicked(MouseEvent mouseEvent) {
+//
+//            }
+//
+//            @Override
+//            public void mousePressed(MouseEvent mouseEvent) {
+//
+//            }
+//
+//            @Override
+//            public void mouseReleased(MouseEvent mouseEvent) {
+//
+//            }
+//
+//            @Override
+//            public void mouseEntered(MouseEvent mouseEvent) {
+//
+//            }
+//
+//            @Override
+//            public void mouseExited(MouseEvent mouseEvent) {
+//
+//            }
+//        });
         linkToSignIn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -74,10 +101,9 @@ public class LogInAndSignIn {
         });
 
         signInBtn.addActionListener(actionEvent -> {
-            //TODO: call sign in -method
             String userName;
             String email;
-            char[] password;
+            String password;
 
             if (userNameTextField.getText() != null && emailTextField.getText() != null) {
                 userName = userNameTextField.getText();
@@ -85,8 +111,9 @@ public class LogInAndSignIn {
 
                 if (passwordField1.getPassword() != null && passwordField2.getPassword() != null) {
                     if (Arrays.equals(passwordField1.getPassword(), passwordField2.getPassword())) {
-                        password = passwordField1.getPassword();
-                        System.out.println(userName + "\n" + email + "\n" + Arrays.toString(password));
+                        password = String.valueOf(passwordField1.getPassword());
+
+                        authHelper.signNewUserIn(email, userName, password);
                     } else {
                         System.out.println("Passwords don't match!");
                         JOptionPane.showMessageDialog(mainPanel, "Passwords don't match!");

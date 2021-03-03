@@ -13,7 +13,6 @@ public class FireBaseRequests {
     private final OkHttpClient client = new OkHttpClient();
 
     public String patchData(String url, String jsonBody, MediaType mediaType) {
-
         RequestBody body = RequestBody.create(jsonBody, mediaType);
 
         Request request = new Request.Builder()
@@ -31,7 +30,6 @@ public class FireBaseRequests {
     }
 
     public String deleteData(String url) {
-
         Request request = new Request.Builder()
                 .url(url)
                 .delete()
@@ -47,7 +45,6 @@ public class FireBaseRequests {
     }
 
     public String getData(String url) {
-
         Request request = new Request.Builder()
                 .url(url)
                 .get()
@@ -63,7 +60,6 @@ public class FireBaseRequests {
     }
 
     public String postData(String url, String jsonBody, MediaType mediaType) {
-
         RequestBody body = RequestBody.create(jsonBody, mediaType);
 
         Request request = new Request.Builder()

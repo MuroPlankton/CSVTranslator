@@ -47,12 +47,10 @@ public class AuthHelper {
         String url = String.format("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s", PROJECT_API_KEY);
         setTokenInfoAndUID(JsonParser.parseString(
                 fireBaseRequests.postData(url, signInJson, MediaType.parse("application/json")))
-                .getAsJsonObject());;
+                .getAsJsonObject());
 
         setNewDisplayName(displayName);
         saveRefreshTokenToFile();
-
-//        SwingUtilities.invokeLater();
     }
 
     public void logExistingUserIn(String email, String password) {
