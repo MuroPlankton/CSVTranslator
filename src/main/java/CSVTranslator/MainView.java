@@ -2,9 +2,15 @@ package CSVTranslator;
 
 import CSVTranslator.auth.AuthHelper;
 import okhttp3.MediaType;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 
 import javax.swing.*;
-import java.util.UUID;
+import java.sql.SQLOutput;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class MainView {
     FireBaseRequests fireBaseRequests = new FireBaseRequests();
@@ -46,11 +52,11 @@ public class MainView {
 
     private int languageCount;
     private final String userID = "feHvfGJ3Iwc8D565wQU7GHnH5hu2";
-    private final String userIDToken = authHelper.getIDToken();
     private final String libraryID = "044fe665-821d-4e7e-be96-678125a40527";
     private String translationID = null;
 
     public MainView() {
+        authHelper.logExistingUserIn("ryhanenjarno@gmail.com", "12345678");
 
         addButton.addActionListener(e -> addNewLanguage());
         newTranslation.addActionListener(e -> addNewTranslation());
@@ -68,13 +74,36 @@ public class MainView {
     }
 
     private void loadAllLibraries() {
-
-        String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries.json?auth=" + userIDToken;
-
-
+        String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/" + userID + ".json?auth=" + authHelper.getIDToken();
         System.out.println(fireBaseRequests.getData(url));
+        System.out.println("lol");
 
+        String myResponse = fireBaseRequests.getData(url);
 
+        JSONObject jsonObject = new JSONObject(myResponse);
+        System.out.println(jsonObject);
+        System.out.println(jsonObject.length());
+
+//        System.out.println(jsonObject.names());
+//        System.out.println(jsonObject.keys());
+        System.out.println(jsonObject.keySet());
+
+        List<Set<String>> keyList = new ArrayList<>();
+        keyList.add(jsonObject.keySet());
+        System.out.println(keyList.get(0));
+
+        DefaultListModel<String> defaultListModel = new DefaultListModel<>();
+
+//        jsonObject.getString(key)
+
+        for (String key : jsonObject.keySet()) {
+//            libraryList.add(jsonObject.getString(key));
+//            defaultListModel.addElement(jsonObject.getString(key));
+            System.out.println(jsonObject.getString(key));
+        }
+//        libraryList = new JList(defaultListModel);
+
+//        libraryList.add();
     }
 
 
@@ -96,7 +125,7 @@ public class MainView {
                 "  \" " + languageCode + "\":\"" + languageName + "\"\n" +
                 "}";
 
-        String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + "/languages.json?auth=" + userIDToken;
+        String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + "/languages.json?auth=" + authHelper.getIDToken();
 
         fireBaseRequests.patchData(url, jsonBody, MediaType.parse("application/json"));
     }
@@ -124,7 +153,7 @@ public class MainView {
                 "\t}\n" +
                 "}\n";
 
-        String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + "/texts/" + translationID + ".json?auth=" + userIDToken;
+        String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + "/texts/" + translationID + ".json?auth=" + authHelper.getIDToken();
         System.out.println(jsonBody);
         System.out.println(url);
         fireBaseRequests.patchData(url, jsonBody, MediaType.parse("application/json"));
@@ -133,7 +162,7 @@ public class MainView {
                 "  \"" + libraryID + "\":\"" + libraryName + "\"\n" +
                 "}";
 
-        String userLibraryUrl = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/" + userID + ".json?auth=" + userIDToken;
+        String userLibraryUrl = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/" + userID + ".json?auth=" + authHelper.getIDToken();
 
         fireBaseRequests.patchData(userLibraryUrl, userLibaryJsonBody, MediaType.parse("application/json"));
     }
