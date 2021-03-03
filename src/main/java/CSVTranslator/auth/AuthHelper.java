@@ -1,11 +1,11 @@
 package CSVTranslator.auth;
 
 import CSVTranslator.FireBaseRequests;
+import CSVTranslator.util.Pair;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import okhttp3.*;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -21,7 +21,9 @@ public class AuthHelper {
 
     FireBaseRequests fireBaseRequests = new FireBaseRequests();
 
-    private OnLoggedInListener listener;
+    private OnLoggedInListener onLoggedInListener;
+    private OnSignedInListener onSignedInListener;
+
     private String refreshToken;
     private String idToken;
     private long tokenExpiryTime;
@@ -45,38 +47,44 @@ public class AuthHelper {
                 email, password);
 
         String url = String.format("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s", PROJECT_API_KEY);
-        setTokenInfoAndUID(JsonParser.parseString(
-                fireBaseRequests.postData(url, signInJson, MediaType.parse("application/json")))
-                .getAsJsonObject());
 
-        setNewDisplayName(displayName);
-        saveRefreshTokenToFile();
+        Pair<String, Boolean> signInResponseInfo =
+                fireBaseRequests.postData(url, signInJson, MediaType.parse("application/json"));
+
+        System.out.println("SIGN IN \n" + "key \n" + signInResponseInfo.getKey() + "value \n" + signInResponseInfo.getValue());
+
+        if (signInResponseInfo.getValue()) {
+            setTokenInfoAndUID(JsonParser.parseString(signInResponseInfo.getKey()).getAsJsonObject());
+            setNewDisplayName(displayName);
+            saveRefreshTokenToFile();
+
+            if(onSignedInListener != null){
+                onSignedInListener.onSignedIn();
+            }
+        } else {
+            //TODO: act accordingly to an unsuccessful response
+            System.out.println("Registering failed");
+        }
     }
 
     public void logExistingUserIn(String email, String password) {
         String logInJson = String.format("{\"email\":\"%s\",\"password\":\"%s\",\"returnSecureToken\":true}",
                 email, password);
+        String logInURL = String.format("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s",
+                PROJECT_API_KEY);
 
-        RequestBody logInBody = RequestBody.create(logInJson, MediaType.parse("application/json"));
+        Pair<String, Boolean> logInResponseInfo =
+                fireBaseRequests.postData(logInURL, logInJson, MediaType.parse("application/json"));
+        if (logInResponseInfo.getValue()) {
+            setTokenInfoAndUID(JsonParser.parseString(logInResponseInfo.getKey()).getAsJsonObject());
+            saveRefreshTokenToFile();
 
-        Request logInRequest = new Request.Builder()
-                .url(String.format("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=%s",
-                        PROJECT_API_KEY)).post(logInBody).build();
-        try {
-            Response logInResponse = client.newCall(logInRequest).execute();
-
-            if (logInResponse.isSuccessful()) {
-                setTokenInfoAndUID(JsonParser.parseString(logInResponse.body().string()).getAsJsonObject());
-                saveRefreshTokenToFile();
-
-                if (listener != null) {
-                    listener.onLoggedIn();
-                }
-            } else {
-                System.out.println("Response for log in wasn't successful");
+            if (onLoggedInListener != null) {
+                onLoggedInListener.onLoggedIn();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } else {
+            //TODO: act accordingly to an unsuccessful response
+            System.out.println("Response for log in wasn't successful");
         }
     }
 
@@ -87,28 +95,41 @@ public class AuthHelper {
             String tokenRefreshRBString = String.format("grant_type=refresh_token&refresh_token=%s", refreshToken);
             String url = String.format("https://securetoken.googleapis.com/v1/token?key=%s", PROJECT_API_KEY);
 
-            return JsonParser.parseString(fireBaseRequests.postData(
-                    url, tokenRefreshRBString, MediaType.parse("application/x-www-form-urlencoded")))
-                    .getAsJsonObject().get("id_token").getAsString();
+            Pair<String, Boolean> tokenRefreshResponseInfo = fireBaseRequests.postData(
+                    url, tokenRefreshRBString, MediaType.parse("application/x-www-form-urlencoded"));
+            if (tokenRefreshResponseInfo.getValue()) {
+                return JsonParser.parseString(tokenRefreshResponseInfo.getKey())
+                        .getAsJsonObject().get("id_token").getAsString();
+            } else {
+                //TODO: act accordingly to an unsuccessful response
+                return null;
+            }
         }
     }
 
     public String getDisplayName() {
         String userInfoRequestURL = String.format("https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=%s", PROJECT_API_KEY);
         String userInfoRequestJson = String.format("{\"idToken\":\"%s\"}", getIDToken());
-        return JsonParser.parseString(
-                fireBaseRequests.postData(userInfoRequestURL, userInfoRequestJson, MediaType.parse("application/json")))
-                .getAsJsonObject().get("users").getAsJsonArray()
-                .get(0).getAsJsonObject()
-                .get("providerUserInfo").getAsJsonArray()
-                .get(0).getAsJsonObject()
-                .get("displayName").getAsString();
+
+        Pair<String, Boolean> userInfoResponseInfo =
+                fireBaseRequests.postData(userInfoRequestURL, userInfoRequestJson, MediaType.parse("application/json"));
+        if (userInfoResponseInfo.getValue()) {
+            return JsonParser.parseString(userInfoResponseInfo.getKey())
+                    .getAsJsonObject().get("users").getAsJsonArray()
+                    .get(0).getAsJsonObject()
+                    .get("providerUserInfo").getAsJsonArray()
+                    .get(0).getAsJsonObject()
+                    .get("displayName").getAsString();
+        } else {
+            //TODO: act accordingly to an unsuccessful response
+            return null;
+        }
     }
 
     public void setNewDisplayName(String displayName) {
         String setNameJson = String.format("{\"idToken\":\"%s\",\"displayName\":\"%s\",\"returnSecureToken\":false}",
                 getIDToken(), displayName);
-        String setNameURL = String.format("ttps://identitytoolkit.googleapis.com/v1/accounts:update?key=%s",
+        String setNameURL = String.format("https://identitytoolkit.googleapis.com/v1/accounts:update?key=%s",
                 PROJECT_API_KEY);
         fireBaseRequests.postData(setNameURL, setNameJson, MediaType.parse("application/json"));
 
@@ -116,15 +137,16 @@ public class AuthHelper {
         String addToRealtimeUserURL = String.format("https://%s.firebaseio.com/users.json?auth=%s", PROJECT_ID, getIDToken());
         fireBaseRequests.patchData(addToRealtimeUserURL, addToRealtimeUsersJson, MediaType.parse("application/json"));
 
-        Request userLibrariesRequest = new Request.Builder()
-                .url(String.format("https://%s.firebaseio.com/user_libraries/%s.json?auth=%s", PROJECT_ID, userID, getIDToken()))
-                .get().build();
+        Pair<String, Boolean> userLibsResponseInfo =
+                fireBaseRequests.getData(String.format("https://%s.firebaseio.com/user_libraries/%s.json?auth=%s",
+                        PROJECT_ID, userID, getIDToken()));
 
-        try {
-            Response userLibrariesResponse = client.newCall(userLibrariesRequest).execute();
+        System.out.println("DISPLAY \n" + "key: \n " + userLibsResponseInfo.getKey() +
+                "\n value: \n" + userLibsResponseInfo.getValue());
 
-            if (userLibrariesResponse.isSuccessful()) {
-                JsonObject userLibrariesObject = JsonParser.parseString(userLibrariesResponse.body().string()).getAsJsonObject();
+        if(userLibsResponseInfo.getKey() != null) {
+            if (userLibsResponseInfo.getValue()) {
+                JsonObject userLibrariesObject = JsonParser.parseString(userLibsResponseInfo.getKey()).getAsJsonObject();
                 int amountOfUserLibraries = userLibrariesObject.size();
                 int index = 0;
 
@@ -139,8 +161,6 @@ public class AuthHelper {
                 String changeUserInLibsURL = String.format("https://%s.firebaseio.com/libraries.json?auth=%s", PROJECT_ID, getIDToken());
                 fireBaseRequests.patchData(changeUserInLibsURL, changeUserInLibrariesJson, MediaType.parse("application/json"));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -179,16 +199,11 @@ public class AuthHelper {
             }
 
             String tokenTestString = String.format("grant_type=refresh_token&refresh_token=%s", scannerLine);
-            RequestBody tokenTestRB = RequestBody.create(tokenTestString,
-                    MediaType.parse("application/x-www-form-urlencoded"));
+            String tokenTrialURL = String.format("https://securetoken.googleapis.com/v1/token?key=%s", PROJECT_API_KEY);
+            Pair<String, Boolean> tokenTrialResponseInfo = fireBaseRequests.postData(tokenTrialURL, tokenTestString, MediaType.parse("application/x-www-form-urlencoded"));
 
-            Request tokenTestRequest = new Request.Builder()
-                    .url(String.format("https://securetoken.googleapis.com/v1/token?key=%s", PROJECT_API_KEY))
-                    .post(tokenTestRB).build();
-
-            Response tokenTrialResponse = client.newCall(tokenTestRequest).execute();
-            if (tokenTrialResponse.isSuccessful()) {
-                setTokenInfoAndUID(JsonParser.parseString(tokenTrialResponse.body().string()).getAsJsonObject());
+            if (tokenTrialResponseInfo.getValue()) {
+                setTokenInfoAndUID(JsonParser.parseString(tokenTrialResponseInfo.getKey()).getAsJsonObject());
                 return true;
             }
         } catch (Exception e) {
@@ -199,11 +214,19 @@ public class AuthHelper {
     }
 
     public void setOnLoggedInListener(OnLoggedInListener listener) {
-        this.listener = listener;
+        this.onLoggedInListener = listener;
     }
 
     public interface OnLoggedInListener {
         void onLoggedIn();
+    }
+
+    public void setOnSignedInListener(OnSignedInListener listener){
+        this.onSignedInListener = listener;
+    }
+
+    public interface OnSignedInListener{
+        void onSignedIn();
     }
 
     public String getUserID() {

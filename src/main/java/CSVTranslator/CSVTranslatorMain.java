@@ -13,8 +13,13 @@ public class CSVTranslatorMain {
         authHelper.setOnLoggedInListener(() -> {
             logInAndSignIn.dispose();
 
-            MainView mainView = new MainView();
-            SwingUtilities.invokeLater(mainView.runUI());
+            startMainView();
+        });
+
+        authHelper.setOnSignedInListener(() -> {
+            logInAndSignIn.dispose();
+
+            startMainView();
         });
 
 //        FireBaseRequests fireBaseRequests = new FireBaseRequests();
@@ -24,5 +29,10 @@ public class CSVTranslatorMain {
 //                "  \"fjldskjfsdjgfjsd\": \"sgfsdkjfhkds\",\n" +
 //                "  \"sfasdfdsfsdf\":\"sfdadsfsfdssdfdsfasfdsfadsfasfdfzfsdfrsfasdfasdf\"\n" +
 //                "}");
+    }
+
+    private static void startMainView() {
+        MainView mainView = new MainView();
+        SwingUtilities.invokeLater(mainView.runUI());
     }
 }
