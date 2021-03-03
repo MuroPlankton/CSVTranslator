@@ -213,7 +213,7 @@
                                   <verticalAlignment value="0"/>
                                 </properties>
                               </component>
-                              <component id="f93d7" class="javax.swing.JLabel" binding="languageCountLabe">
+                              <component id="f93d7" class="javax.swing.JLabel" binding="languageCountLabel">
                                 <constraints>
                                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
                                 </constraints>
@@ -377,7 +377,7 @@
                     <properties/>
                     <border type="none" title=""/>
                     <children>
-                      <component id="919f4" class="javax.swing.JTextField" binding="translationDescrpitionTextField" default-binding="true">
+                      <component id="919f4" class="javax.swing.JTextField" binding="translationDescriptionTextField" default-binding="true">
                         <constraints>
                           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>

@@ -1,5 +1,6 @@
 package CSVTranslator;
 
+import CSVTranslator.util.Pair;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ public class FireBaseRequests {
 
     private final OkHttpClient client = new OkHttpClient();
 
-    public String patchData(String url, String jsonBody, MediaType mediaType) {
+    public Pair<String, Boolean> patchData(String url, String jsonBody, MediaType mediaType) {
 
         RequestBody body = RequestBody.create(jsonBody, mediaType);
 
@@ -23,14 +24,14 @@ public class FireBaseRequests {
 
         try (Response response = client.newCall(request).execute()) {
 //            System.out.println(response.toString());
-            return response.toString();
+            return new Pair<>(response.body().string(), (response.isSuccessful()));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public String deleteData(String url) {
+    public Pair<String, Boolean> deleteData(String url) {
 
         Request request = new Request.Builder()
                 .url(url)
@@ -39,14 +40,14 @@ public class FireBaseRequests {
 
         try (Response response = client.newCall(request).execute()) {
 //            System.out.println(response.body().string());
-            return response.body().string();
+            return new Pair<>(response.body().string(), (response.isSuccessful()));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public String getData(String url) {
+    public Pair<String, Boolean> getData(String url) {
 
         Request request = new Request.Builder()
                 .url(url)
@@ -55,14 +56,14 @@ public class FireBaseRequests {
 
         try (Response response = client.newCall(request).execute()) {
 //            System.out.println(response.body().string());
-            return response.body().string();
+            return new Pair<>(response.body().string(), (response.isSuccessful()));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public String postData(String url, String jsonBody, MediaType mediaType) {
+    public Pair<String, Boolean> postData(String url, String jsonBody, MediaType mediaType) {
 
         RequestBody body = RequestBody.create(jsonBody, mediaType);
 
@@ -73,7 +74,7 @@ public class FireBaseRequests {
 
         try (Response response = client.newCall(request).execute()) {
 //            System.out.println(response.body().string());
-            return response.body().string();
+            return new Pair<>(response.body().string(), (response.isSuccessful()));
         } catch (IOException e) {
             e.printStackTrace();
         }

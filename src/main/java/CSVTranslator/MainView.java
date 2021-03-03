@@ -1,13 +1,12 @@
 package CSVTranslator;
 
 import CSVTranslator.auth.AuthHelper;
+import CSVTranslator.util.Pair;
 import okhttp3.MediaType;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 
 import javax.swing.*;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -17,27 +16,28 @@ public class MainView {
     AuthHelper authHelper = AuthHelper.getInstance();
 
     private JPanel mainPanel;
-    private JPanel secondPanel;
-    private JSplitPane splitPane;
     private JPanel mainView;
-    private JLabel librariesLabel;
-    private JList libraryList;
+    private JPanel secondPanel;
     private JPanel editTranslationsPane;
-    private JLabel libraryNameLabel;
-    private JList libraryAdapter;
+    private JLabel librariesLabel;
     private JPanel libraryActionsPane;
+    private JSplitPane splitPane;
+
+    private JList libraryList;
+    private JList libraryAdapter;
+    private JLabel libraryNameLabel;
     private JButton newTranslation;
     private JTextField languageNameTextField;
     private JTextField languageCodeTextField;
     private JButton addButton;
     private JTextField translationNameTextField;
-    private JTextField translationDescrpitionTextField;
+    private JTextField translationDescriptionTextField;
     private JTextField androidKeyTextField;
     private JTextField iosKeyTextField;
     private JTextField webKeyTextField;
     private JTextField translationNameTextField2;
     private JButton saveButton;
-    private JLabel languageCountLabe;
+    private JLabel languageCountLabel;
     private JLabel languageCodeLabel;
     private JLabel LanguageNameLabel;
     private JLabel translationNameLabel;
@@ -57,7 +57,7 @@ public class MainView {
 
     public MainView() {
         authHelper.logExistingUserIn("ryhanenjarno@gmail.com", "12345678");
-
+//        mainViewMethod();
         addButton.addActionListener(e -> addNewLanguage());
         newTranslation.addActionListener(e -> addNewTranslation());
 
@@ -69,39 +69,70 @@ public class MainView {
         addLanguageToDropDown("english");
         addLanguageToDropDown("svenska");
 
-        languageCountLabe.setText(String.format("amount of languages: $d", languageCount));
+        languageCountLabel.setText(String.format("amount of languages: $d", languageCount));
+        loadAllLibraries();
+    }
+    private void createUIThings(){
+        authHelper.logExistingUserIn("ryhanenjarno@gmail.com", "12345678");
+//        mainViewMethod();
+        addButton.addActionListener(e -> addNewLanguage());
+        newTranslation.addActionListener(e -> addNewTranslation());
+
+        saveButton.addActionListener(e -> {
+            addTranslationToLibraries();
+        });
+
+        addLanguageToDropDown("suomi");
+        addLanguageToDropDown("english");
+        addLanguageToDropDown("svenska");
+
+        languageCountLabel.setText(String.format("amount of languages: $d", languageCount));
         loadAllLibraries();
     }
 
+    private final Runnable runUI = this::createUI;
+
+    public final Runnable runUI() {
+        return runUI;
+    }
+
+    public void createUI() {
+//        JFrame frame = new JFrame("Main view");
+//        frame.setContentPane(new MainView().mainPanel);
+//        makeJMenu(frame);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.pack();
+//        frame.setResizable(false);
+//        frame.setVisible(true);
+    }
+
     private void loadAllLibraries() {
-        String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/" + userID + ".json?auth=" + authHelper.getIDToken();
+        String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/" + authHelper.getUserID() + ".json?auth=" + authHelper.getIDToken();
+
         System.out.println(fireBaseRequests.getData(url));
-        System.out.println("lol");
 
-        String myResponse = fireBaseRequests.getData(url);
+        Pair<String, Boolean> myResponse = fireBaseRequests.getData(url);
 
-        JSONObject jsonObject = new JSONObject(myResponse);
+        System.out.println(myResponse.getKey() + ", " + myResponse.getValue());
+
+        JSONObject jsonObject = new JSONObject(myResponse.getKey());
         System.out.println(jsonObject);
         System.out.println(jsonObject.length());
 
-//        System.out.println(jsonObject.names());
-//        System.out.println(jsonObject.keys());
         System.out.println(jsonObject.keySet());
-
-        List<Set<String>> keyList = new ArrayList<>();
-        keyList.add(jsonObject.keySet());
-        System.out.println(keyList.get(0));
 
         DefaultListModel<String> defaultListModel = new DefaultListModel<>();
 
 //        jsonObject.getString(key)
-
+        System.out.println("JSONOBJECT keyset = " + jsonObject.keySet());
         for (String key : jsonObject.keySet()) {
-//            libraryList.add(jsonObject.getString(key));
-//            defaultListModel.addElement(jsonObject.getString(key));
+            System.out.println(key);
             System.out.println(jsonObject.getString(key));
+//            libraryList.add(jsonObject.getString(key));
+            defaultListModel.addElement(jsonObject.getString(key));
+//            System.out.println(jsonObject.getString(key).toString());
         }
-//        libraryList = new JList(defaultListModel);
+        libraryList.setModel(defaultListModel);
 
 //        libraryList.add();
     }
@@ -115,6 +146,7 @@ public class MainView {
 //
 //        String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + "/texts/" + translationID + ".json?auth=" + userIDToken;
 //        fireBaseRequests.addData(url, jsonBody);
+        languageCountLabel.setText(String.format("amount of languages: $d", languageCount));
     }
 
     private void addNewLanguage() {
@@ -131,8 +163,8 @@ public class MainView {
     }
 
     private void addTranslationToLibraries() {
-        String translationName = translationDescrpitionTextField.getText();
-        String translationDescription = translationDescrpitionTextField.getText();
+        String translationName = translationDescriptionTextField.getText();
+        String translationDescription = translationDescriptionTextField.getText();
         String androidKey = androidKeyTextField.getText();
         String iosKey = iosKeyTextField.getText();
         String webKey = webKeyTextField.getText();
@@ -199,4 +231,5 @@ public class MainView {
         frame.setResizable(false);
         frame.setVisible(true);
     }
+
 }
