@@ -69,7 +69,7 @@ public class FireBaseRequests {
 
         try (Response response = client.newCall(request).execute()) {
 //            System.out.println(response.body().string());
-            System.out.println("Response is successful");
+//            System.out.println("Response is successful");
             return new Pair<>(response.body().string(), (response.isSuccessful()));
         } catch (IOException e) {
             e.printStackTrace();

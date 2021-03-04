@@ -60,6 +60,8 @@ public class AuthHelper {
 
             if(onSignedInListener != null){
                 onSignedInListener.onSignedIn();
+            } else{
+                System.out.println("listener is null");
             }
         } else {
             //TODO: act accordingly to an unsuccessful response
@@ -141,8 +143,8 @@ public class AuthHelper {
                 fireBaseRequests.getData(String.format("https://%s.firebaseio.com/user_libraries/%s.json?auth=%s",
                         PROJECT_ID, userID, getIDToken()));
 
-        System.out.println("DISPLAY \n" + "key: \n " + userLibsResponseInfo.getKey() +
-                "\n value: \n" + userLibsResponseInfo.getValue());
+//        System.out.println("DISPLAY \n" + "key: \n " + userLibsResponseInfo.getKey() +
+//                "\n value: \n" + userLibsResponseInfo.getValue());
 
         if(userLibsResponseInfo.getKey() != null) {
             if (userLibsResponseInfo.getValue()) {
@@ -161,6 +163,8 @@ public class AuthHelper {
                 String changeUserInLibsURL = String.format("https://%s.firebaseio.com/libraries.json?auth=%s", PROJECT_ID, getIDToken());
                 fireBaseRequests.patchData(changeUserInLibsURL, changeUserInLibrariesJson, MediaType.parse("application/json"));
             }
+        } else{
+            System.out.println("is null");
         }
     }
 
