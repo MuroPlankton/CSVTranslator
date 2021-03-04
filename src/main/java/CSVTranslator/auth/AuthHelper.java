@@ -6,7 +6,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import okhttp3.*;
 
-import javax.print.attribute.standard.Media;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -22,7 +21,9 @@ public class AuthHelper {
 
     FireBaseRequests fireBaseRequests = new FireBaseRequests();
 
-    private OnLoggedInListener listener;
+    private OnLoggedInListener onLoggedInListener;
+    private OnSignedInListener onSignedInListener;
+
     private String refreshToken;
     private String idToken;
     private long tokenExpiryTime;
@@ -46,14 +47,25 @@ public class AuthHelper {
                 email, password);
 
         String url = String.format("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=%s", PROJECT_API_KEY);
+
         Pair<String, Boolean> signInResponseInfo =
                 fireBaseRequests.postData(url, signInJson, MediaType.parse("application/json"));
+
+        System.out.println("SIGN IN \n" + "key \n" + signInResponseInfo.getKey() + "value \n" + signInResponseInfo.getValue());
+
         if (signInResponseInfo.getValue()) {
             setTokenInfoAndUID(JsonParser.parseString(signInResponseInfo.getKey()).getAsJsonObject());
             setNewDisplayName(displayName);
             saveRefreshTokenToFile();
+
+            if(onSignedInListener != null){
+                onSignedInListener.onSignedIn();
+            } else{
+                System.out.println("listener is null");
+            }
         } else {
             //TODO: act accordingly to an unsuccessful response
+            System.out.println("Registering failed");
         }
     }
 
@@ -69,8 +81,8 @@ public class AuthHelper {
             setTokenInfoAndUID(JsonParser.parseString(logInResponseInfo.getKey()).getAsJsonObject());
             saveRefreshTokenToFile();
 
-            if (listener != null) {
-                listener.onLoggedIn();
+            if (onLoggedInListener != null) {
+                onLoggedInListener.onLoggedIn();
             }
         } else {
             //TODO: act accordingly to an unsuccessful response
@@ -119,7 +131,7 @@ public class AuthHelper {
     public void setNewDisplayName(String displayName) {
         String setNameJson = String.format("{\"idToken\":\"%s\",\"displayName\":\"%s\",\"returnSecureToken\":false}",
                 getIDToken(), displayName);
-        String setNameURL = String.format("ttps://identitytoolkit.googleapis.com/v1/accounts:update?key=%s",
+        String setNameURL = String.format("https://identitytoolkit.googleapis.com/v1/accounts:update?key=%s",
                 PROJECT_API_KEY);
         fireBaseRequests.postData(setNameURL, setNameJson, MediaType.parse("application/json"));
 
@@ -131,21 +143,28 @@ public class AuthHelper {
                 fireBaseRequests.getData(String.format("https://%s.firebaseio.com/user_libraries/%s.json?auth=%s",
                         PROJECT_ID, userID, getIDToken()));
 
-        if (userLibsResponseInfo.getValue()) {
-            JsonObject userLibrariesObject = JsonParser.parseString(userLibsResponseInfo.getKey()).getAsJsonObject();
-            int amountOfUserLibraries = userLibrariesObject.size();
-            int index = 0;
+//        System.out.println("DISPLAY \n" + "key: \n " + userLibsResponseInfo.getKey() +
+//                "\n value: \n" + userLibsResponseInfo.getValue());
 
-            String changeUserInLibrariesJson = "{\n";
-            for (String userLibraryKey : userLibrariesObject.keySet()) {
-                changeUserInLibrariesJson += String.format("\"%s/users/%s\":\"%s\"%s", userLibraryKey, userID,
-                        displayName, (index < amountOfUserLibraries - 1) ? ",\n" : "\n");
-                index++;
+        if(userLibsResponseInfo.getKey() != null) {
+            if (userLibsResponseInfo.getValue()) {
+                JsonObject userLibrariesObject = JsonParser.parseString(userLibsResponseInfo.getKey()).getAsJsonObject();
+                int amountOfUserLibraries = userLibrariesObject.size();
+                int index = 0;
+
+                String changeUserInLibrariesJson = "{\n";
+                for (String userLibraryKey : userLibrariesObject.keySet()) {
+                    changeUserInLibrariesJson += String.format("\"%s/users/%s\":\"%s\"%s", userLibraryKey, userID,
+                            displayName, (index < amountOfUserLibraries - 1) ? ",\n" : "\n");
+                    index++;
+                }
+                changeUserInLibrariesJson += "}";
+
+                String changeUserInLibsURL = String.format("https://%s.firebaseio.com/libraries.json?auth=%s", PROJECT_ID, getIDToken());
+                fireBaseRequests.patchData(changeUserInLibsURL, changeUserInLibrariesJson, MediaType.parse("application/json"));
             }
-            changeUserInLibrariesJson += "}";
-
-            String changeUserInLibsURL = String.format("https://%s.firebaseio.com/libraries.json?auth=%s", PROJECT_ID, getIDToken());
-            fireBaseRequests.patchData(changeUserInLibsURL, changeUserInLibrariesJson, MediaType.parse("application/json"));
+        } else{
+            System.out.println("is null");
         }
     }
 
@@ -199,11 +218,19 @@ public class AuthHelper {
     }
 
     public void setOnLoggedInListener(OnLoggedInListener listener) {
-        this.listener = listener;
+        this.onLoggedInListener = listener;
     }
 
     public interface OnLoggedInListener {
         void onLoggedIn();
+    }
+
+    public void setOnSignedInListener(OnSignedInListener listener){
+        this.onSignedInListener = listener;
+    }
+
+    public interface OnSignedInListener{
+        void onSignedIn();
     }
 
     public String getUserID() {

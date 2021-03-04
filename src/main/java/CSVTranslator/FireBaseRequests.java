@@ -14,7 +14,6 @@ public class FireBaseRequests {
     private final OkHttpClient client = new OkHttpClient();
 
     public Pair<String, Boolean> patchData(String url, String jsonBody, MediaType mediaType) {
-
         RequestBody body = RequestBody.create(jsonBody, mediaType);
 
         Request request = new Request.Builder()
@@ -32,7 +31,6 @@ public class FireBaseRequests {
     }
 
     public Pair<String, Boolean> deleteData(String url) {
-
         Request request = new Request.Builder()
                 .url(url)
                 .delete()
@@ -48,14 +46,12 @@ public class FireBaseRequests {
     }
 
     public Pair<String, Boolean> getData(String url) {
-
         Request request = new Request.Builder()
                 .url(url)
                 .get()
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-//            System.out.println(response.body().string());
             return new Pair<>(response.body().string(), (response.isSuccessful()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -64,7 +60,6 @@ public class FireBaseRequests {
     }
 
     public Pair<String, Boolean> postData(String url, String jsonBody, MediaType mediaType) {
-
         RequestBody body = RequestBody.create(jsonBody, mediaType);
 
         Request request = new Request.Builder()
@@ -74,11 +69,12 @@ public class FireBaseRequests {
 
         try (Response response = client.newCall(request).execute()) {
 //            System.out.println(response.body().string());
+//            System.out.println("Response is successful");
             return new Pair<>(response.body().string(), (response.isSuccessful()));
         } catch (IOException e) {
             e.printStackTrace();
+//            return new Pair<>("", false);
         }
         return null;
     }
-
 }
