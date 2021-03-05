@@ -4,7 +4,8 @@ import CSVTranslator.FireBaseRequests;
 import CSVTranslator.util.Pair;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import okhttp3.*;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -169,7 +170,6 @@ public class AuthHelper {
     }
 
     private void setTokenInfoAndUID(JsonObject object) {
-        System.out.println(object.toString());
         tokenExpiryTime = System.currentTimeMillis() + 3_600_000;
         try {
             idToken = object.get("idToken").getAsString();
@@ -217,6 +217,10 @@ public class AuthHelper {
         return false;
     }
 
+    public String getUserID() {
+        return userID;
+    }
+
     public void setOnLoggedInListener(OnLoggedInListener listener) {
         this.onLoggedInListener = listener;
     }
@@ -233,7 +237,4 @@ public class AuthHelper {
         void onSignedIn();
     }
 
-    public String getUserID() {
-        return userID;
-    }
 }

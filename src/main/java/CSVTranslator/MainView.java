@@ -2,16 +2,13 @@ package CSVTranslator;
 
 import CSVTranslator.auth.AuthHelper;
 import CSVTranslator.util.Pair;
-import com.google.gson.JsonObject;
 import okhttp3.MediaType;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,6 +50,7 @@ public class MainView {
     private JLabel androidKeyLabel;
     private JComboBox languagesDropDown;
     private JTextField libraryNameTextField;
+    private JButton exportButton;
 
     private int languageCount;
     private final String userID = "feHvfGJ3Iwc8D565wQU7GHnH5hu2";
@@ -116,6 +114,11 @@ public class MainView {
                 libraryName = libraryList.getSelectedValue().toString();
                 loadSingleLibraryContent(libraryName);
             }
+        });
+
+        exportButton.addActionListener(e -> {
+            ExportDialog exportDialog = new ExportDialog(libraryID, mainPanel);
+            SwingUtilities.invokeLater(exportDialog.runUI());
         });
     }
 
@@ -253,7 +256,6 @@ public class MainView {
         JMenuItem importFile = new JMenuItem("Import");
         JMenuItem profile = new JMenuItem("Profile");
         JMenuItem addNewFile = new JMenuItem("Add new library");
-        JMenuItem exportFile = new JMenuItem("Export");
 
         importFile.addActionListener(e -> System.out.println("import pressed"));
         profile.addActionListener(e -> System.out.println("profile pressed"));
@@ -262,7 +264,6 @@ public class MainView {
         jMenu.add(addNewFile);
         jMenu.add(profile);
         jMenu.add(importFile);
-        jMenu.add(exportFile);
         jMenuBar.add(jMenu);
         frame.setJMenuBar(jMenuBar);
     }
