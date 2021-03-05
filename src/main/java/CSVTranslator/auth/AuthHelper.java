@@ -60,8 +60,6 @@ public class AuthHelper {
 
             if(onSignedInListener != null){
                 onSignedInListener.onSignedIn();
-            } else{
-                System.out.println("listener is null");
             }
         } else {
             //TODO: act accordingly to an unsuccessful response
@@ -129,11 +127,11 @@ public class AuthHelper {
     }
 
     public void setNewDisplayName(String displayName) {
-        String setNameJson = String.format("{\"idToken\":\"%s\",\"displayName\":\"%s\",\"returnSecureToken\":false}",
+        String nameJson = String.format("{\"idToken\":\"%s\",\"displayName\":\"%s\",\"returnSecureToken\":false}",
                 getIDToken(), displayName);
-        String setNameURL = String.format("https://identitytoolkit.googleapis.com/v1/accounts:update?key=%s",
+        String nameURL = String.format("https://identitytoolkit.googleapis.com/v1/accounts:update?key=%s",
                 PROJECT_API_KEY);
-        fireBaseRequests.postData(setNameURL, setNameJson, MediaType.parse("application/json"));
+        fireBaseRequests.postData(nameURL, nameJson, MediaType.parse("application/json"));
 
         String addToRealtimeUsersJson = String.format("{\"%s\":\"%s\"}", userID, displayName);
         String addToRealtimeUserURL = String.format("https://%s.firebaseio.com/users.json?auth=%s", PROJECT_ID, getIDToken());
@@ -146,7 +144,7 @@ public class AuthHelper {
 //        System.out.println("DISPLAY \n" + "key: \n " + userLibsResponseInfo.getKey() +
 //                "\n value: \n" + userLibsResponseInfo.getValue());
 
-        if(userLibsResponseInfo.getKey() != null) {
+        if(userLibsResponseInfo != null) {
             if (userLibsResponseInfo.getValue()) {
                 JsonObject userLibrariesObject = JsonParser.parseString(userLibsResponseInfo.getKey()).getAsJsonObject();
                 int amountOfUserLibraries = userLibrariesObject.size();
@@ -163,8 +161,6 @@ public class AuthHelper {
                 String changeUserInLibsURL = String.format("https://%s.firebaseio.com/libraries.json?auth=%s", PROJECT_ID, getIDToken());
                 fireBaseRequests.patchData(changeUserInLibsURL, changeUserInLibrariesJson, MediaType.parse("application/json"));
             }
-        } else{
-            System.out.println("is null");
         }
     }
 

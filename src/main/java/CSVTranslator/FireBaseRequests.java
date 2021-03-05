@@ -22,8 +22,11 @@ public class FireBaseRequests {
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-//            System.out.println(response.toString());
-            return new Pair<>(response.body().string(), (response.isSuccessful()));
+            ResponseBody responseBody = response.body();
+
+            if (responseBody != null && !("null").equals(responseBody.string())) {
+                return new Pair<>(responseBody.string(), (response.isSuccessful()));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,7 +40,6 @@ public class FireBaseRequests {
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-//            System.out.println(response.body().string());
             return new Pair<>(response.body().string(), (response.isSuccessful()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,10 +54,15 @@ public class FireBaseRequests {
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-            return new Pair<>(response.body().string(), (response.isSuccessful()));
+            ResponseBody responseBody = response.body();
+
+            if (responseBody != null && !("null").equals(responseBody.string())) {
+                return new Pair<>(responseBody.string(), (response.isSuccessful()));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
@@ -68,12 +75,13 @@ public class FireBaseRequests {
                 .build();
 
         try (Response response = client.newCall(request).execute()) {
-//            System.out.println(response.body().string());
-//            System.out.println("Response is successful");
-            return new Pair<>(response.body().string(), (response.isSuccessful()));
+            ResponseBody responseBody = response.body();
+
+            if (responseBody != null && !("null").equals(responseBody.string())) {
+                return new Pair<>(responseBody.string(), (response.isSuccessful()));
+            }
         } catch (IOException e) {
             e.printStackTrace();
-//            return new Pair<>("", false);
         }
         return null;
     }
