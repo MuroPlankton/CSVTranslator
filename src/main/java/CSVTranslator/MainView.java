@@ -6,16 +6,15 @@ import okhttp3.MediaType;
 import org.json.JSONObject;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.UUID;
 
 public class MainView {
     FireBaseRequests fireBaseRequests = new FireBaseRequests();
     AuthHelper authHelper = AuthHelper.getInstance();
 
+    private JFrame frame;
     private JPanel mainPanel;
     private JPanel mainView;
     private JPanel secondPanel;
@@ -24,8 +23,8 @@ public class MainView {
     private JPanel libraryActionsPane;
     private JSplitPane splitPane;
 
-    private JList libraryList;
-    private JList libraryAdapter;
+    private JList<String> libraryList;
+    private JList<String> libraryAdapter;
     private JLabel libraryNameLabel;
     private JButton newTranslation;
     private JTextField languageNameTextField;
@@ -48,12 +47,11 @@ public class MainView {
     private JLabel languageSpinnerLabel;
     private JLabel translationsLabel;
     private JLabel androidKeyLabel;
-    private JComboBox languagesDropDown;
+    private JComboBox<String> languagesDropDown;
     private JTextField libraryNameTextField;
     private JButton exportButton;
 
     private int languageCount;
-    private final String userID = "feHvfGJ3Iwc8D565wQU7GHnH5hu2";
     private String libraryID = "";
     private String libraryName = "";
 
@@ -62,8 +60,6 @@ public class MainView {
     public final Runnable runUI() {
         return runUI;
     }
-
-    private List<String> idList = new ArrayList<>();
 
     private void saveLibrary() {
 //        String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/" + authHelper.getUserID() + "/" + libraryID + ".json?auth=" + authHelper.getIDToken();
@@ -77,17 +73,16 @@ public class MainView {
     }
 
     public void createUI() {
-//        JFrame frame = new JFrame("Main view");
-//        frame.setContentPane(new MainView().mainPanel);
-//        makeJMenu(frame);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.pack();
-//        frame.setResizable(false);
-//        frame.setVisible(true);
+        frame = new JFrame("Main view");
+        frame.setContentPane(new MainView().mainPanel);
+        makeJMenu();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setResizable(false);
+        frame.setVisible(true);
     }
 
     public MainView() {
-        authHelper.logExistingUserIn("ryhanenjarno@gmail.com", "12345678");
         addButton.addActionListener(e -> addNewLanguage());
 //        newTranslation.addActionListener(e -> addNewTranslation());
 
@@ -99,21 +94,14 @@ public class MainView {
         addLanguageToDropDown("english");
         addLanguageToDropDown("svenska");
 
-        languageCountLabel.setText(String.format("amount of languages: $d", languageCount));
-        addAllLibrariesToList();
+//        languageCountLabel.setText(String.format("amount of languages: $d", languageCount));
+        if (getAllLibraries() != null) {
+            addAllLibrariesToList();
+        }
 
-//        for (String id : getAllLibraries().keySet()) {
-//            System.out.println(id);
-//            idList.add(id);
-//        }
-        System.out.println(getAllLibraries().keySet());
-        libraryList.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                System.out.println(libraryList.getSelectedValue().toString());
-                libraryName = libraryList.getSelectedValue().toString();
-                loadSingleLibraryContent(libraryName);
-            }
+        libraryList.addListSelectionListener(e -> {
+            libraryName = libraryList.getSelectedValue();
+            loadSingleLibraryContent(libraryName);
         });
 
         exportButton.addActionListener(e -> {
@@ -123,7 +111,9 @@ public class MainView {
     }
 
     private void loadSingleLibraryContent(String library) {
+        libraryNameTextField.setText(libraryName);
 
+        //todo this loop is extremely slow for some reason. This needs to be fixed. Might be because of getAllLibraries. Have to figure out a better way to get all users libraries
         for (String id : getAllLibraries().keySet()) {
             if (library.equals(getAllLibraries().getString(id))) {
                 System.out.println(library + ", " + id);
@@ -154,20 +144,41 @@ public class MainView {
         String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/" + authHelper.getUserID() + ".json?auth=" + authHelper.getIDToken();
         Pair<String, Boolean> myResponse = fireBaseRequests.getData(url);
 
-        return new JSONObject(myResponse.getKey());
+        if (myResponse.getKey().equals("null")) {
+            System.out.println("No libraries exist");
+            return null;
+        } else {
+            return new JSONObject(myResponse.getKey());
+        }
     }
 
-    private void addNewLibrary(JFrame frame) {
-        String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/" + authHelper.getUserID() + ".json?auth=" + authHelper.getIDToken();
+    private void addNewLibrary() {
+        System.out.println("new library");
+        String userLibrariesUrl = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/" + authHelper.getUserID() + ".json?auth=" + authHelper.getIDToken();
 
         String libraryID = UUID.randomUUID().toString();
         String libraryName = JOptionPane.showInputDialog(frame, "Enter a name for the created library");
 
-        String jsonBody = "{\n" +
+        String userLibrariesJsonBody = "{\n" +
                 "  \"" + libraryID + "\":\"" + libraryName + "\"\n" +
                 "}";
 
-        fireBaseRequests.patchData(url, jsonBody, MediaType.parse("application/json"));
+        fireBaseRequests.patchData(userLibrariesUrl, userLibrariesJsonBody, MediaType.parse("application/json"));
+
+        String librariesUrl = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + ".json?auth=" + authHelper.getIDToken();
+
+        String librariesJsonBody = "{\n" +
+                "  \"library_name\":\"" + libraryName + "\",\n" +
+                "  \"users\":{\n" +
+                "    \"" + authHelper.getUserID() + "\":\"" + authHelper.getDisplayName() + "\"\n" +
+                "  }\n" +
+                "}";
+
+        fireBaseRequests.patchData(librariesUrl, librariesJsonBody, MediaType.parse("application/json"));
+
+
+        //todo when the user creates a new library, that library should be shown in the libraryList by calling addAllLibrariesToList
+        // , but for some reason calling it again after initial launch doesn't work properly
 
         addAllLibrariesToList();
     }
@@ -177,6 +188,7 @@ public class MainView {
         defaultListModel.removeAllElements();
 
         for (String key : getAllLibraries().keySet()) {
+            System.out.println("individual key: " + key);
             defaultListModel.addElement(getAllLibraries().getString(key));
         }
         libraryList.setModel(defaultListModel);
@@ -192,15 +204,6 @@ public class MainView {
 //        languageCountLabel.setText(String.format("amount of languages: $d", languageCount));
 
 //        clearTranslationTextFields();
-    }
-
-    private void clearTranslationTextFields() {
-        translationNameTextField.setText("");
-        translationDescriptionTextField.setText("");
-        androidKeyTextField.setText("");
-        iosKeyTextField.setText("");
-        webKeyTextField.setText("");
-        translationNameTextField2.setText("");
     }
 
     private void addNewLanguage() {
@@ -249,7 +252,7 @@ public class MainView {
         clearTranslationTextFields();
     }
 
-    private static void makeJMenu(JFrame frame) {
+    private void makeJMenu() {
         JMenu jMenu = new JMenu("Options");
         JMenuBar jMenuBar = new JMenuBar();
 
@@ -259,7 +262,13 @@ public class MainView {
 
         importFile.addActionListener(e -> System.out.println("import pressed"));
         profile.addActionListener(e -> System.out.println("profile pressed"));
-        addNewFile.addActionListener(e -> System.out.println("add new file pressed"));
+        addNewFile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("pressed");
+                addNewLibrary();
+            }
+        });
 
         jMenu.add(addNewFile);
         jMenu.add(profile);
@@ -272,13 +281,22 @@ public class MainView {
         languagesDropDown.addItem(language);
     }
 
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Main view");
-        frame.setContentPane(new MainView().mainPanel);
-        makeJMenu(frame);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setResizable(false);
-        frame.setVisible(true);
+    private void clearTranslationTextFields() {
+        translationNameTextField.setText("");
+        translationDescriptionTextField.setText("");
+        androidKeyTextField.setText("");
+        iosKeyTextField.setText("");
+        webKeyTextField.setText("");
+        translationNameTextField2.setText("");
     }
+
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame("Main view");
+//        frame.setContentPane(new MainView().mainPanel);
+//        makeJMenu(frame);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.pack();
+//        frame.setResizable(false);
+//        frame.setVisible(true);
+//    }
 }
