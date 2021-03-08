@@ -127,10 +127,10 @@ public class MainView {
 //        }
 //    }
 
-//        exportButton.addActionListener(e -> {
-//            ExportDialog exportDialog = new ExportDialog(libraryID, mainPanel);
-//            SwingUtilities.invokeLater(exportDialog.runUI());
-//        });
+        exportButton.addActionListener(e -> {
+            ExportDialog exportDialog = new ExportDialog(libraryID, mainPanel);
+            SwingUtilities.invokeLater(exportDialog.runUI());
+        });
     }
 
     private void loadSingleLibraryContent(String library) {

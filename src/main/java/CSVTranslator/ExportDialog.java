@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class ExportDialog extends JDialog {
@@ -17,7 +19,7 @@ public class ExportDialog extends JDialog {
     private JLabel LangLabel;
     private JLabel infoLabel;
 
-    private static final File outputTokenFile = new File(System.getProperty("user.dir") + "outputDirFile.txt");
+    private static final File outputTokenFile = new File(System.getProperty("user.dir") + "\\outputDirFile.txt");
     private String outputPath;
     private String libraryID;
     private String outputFileType;
@@ -46,9 +48,9 @@ public class ExportDialog extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(leftButton);
 
-        langComboBox.setVisible(false);
+        langComboBox.setEnabled(false);
         langComboBox.addItem("Every language");
-        LangLabel.setVisible(false);
+        LangLabel.setEnabled(false);
         infoLabel.setText("Directory to export to:");
         leftButton.setText("Default/previous");
         rightButton.setText("Custom");
@@ -107,12 +109,14 @@ public class ExportDialog extends JDialog {
     }
 
     private void onCancel() {
+        System.out.println(rightButton.getText());
         switch (rightButton.getText()) {
             case "Custom":
                 dirChooser();
                 break;
-            case "Platform specific files":
+            case "Platform files":
                 finalizeExportDialog("Platform files");
+                break;
             default:
                 System.out.println("What the heck did you do?");
                 dispose();
@@ -130,15 +134,23 @@ public class ExportDialog extends JDialog {
             File outputDir = directoryChooser.getSelectedFile();
             outputPath = outputDir.getAbsolutePath();
             advanceDialogState();
+
+            try {
+                FileWriter tokenWriter = new FileWriter(System.getProperty("user.dir") + "\\outputDirFile.txt");
+                tokenWriter.write(outputPath);
+                tokenWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private void advanceDialogState() {
         infoLabel.setText("Which filetype do you want to export as?");
         leftButton.setText(".csv");
-        rightButton.setText("Platform specific files");
-        LangLabel.setVisible(true);
-        langComboBox.setVisible(false);
+        rightButton.setText("Platform files");
+        LangLabel.setEnabled(true);
+        langComboBox.setEnabled(true);
     }
 
     private void finalizeExportDialog(String outputFileType) {
