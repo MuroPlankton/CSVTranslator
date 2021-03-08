@@ -121,30 +121,40 @@ public class MainView {
             if (stringStringPair.getValue().equals(library)) {
                 libraryID = stringStringPair.getKey();
                 String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + ".json?auth=" + authHelper.getIDToken();
-                parseLibraryData(fireBaseRequests.getData(url).getKey());
+                parseLibraryData(fireBaseRequests.getData(url));
             }
         }
     }
 
-    private void parseLibraryData(String response) {
+    private void parseLibraryData(Pair<String, Boolean> response) {
         if (response != null) {
-            JSONObject allTranslationsJsonObject = new JSONObject(response);
-            if (allTranslationsJsonObject.has("texts")) {
-                JSONObject singleTranslationJsonObject = allTranslationsJsonObject.getJSONObject("texts");
 
-                DefaultListModel<String> defaultListModel = new DefaultListModel<>();
-                defaultListModel.removeAllElements();
+            DefaultListModel<String> defaultListModel = new DefaultListModel<>();
+            defaultListModel.removeAllElements();
 
-                for (String translationID : singleTranslationJsonObject.keySet()) {
+            System.out.println(defaultListModel);
+
+            JsonObject responseObject = JsonParser.parseString(response.getKey()).getAsJsonObject();
+            if (responseObject.has("texts")) {
+                JsonObject singleTranslationObject = responseObject.getAsJsonObject("texts");
+
+                for (String translationID : singleTranslationObject.keySet()) {
                     System.out.println("Translation id: " + translationID);
-                    String name = allTranslationsJsonObject.getJSONObject("texts").getJSONObject(translationID).getString("name");
-//            String description = allTranslationsJsonObject.getJSONObject("texts").getJSONObject(translationID).getString("description");
-                    defaultListModel.addElement(name);
+
+                    String translationName = responseObject.get("texts")
+                            .getAsJsonObject().get(translationID)
+                            .getAsJsonObject().get("name")
+                            .getAsString();
+
+                    System.out.println(translationName);
+
+                    defaultListModel.addElement(translationName);
                 }
-                libraryContentJList.setModel(defaultListModel);
+                System.out.println(defaultListModel);
             } else {
                 System.out.println("no texts found");
             }
+            libraryContentJList.setModel(defaultListModel);
         }
     }
 
