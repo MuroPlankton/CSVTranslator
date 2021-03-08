@@ -140,7 +140,6 @@ public class MainView {
         libraryContentJList.setModel(defaultListModel);
     }
 
-
     private void getAllLibraries() {
         String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/" + authHelper.getUserID() + ".json?auth=" + authHelper.getIDToken();
         Pair<String, Boolean> myResponse = fireBaseRequests.getData(url);
