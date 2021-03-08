@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 public class LogInAndSignIn {
 
-    private JPanel mainPanel;
+    protected JPanel mainPanel;
     private JFrame frame;
     private JPanel signInPanel;
     private JPanel logInPanel;
@@ -26,10 +26,10 @@ public class LogInAndSignIn {
     private JPasswordField passwordField2;
 
     private JButton logInBtn;
-    private JLabel userNameOrEmailLabel;
+    private JLabel emailLabel;
     private JLabel logInPasswordLabel;
     private JLabel linkToSignIn;
-    private JTextField userNameOrEmailTextField;
+    private JTextField signInEmailTextField;
     private JPasswordField logInPasswordField;
 
     private final Runnable runUI = this::createUI;
@@ -53,7 +53,7 @@ public class LogInAndSignIn {
         AuthHelper authHelper = AuthHelper.getInstance();
 
         logInBtn.addActionListener(actionEvent -> {
-            String email = userNameOrEmailTextField.getText();
+            String email = signInEmailTextField.getText();
             String password = String.valueOf(logInPasswordField.getPassword());
 
             authHelper.logExistingUserIn(email, password);
@@ -71,7 +71,7 @@ public class LogInAndSignIn {
                 CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
                 cardLayout.next(mainPanel);
 
-                userNameOrEmailTextField.setText("");
+                signInEmailTextField.setText("");
                 logInPasswordField.setText("");
             }
 
