@@ -8,6 +8,8 @@ import org.json.JSONObject;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class MainView {
@@ -134,9 +136,17 @@ public class MainView {
         libraryAdapter.setModel(defaultListModel);
     }
 
+    private List<Pair<String, String>> responseList = new ArrayList<>();
+
+
     private JSONObject getAllLibraries() {
         String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/" + authHelper.getUserID() + ".json?auth=" + authHelper.getIDToken();
         Pair<String, Boolean> myResponse = fireBaseRequests.getData(url);
+
+        System.out.println(myResponse.getKey().length());
+//        for (int i = 0; i < myResponse.getKey().length(); i++){
+//
+//        }
 
         if (myResponse.getKey().equals("null")) {
             System.out.println("No libraries exist");
@@ -249,11 +259,9 @@ public class MainView {
     private void makeJMenu() {
         JMenu jMenu = new JMenu("Options");
         JMenuBar jMenuBar = new JMenuBar();
-
         JMenuItem importFile = new JMenuItem("Import");
         JMenuItem profile = new JMenuItem("Profile");
         JMenuItem addNewFile = new JMenuItem("Add new library");
-        JMenuItem exportFile = new JMenuItem("Export");
 
         importFile.addActionListener(e -> System.out.println("import pressed"));
         profile.addActionListener(e -> System.out.println("profile pressed"));
@@ -268,7 +276,6 @@ public class MainView {
         jMenu.add(addNewFile);
         jMenu.add(profile);
         jMenu.add(importFile);
-        jMenu.add(exportFile);
         jMenuBar.add(jMenu);
         frame.setJMenuBar(jMenuBar);
     }
