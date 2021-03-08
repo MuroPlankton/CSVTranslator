@@ -1,5 +1,6 @@
 package CSVTranslator.auth;
 
+import CSVTranslator.CSVTranslatorMain;
 import CSVTranslator.FireBaseRequests;
 import CSVTranslator.util.Pair;
 import com.google.gson.JsonObject;
@@ -7,6 +8,7 @@ import com.google.gson.JsonParser;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -59,11 +61,14 @@ public class AuthHelper {
             setNewDisplayName(displayName);
             saveRefreshTokenToFile();
 
-            if(onSignedInListener != null){
+            if (onSignedInListener != null) {
                 onSignedInListener.onSignedIn();
             }
+        } else if (signInResponseInfo.getKey().contains("EMAIL_EXISTS")) {
+            JOptionPane.showMessageDialog(CSVTranslatorMain.getLogInAndSignInPanel(), "Email already exists");
+        } else if (signInResponseInfo.getKey().contains("WEAK_PASSWORD")) {
+            JOptionPane.showMessageDialog(CSVTranslatorMain.getLogInAndSignInPanel(), "Password should be at least 6 characters");
         } else {
-            //TODO: act accordingly to an unsuccessful response
             System.out.println("Registering failed");
         }
     }
@@ -145,7 +150,7 @@ public class AuthHelper {
 //        System.out.println("DISPLAY \n" + "key: \n " + userLibsResponseInfo.getKey() +
 //                "\n value: \n" + userLibsResponseInfo.getValue());
 
-        if(userLibsResponseInfo != null) {
+        if (userLibsResponseInfo != null) {
             if (userLibsResponseInfo.getValue()) {
                 JsonObject userLibrariesObject = JsonParser.parseString(userLibsResponseInfo.getKey()).getAsJsonObject();
                 int amountOfUserLibraries = userLibrariesObject.size();
@@ -225,11 +230,11 @@ public class AuthHelper {
         void onLoggedIn();
     }
 
-    public void setOnSignedInListener(OnSignedInListener listener){
+    public void setOnSignedInListener(OnSignedInListener listener) {
         this.onSignedInListener = listener;
     }
 
-    public interface OnSignedInListener{
+    public interface OnSignedInListener {
         void onSignedIn();
     }
 
