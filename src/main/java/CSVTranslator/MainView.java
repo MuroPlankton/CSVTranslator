@@ -2,6 +2,8 @@ package CSVTranslator;
 
 import CSVTranslator.auth.AuthHelper;
 import CSVTranslator.util.Pair;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import okhttp3.MediaType;
 import org.json.JSONObject;
 
@@ -151,11 +153,11 @@ public class MainView {
         Pair<String, Boolean> myResponse = fireBaseRequests.getData(url);
 
         if (myResponse != null) {
-            JSONObject jsonObject = new JSONObject(myResponse.getKey());
+            JsonObject responseObject = JsonParser.parseString(myResponse.getKey()).getAsJsonObject();
 
-            for (String id : jsonObject.keySet()) {
-                System.out.println("id: " + id + ", " + jsonObject.getString(id));
-                responseList.add(new Pair<>(id, jsonObject.getString(id)));
+            for (String id : responseObject.keySet()) {
+                System.out.println("id: " + id + ", " + responseObject.get(id).getAsString());
+                responseList.add(new Pair<>(id, responseObject.get(id).getAsString()));
             }
             addAllLibrariesToList();
         } else {
