@@ -26,7 +26,7 @@ public class MainView {
     private JSplitPane splitPane;
 
     private JList<String> libraryList;
-    private JList<String> libraryAdapter;
+    private JList<String> libraryContentJList;
     private JLabel libraryNameLabel;
     private JButton newTranslation;
     private JTextField languageNameTextField;
@@ -56,6 +56,8 @@ public class MainView {
     private int languageCount;
     private String libraryID = "";
     private String libraryName = "";
+
+    private List<Pair<String, String>> responseList = new ArrayList<>();
 
     private final Runnable runUI = this::createUI;
 
@@ -96,28 +98,13 @@ public class MainView {
         addLanguageToDropDown("english");
         addLanguageToDropDown("svenska");
 
-        if (getAllLibraries() != null) {
-            addAllLibrariesToList();
-        }
-
+        getAllLibraries();
 
         libraryList.addListSelectionListener(e -> {
-            System.out.println(libraryList.getSelectedValue().toString());
-            libraryName = libraryList.getSelectedValue().toString();
+            System.out.println(libraryList.getSelectedValue());
+            libraryName = libraryList.getSelectedValue();
             loadSingleLibraryContent(libraryName);
         });
-//    }
-//
-//    private void loadSingleLibraryContent(String library) {
-//        for (String id : getAllLibraries().keySet()) {
-//            if (library.equals(getAllLibraries().getString(id))) {
-//                System.out.println(library + ", " + id);
-//                libraryID = id;
-//                String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + ".json?auth=" + authHelper.getIDToken();
-//                parseLibraryData(fireBaseRequests.getData(url).getKey());
-//            }
-//        }
-//    }
 
 //        exportButton.addActionListener(e -> {
 //            ExportDialog exportDialog = new ExportDialog(libraryID, mainPanel);
@@ -128,11 +115,9 @@ public class MainView {
     private void loadSingleLibraryContent(String library) {
         libraryNameTextField.setText(libraryName);
 
-        //todo this loop is extremely slow for some reason. This needs to be fixed. Might be because of getAllLibraries. Have to figure out a better way to get all users libraries
-        for (String id : getAllLibraries().keySet()) {
-            if (library.equals(getAllLibraries().getString(id))) {
-                System.out.println(library + ", " + id);
-                libraryID = id;
+        for (Pair<String, String> stringStringPair : responseList) {
+            if (stringStringPair.getValue().equals(library)) {
+                libraryID = stringStringPair.getKey();
                 String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + ".json?auth=" + authHelper.getIDToken();
                 parseLibraryData(fireBaseRequests.getData(url).getKey());
             }
@@ -152,27 +137,35 @@ public class MainView {
 //            String description = allTranslationsJsonObject.getJSONObject("texts").getJSONObject(translationID).getString("description");
             defaultListModel.addElement(name);
         }
-        libraryAdapter.setModel(defaultListModel);
+        libraryContentJList.setModel(defaultListModel);
     }
 
-    private List<Pair<String, String>> responseList = new ArrayList<>();
 
-
-    private JSONObject getAllLibraries() {
+    private void getAllLibraries() {
         String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/" + authHelper.getUserID() + ".json?auth=" + authHelper.getIDToken();
         Pair<String, Boolean> myResponse = fireBaseRequests.getData(url);
 
-        System.out.println(myResponse.getKey().length());
-//        for (int i = 0; i < myResponse.getKey().length(); i++){
-//
-//        }
+        if (myResponse != null) {
+            JSONObject jsonObject = new JSONObject(myResponse.getKey());
 
-        if (myResponse.getKey().equals("null")) {
-            System.out.println("No libraries exist");
-            return null;
+            for (String id : jsonObject.keySet()) {
+                System.out.println("id: " + id + ", " + jsonObject.getString(id));
+                responseList.add(new Pair<>(id, jsonObject.getString(id)));
+            }
+            addAllLibrariesToList();
         } else {
-            return new JSONObject(myResponse.getKey());
+            System.out.println("No libraries exist");
         }
+    }
+
+    private void addAllLibrariesToList() {
+        DefaultListModel<String> defaultListModel = new DefaultListModel<>();
+        defaultListModel.removeAllElements();
+
+        for (Pair<String, String> stringStringPair : responseList) {
+            defaultListModel.addElement(stringStringPair.getValue());
+        }
+        libraryList.setModel(defaultListModel);
     }
 
     private void addNewLibrary() {
@@ -204,17 +197,6 @@ public class MainView {
         // , but for some reason calling it again after initial launch doesn't work properly
 
         addAllLibrariesToList();
-    }
-
-    private void addAllLibrariesToList() {
-        DefaultListModel<String> defaultListModel = new DefaultListModel<>();
-        defaultListModel.removeAllElements();
-
-        for (String key : getAllLibraries().keySet()) {
-            System.out.println("individual key: " + key);
-            defaultListModel.addElement(getAllLibraries().getString(key));
-        }
-        libraryList.setModel(defaultListModel);
     }
 
     private void addNewTranslation() {
