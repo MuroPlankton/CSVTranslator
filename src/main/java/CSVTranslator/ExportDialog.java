@@ -146,11 +146,4 @@ public class ExportDialog extends JDialog {
         csvHandler.exportLibrary(libraryID, outputFileType, langComboBox.getSelectedItem().toString());
         dispose();
     }
-
-    public static void main(String[] args) {
-//        ExportDialog dialog = new ExportDialog("");
-//        dialog.pack();
-//        dialog.setVisible(true);
-//        System.exit(0);
-    }
 }
