@@ -125,19 +125,25 @@ public class MainView {
     }
 
     private void parseLibraryData(String response) {
-        JSONObject allTranslationsJsonObject = new JSONObject(response);
-        JSONObject singleTranslationJsonObject = allTranslationsJsonObject.getJSONObject("texts");
+        if (response != null) {
+            JSONObject allTranslationsJsonObject = new JSONObject(response);
+            if (allTranslationsJsonObject.has("texts")) {
+                JSONObject singleTranslationJsonObject = allTranslationsJsonObject.getJSONObject("texts");
 
-        DefaultListModel<String> defaultListModel = new DefaultListModel<>();
-        defaultListModel.removeAllElements();
+                DefaultListModel<String> defaultListModel = new DefaultListModel<>();
+                defaultListModel.removeAllElements();
 
-        for (String translationID : singleTranslationJsonObject.keySet()) {
-            System.out.println("Translation id: " + translationID);
-            String name = allTranslationsJsonObject.getJSONObject("texts").getJSONObject(translationID).getString("name");
+                for (String translationID : singleTranslationJsonObject.keySet()) {
+                    System.out.println("Translation id: " + translationID);
+                    String name = allTranslationsJsonObject.getJSONObject("texts").getJSONObject(translationID).getString("name");
 //            String description = allTranslationsJsonObject.getJSONObject("texts").getJSONObject(translationID).getString("description");
-            defaultListModel.addElement(name);
+                    defaultListModel.addElement(name);
+                }
+                libraryContentJList.setModel(defaultListModel);
+            } else {
+                System.out.println("no texts found");
+            }
         }
-        libraryContentJList.setModel(defaultListModel);
     }
 
     private void getAllLibraries() {
@@ -229,7 +235,7 @@ public class MainView {
         String androidKey = androidKeyTextField.getText();
         String iosKey = iosKeyTextField.getText();
         String webKey = webKeyTextField.getText();
-        String language = languagesDropDown.getItemAt(languagesDropDown.getSelectedIndex()).toString();
+        String language = languagesDropDown.getItemAt(languagesDropDown.getSelectedIndex());
         String translation = translationNameTextField2.getText();
         System.out.println("save pressed");
         String translationID = UUID.randomUUID().toString();
@@ -252,7 +258,7 @@ public class MainView {
         System.out.println(url);
         fireBaseRequests.patchData(url, jsonBody, MediaType.parse("application/json"));
 
-//        loadSingleLibraryContent(libraryName);
+        loadSingleLibraryContent(libraryName);
         clearTranslationTextFields();
     }
 
@@ -265,12 +271,10 @@ public class MainView {
 
         importFile.addActionListener(e -> System.out.println("import pressed"));
         profile.addActionListener(e -> System.out.println("profile pressed"));
-        addNewFile.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("pressed");
-                addNewLibrary();
-            }
+
+        addNewFile.addActionListener(e -> {
+            System.out.println("pressed");
+            addNewLibrary();
         });
 
         jMenu.add(addNewFile);
