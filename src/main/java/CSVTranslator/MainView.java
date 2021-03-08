@@ -89,7 +89,7 @@ public class MainView {
     }
 
     public MainView() {
-        authHelper.logExistingUserIn("ryhanenjarno@gmail.com", "12345678");
+//        authHelper.logExistingUserIn("ryhanenjarno@gmail.com", "12345678");
         addButton.addActionListener(e -> addNewLanguage());
 //        newTranslation.addActionListener(e -> addNewTranslation());
 
@@ -108,28 +108,27 @@ public class MainView {
 //            System.out.println(id);
 //            idList.add(id);
 //        }
-        System.out.println(getAllLibraries().keySet());
+//        System.out.println(getAllLibraries().keySet());
         libraryList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 System.out.println(libraryList.getSelectedValue().toString());
                 libraryName = libraryList.getSelectedValue().toString();
-                loadSingleLibraryContent(libraryName);
+//                loadSingleLibraryContent(libraryName);
             }
         });
     }
 
-    private void loadSingleLibraryContent(String library) {
-
-        for (String id : getAllLibraries().keySet()) {
-            if (library.equals(getAllLibraries().getString(id))) {
-                System.out.println(library + ", " + id);
-                libraryID = id;
-                String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + ".json?auth=" + authHelper.getIDToken();
-                parseLibraryData(fireBaseRequests.getData(url).getKey());
-            }
-        }
-    }
+//    private void loadSingleLibraryContent(String library) {
+//        for (String id : getAllLibraries().keySet()) {
+//            if (library.equals(getAllLibraries().getString(id))) {
+//                System.out.println(library + ", " + id);
+//                libraryID = id;
+//                String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + ".json?auth=" + authHelper.getIDToken();
+//                parseLibraryData(fireBaseRequests.getData(url).getKey());
+//            }
+//        }
+//    }
 
     private void parseLibraryData(String response) {
         JSONObject allTranslationsJsonObject = new JSONObject(response);
@@ -147,12 +146,12 @@ public class MainView {
         libraryAdapter.setModel(defaultListModel);
     }
 
-    private JSONObject getAllLibraries() {
-        String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/" + authHelper.getUserID() + ".json?auth=" + authHelper.getIDToken();
-        Pair<String, Boolean> myResponse = fireBaseRequests.getData(url);
-
-        return new JSONObject(myResponse.getKey());
-    }
+//    private JSONObject getAllLibraries() {
+//        String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/" + authHelper.getUserID() + ".json?auth=" + authHelper.getIDToken();
+//        Pair<String, Boolean> myResponse = fireBaseRequests.getData(url);
+//
+//        return new JSONObject(myResponse.getKey());
+//    }
 
     private void addNewLibrary(JFrame frame) {
         String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/" + authHelper.getUserID() + ".json?auth=" + authHelper.getIDToken();
@@ -173,10 +172,10 @@ public class MainView {
         DefaultListModel<String> defaultListModel = new DefaultListModel<>();
         defaultListModel.removeAllElements();
 
-        for (String key : getAllLibraries().keySet()) {
-            defaultListModel.addElement(getAllLibraries().getString(key));
-        }
-        libraryList.setModel(defaultListModel);
+//        for (String key : getAllLibraries().keySet()) {
+//            defaultListModel.addElement(getAllLibraries().getString(key));
+//        }
+//        libraryList.setModel(defaultListModel);
     }
 
     private void addNewTranslation() {
@@ -242,7 +241,7 @@ public class MainView {
         System.out.println(url);
         fireBaseRequests.patchData(url, jsonBody, MediaType.parse("application/json"));
 
-        loadSingleLibraryContent(libraryName);
+//        loadSingleLibraryContent(libraryName);
         clearTranslationTextFields();
     }
 
