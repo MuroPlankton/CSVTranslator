@@ -165,23 +165,24 @@ public class MainView {
 
     private List<Pair<String, String>> responseList = new ArrayList<>();
 
-
     private JSONObject getAllLibraries() {
         String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/" + authHelper.getUserID() + ".json?auth=" + authHelper.getIDToken();
         Pair<String, Boolean> myResponse = fireBaseRequests.getData(url);
 
-        System.out.println(myResponse.getKey().length());
 //        for (int i = 0; i < myResponse.getKey().length(); i++){
 //
 //        }
-
-        if (myResponse.getKey().equals("null")) {
-            System.out.println("No libraries exist");
-            return null;
-        } else {
-            return new JSONObject(myResponse.getKey());
+        if (myResponse != null) {
+            if (myResponse.getKey().equals("null")) {
+                System.out.println("No libraries exist");
+            } else {
+                return new JSONObject(myResponse.getKey());
+            }
         }
+
+        return null;
     }
+
 
     private void addNewLibrary() {
         System.out.println("new library");
