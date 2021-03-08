@@ -151,16 +151,16 @@ public class AuthHelper {
                 int amountOfUserLibraries = userLibrariesObject.size();
                 int index = 0;
 
-                String changeUserInLibrariesJson = "{\n";
+                StringBuilder changeUserInLibrariesJson = new StringBuilder("{\n");
                 for (String userLibraryKey : userLibrariesObject.keySet()) {
-                    changeUserInLibrariesJson += String.format("\"%s/users/%s\":\"%s\"%s", userLibraryKey, userID,
-                            displayName, (index < amountOfUserLibraries - 1) ? ",\n" : "\n");
+                    changeUserInLibrariesJson.append(String.format("\"%s/users/%s\":\"%s\"%s", userLibraryKey, userID,
+                            displayName, (index < amountOfUserLibraries - 1) ? ",\n" : "\n"));
                     index++;
                 }
-                changeUserInLibrariesJson += "}";
+                changeUserInLibrariesJson.append("}");
 
                 String changeUserInLibsURL = String.format("https://%s.firebaseio.com/libraries.json?auth=%s", PROJECT_ID, getIDToken());
-                fireBaseRequests.patchData(changeUserInLibsURL, changeUserInLibrariesJson, MediaType.parse("application/json"));
+                fireBaseRequests.patchData(changeUserInLibsURL, changeUserInLibrariesJson.toString(), MediaType.parse("application/json"));
             }
         }
     }

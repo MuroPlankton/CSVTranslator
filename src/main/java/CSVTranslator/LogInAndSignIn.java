@@ -4,7 +4,6 @@ import CSVTranslator.auth.AuthHelper;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Arrays;
@@ -26,7 +25,7 @@ public class LogInAndSignIn {
     private JPasswordField passwordField1;
     private JPasswordField passwordField2;
 
-    private JButton LogInBtn;
+    private JButton logInBtn;
     private JLabel userNameOrEmailLabel;
     private JLabel logInPasswordLabel;
     private JLabel linkToSignIn;
@@ -53,7 +52,7 @@ public class LogInAndSignIn {
     public LogInAndSignIn() {
         AuthHelper authHelper = AuthHelper.getInstance();
 
-        LogInBtn.addActionListener(actionEvent -> {
+        logInBtn.addActionListener(actionEvent -> {
             String email = userNameOrEmailTextField.getText();
             String password = String.valueOf(logInPasswordField.getPassword());
 
@@ -61,43 +60,25 @@ public class LogInAndSignIn {
         });
 
         linkToSignIn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//        linkToSignIn.addMouseListener(new MouseListener() {
-//            @Override
-//            public void mouseClicked(MouseEvent mouseEvent) {
-//
-//            }
-//
-//            @Override
-//            public void mousePressed(MouseEvent mouseEvent) {
-//
-//            }
-//
-//            @Override
-//            public void mouseReleased(MouseEvent mouseEvent) {
-//
-//            }
-//
-//            @Override
-//            public void mouseEntered(MouseEvent mouseEvent) {
-//
-//            }
-//
-//            @Override
-//            public void mouseExited(MouseEvent mouseEvent) {
-//
-//            }
-//        });
-        linkToSignIn.addMouseListener(new MouseAdapter() {
+        linkToSignIn.addMouseListener(new MouseListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                //TODO: see why the click doesn't always register
+            public void mouseClicked(MouseEvent mouseEvent) { }
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) { }
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
                 CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
                 cardLayout.next(mainPanel);
 
                 userNameOrEmailTextField.setText("");
                 logInPasswordField.setText("");
             }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) { }
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) { }
         });
 
         signInBtn.addActionListener(actionEvent -> {
@@ -115,7 +96,6 @@ public class LogInAndSignIn {
 
                         authHelper.signNewUserIn(email, userName, password);
                     } else {
-                        System.out.println("Passwords don't match!");
                         JOptionPane.showMessageDialog(mainPanel, "Passwords don't match!");
                     }
                 }
@@ -123,11 +103,15 @@ public class LogInAndSignIn {
         });
 
         linkToLogIn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        linkToLogIn.addMouseListener(new MouseAdapter() {
+
+        linkToLogIn.addMouseListener(new MouseListener() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                //TODO: see why the click doesn't always register
+            public void mouseClicked(MouseEvent mouseEvent) { }
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) { }
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
                 CardLayout cardLayout = (CardLayout) mainPanel.getLayout();
                 cardLayout.next(mainPanel);
 
@@ -136,6 +120,11 @@ public class LogInAndSignIn {
                 passwordField1.setText("");
                 passwordField2.setText("");
             }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) { }
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) { }
         });
     }
 }

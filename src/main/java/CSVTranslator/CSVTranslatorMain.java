@@ -12,6 +12,12 @@ public class CSVTranslatorMain {
 
         AuthHelper authHelper = AuthHelper.getInstance();
 
+        authHelper.setOnLoggedInListener(() -> {
+            logInAndSignIn.dispose();
+
+            startMainView();
+        });
+
         authHelper.setOnSignedInListener(() -> {
             logInAndSignIn.dispose();
 

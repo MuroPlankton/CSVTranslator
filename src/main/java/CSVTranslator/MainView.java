@@ -6,6 +6,8 @@ import okhttp3.MediaType;
 import org.json.JSONObject;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -101,15 +103,34 @@ public class MainView {
             addAllLibrariesToList();
         }
 
-        libraryList.addListSelectionListener(e -> {
-            libraryName = libraryList.getSelectedValue();
-            loadSingleLibraryContent(libraryName);
-        });
+//        for (String id : getAllLibraries().keySet()) {
+//            System.out.println(id);
+//            idList.add(id);
+//        }
+//        System.out.println(getAllLibraries().keySet());
 
-        exportButton.addActionListener(e -> {
-            ExportDialog exportDialog = new ExportDialog(libraryID, mainPanel);
-            SwingUtilities.invokeLater(exportDialog.runUI());
+        libraryList.addListSelectionListener(e -> {
+            System.out.println(libraryList.getSelectedValue().toString());
+            libraryName = libraryList.getSelectedValue().toString();
+//                loadSingleLibraryContent(libraryName);
         });
+//    }
+
+//    private void loadSingleLibraryContent(String library) {
+//        for (String id : getAllLibraries().keySet()) {
+//            if (library.equals(getAllLibraries().getString(id))) {
+//                System.out.println(library + ", " + id);
+//                libraryID = id;
+//                String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + ".json?auth=" + authHelper.getIDToken();
+//                parseLibraryData(fireBaseRequests.getData(url).getKey());
+//            }
+//        }
+//    }
+
+//        exportButton.addActionListener(e -> {
+//            ExportDialog exportDialog = new ExportDialog(libraryID, mainPanel);
+//            SwingUtilities.invokeLater(exportDialog.runUI());
+//        });
     }
 
     private void loadSingleLibraryContent(String library) {
@@ -258,7 +279,7 @@ public class MainView {
         System.out.println(url);
         fireBaseRequests.patchData(url, jsonBody, MediaType.parse("application/json"));
 
-        loadSingleLibraryContent(libraryName);
+//        loadSingleLibraryContent(libraryName);
         clearTranslationTextFields();
     }
 
