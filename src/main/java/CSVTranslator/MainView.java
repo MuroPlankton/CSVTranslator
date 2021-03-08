@@ -6,8 +6,6 @@ import okhttp3.MediaType;
 import org.json.JSONObject;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -98,24 +96,18 @@ public class MainView {
         addLanguageToDropDown("english");
         addLanguageToDropDown("svenska");
 
-//        languageCountLabel.setText(String.format("amount of languages: $d", languageCount));
         if (getAllLibraries() != null) {
             addAllLibrariesToList();
         }
 
-//        for (String id : getAllLibraries().keySet()) {
-//            System.out.println(id);
-//            idList.add(id);
-//        }
-//        System.out.println(getAllLibraries().keySet());
 
         libraryList.addListSelectionListener(e -> {
             System.out.println(libraryList.getSelectedValue().toString());
             libraryName = libraryList.getSelectedValue().toString();
-//                loadSingleLibraryContent(libraryName);
+            loadSingleLibraryContent(libraryName);
         });
 //    }
-
+//
 //    private void loadSingleLibraryContent(String library) {
 //        for (String id : getAllLibraries().keySet()) {
 //            if (library.equals(getAllLibraries().getString(id))) {
