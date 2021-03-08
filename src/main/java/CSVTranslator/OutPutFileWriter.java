@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CsvWriter {
+public class OutPutFileWriter {
     private FileWriter writer;
 
     private final String fileType/*os*/;
@@ -19,7 +19,7 @@ public class CsvWriter {
 
     private boolean isFirstLineWritten = false;
 
-    public CsvWriter(String fileType/*os*/, String lang, String translationFolder) {
+    public OutPutFileWriter(String fileType/*os*/, String lang, String translationFolder) {
         this.fileType = fileType/*os*/;
         this.lang = lang;
 

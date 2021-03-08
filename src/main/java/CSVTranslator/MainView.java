@@ -51,6 +51,7 @@ public class MainView {
     private JLabel androidKeyLabel;
     private JComboBox<String> languagesDropDown;
     private JTextField libraryNameTextField;
+    private JButton exportButton;
 
     private int languageCount;
     private String libraryID = "";
@@ -103,6 +104,11 @@ public class MainView {
         libraryList.addListSelectionListener(e -> {
             libraryName = libraryList.getSelectedValue();
             loadSingleLibraryContent(libraryName);
+        });
+
+        exportButton.addActionListener(e -> {
+            ExportDialog exportDialog = new ExportDialog(libraryID, mainPanel);
+            SwingUtilities.invokeLater(exportDialog.runUI());
         });
     }
 

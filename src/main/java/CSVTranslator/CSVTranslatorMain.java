@@ -1,5 +1,7 @@
 package CSVTranslator;
+
 import CSVTranslator.auth.AuthHelper;
+
 import javax.swing.*;
 
 public class CSVTranslatorMain {
@@ -9,12 +11,6 @@ public class CSVTranslatorMain {
         SwingUtilities.invokeLater(logInAndSignIn.runUI());
 
         AuthHelper authHelper = AuthHelper.getInstance();
-
-        authHelper.setOnLoggedInListener(() -> {
-            logInAndSignIn.dispose();
-
-            startMainView();
-        });
 
         authHelper.setOnSignedInListener(() -> {
             logInAndSignIn.dispose();

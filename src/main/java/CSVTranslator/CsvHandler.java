@@ -17,7 +17,7 @@ public class CsvHandler {
     private static final Pattern CSV_PATTERN = Pattern.compile("\\s*(?:\"[^\"]*\"|(?:^|(?<=,))[^,]*)");
 
     private int linesHandled = 0;
-    private final Map<Pair<Integer, Integer>, CsvWriter> writerMap = new HashMap<>();
+    private final Map<Pair<Integer, Integer>, OutPutFileWriter> writerMap = new HashMap<>();
 
     private final int ANDROID_INDEX = 0;
     private final int IOS_INDEX = 1;
@@ -71,7 +71,7 @@ public class CsvHandler {
                     translation = cellList.get(langIndex);
                 }
 
-                CsvWriter writer = writerMap.get(pair);
+                OutPutFileWriter writer = writerMap.get(pair);
                 if (writer != null && isNotEmpty(osKey) && isNotEmpty(translation)) {
                     switch (pair.getKey()) {
                         case ANDROID_INDEX:
@@ -98,15 +98,19 @@ public class CsvHandler {
     }
 
     private void addWritersToWriterMap(int langIndex, String lang) {
-        writerMap.put(new Pair<>(ANDROID_INDEX, langIndex), new CsvWriter("android", lang, outputDir));
-        writerMap.put(new Pair<>(IOS_INDEX, langIndex), new CsvWriter("ios", lang, outputDir));
-        writerMap.put(new Pair<>(WEB_ADMIN_INDEX, langIndex), new CsvWriter("web-admin", lang, outputDir));
-        writerMap.put(new Pair<>(WEB_MAIN_INDEX, langIndex), new CsvWriter("web-main", lang, outputDir));
-        writerMap.put(new Pair<>(WEB_WIDGET_INDEX, langIndex), new CsvWriter("web-widget", lang, outputDir));
+        writerMap.put(new Pair<>(ANDROID_INDEX, langIndex), new OutPutFileWriter("android", lang, outputDir));
+        writerMap.put(new Pair<>(IOS_INDEX, langIndex), new OutPutFileWriter("ios", lang, outputDir));
+        writerMap.put(new Pair<>(WEB_ADMIN_INDEX, langIndex), new OutPutFileWriter("web-admin", lang, outputDir));
+        writerMap.put(new Pair<>(WEB_MAIN_INDEX, langIndex), new OutPutFileWriter("web-main", lang, outputDir));
+        writerMap.put(new Pair<>(WEB_WIDGET_INDEX, langIndex), new OutPutFileWriter("web-widget", lang, outputDir));
     }
 
     private boolean isNotEmpty(String text) {
         return text != null && text.length() > 0;
+    }
+
+    public void exportLibrary(String libraryID, String outputFileType, String selectedLang) {
+        //TODO: export logic
     }
 
     interface CsvLineHandlerInterface {
@@ -148,7 +152,7 @@ public class CsvHandler {
 
     private void finishWriterWriting() {
         for (Pair<Integer, Integer> pair : writerMap.keySet()) {
-            CsvWriter writer = writerMap.get(pair);
+            OutPutFileWriter writer = writerMap.get(pair);
             writer.stopWriting();
         }
     }
