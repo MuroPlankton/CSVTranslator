@@ -23,9 +23,11 @@ public class FireBaseRequests {
 
         try (Response response = client.newCall(request).execute()) {
             ResponseBody responseBody = response.body();
-
-            if (responseBody != null && !("null").equals(responseBody.string())) {
-                return new Pair<>(responseBody.string(), (response.isSuccessful()));
+            if(responseBody != null) {
+                String responseBodyString = responseBody.string();
+                if (!("null").equals(responseBodyString)) {
+                    return new Pair<>(responseBodyString, (response.isSuccessful()));
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -59,7 +61,7 @@ public class FireBaseRequests {
             if(responseBody != null) {
                 String responseBodyString = responseBody.string();
                 if (!("null").equals(responseBodyString)) {
-                    return new Pair<>(responseBody.string(), (response.isSuccessful()));
+                    return new Pair<>(responseBodyString, (response.isSuccessful()));
                 }
             }
         } catch (IOException e) {
@@ -79,9 +81,6 @@ public class FireBaseRequests {
 
         try (Response response = client.newCall(request).execute()) {
             ResponseBody responseBody = response.body();
-
-            //TODO: responseBody.stringii ei voi kutsuu kaks kertaa. Tallenna muuttujaan riku
-            //TODO: tästä se bugi johtuu riku
             if (responseBody != null) {
                 String responseBodyString = responseBody.string();
                 if (!("null").equals(responseBodyString)) {
