@@ -89,12 +89,23 @@ public class MainView {
     }
 
     public MainView() {
-        addButton.addActionListener(e -> addNewLanguage());
-//        newTranslation.addActionListener(e -> addNewTranslation());
+        ActionListener buttonListener = actionEvent -> {
+            Object obj = actionEvent.getSource();
 
-        saveButton.addActionListener(e -> {
-            addTranslationToLibraries();
-        });
+            if(obj == addButton){
+                addNewLanguage();
+            } else if(obj == saveButton){
+                addTranslationToLibraries();
+            } else if(obj == exportButton){
+                ExportDialog exportDialog = new ExportDialog(libraryID, mainPanel);
+                SwingUtilities.invokeLater(exportDialog.runUI());
+            }
+        };
+
+        addButton.addActionListener(buttonListener);
+        saveButton.addActionListener(buttonListener);
+        exportButton.addActionListener(buttonListener);
+//        newTranslation.addActionListener(e -> addNewTranslation());
 
         addLanguageToDropDown("suomi");
         addLanguageToDropDown("english");
@@ -107,11 +118,6 @@ public class MainView {
             libraryName = libraryList.getSelectedValue();
             loadSingleLibraryContent(libraryName);
         });
-
-        exportButton.addActionListener(e -> {
-            ExportDialog exportDialog = new ExportDialog(libraryID, mainPanel);
-            SwingUtilities.invokeLater(exportDialog.runUI());
-        });
     }
 
     private void loadSingleLibraryContent(String library) {
@@ -121,30 +127,40 @@ public class MainView {
             if (stringStringPair.getValue().equals(library)) {
                 libraryID = stringStringPair.getKey();
                 String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + ".json?auth=" + authHelper.getIDToken();
-                parseLibraryData(fireBaseRequests.getData(url).getKey());
+                parseLibraryData(fireBaseRequests.getData(url));
             }
         }
     }
 
-    private void parseLibraryData(String response) {
+    private void parseLibraryData(Pair<String, Boolean> response) {
         if (response != null) {
-            JSONObject allTranslationsJsonObject = new JSONObject(response);
-            if (allTranslationsJsonObject.has("texts")) {
-                JSONObject singleTranslationJsonObject = allTranslationsJsonObject.getJSONObject("texts");
 
-                DefaultListModel<String> defaultListModel = new DefaultListModel<>();
-                defaultListModel.removeAllElements();
+            DefaultListModel<String> defaultListModel = new DefaultListModel<>();
+            defaultListModel.removeAllElements();
 
-                for (String translationID : singleTranslationJsonObject.keySet()) {
+            System.out.println(defaultListModel);
+
+            JsonObject responseObject = JsonParser.parseString(response.getKey()).getAsJsonObject();
+            if (responseObject.has("texts")) {
+                JsonObject singleTranslationObject = responseObject.getAsJsonObject("texts");
+
+                for (String translationID : singleTranslationObject.keySet()) {
                     System.out.println("Translation id: " + translationID);
-                    String name = allTranslationsJsonObject.getJSONObject("texts").getJSONObject(translationID).getString("name");
-//            String description = allTranslationsJsonObject.getJSONObject("texts").getJSONObject(translationID).getString("description");
-                    defaultListModel.addElement(name);
+
+                    String translationName = responseObject.get("texts")
+                            .getAsJsonObject().get(translationID)
+                            .getAsJsonObject().get("name")
+                            .getAsString();
+
+                    System.out.println(translationName);
+
+                    defaultListModel.addElement(translationName);
                 }
-                libraryContentJList.setModel(defaultListModel);
+                System.out.println(defaultListModel);
             } else {
                 System.out.println("no texts found");
             }
+            libraryContentJList.setModel(defaultListModel);
         }
     }
 
@@ -271,13 +287,21 @@ public class MainView {
         JMenuItem profile = new JMenuItem("Profile");
         JMenuItem addNewFile = new JMenuItem("Add new library");
 
-        importFile.addActionListener(e -> System.out.println("import pressed"));
-        profile.addActionListener(e -> System.out.println("profile pressed"));
+        ActionListener buttonListener = actionEvent -> {
+            Object obj = actionEvent.getSource();
 
-        addNewFile.addActionListener(e -> {
-            System.out.println("pressed");
-            addNewLibrary();
-        });
+            if(obj == importFile){
+                System.out.println("import pressed");
+            } else if(obj == profile){
+                System.out.println("profile pressed");
+            } else if(obj == addNewFile){
+                addNewLibrary();
+            }
+        };
+
+        importFile.addActionListener(buttonListener);
+        profile.addActionListener(buttonListener);
+        addNewFile.addActionListener(buttonListener);
 
         jMenu.add(addNewFile);
         jMenu.add(profile);

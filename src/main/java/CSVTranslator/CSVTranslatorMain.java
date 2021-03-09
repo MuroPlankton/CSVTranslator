@@ -2,29 +2,29 @@ package CSVTranslator;
 
 import CSVTranslator.auth.AuthHelper;
 import javax.swing.*;
+import java.awt.*;
 
 public class CSVTranslatorMain {
 
+    private static final LogInAndSignIn logInAndSignIn = new LogInAndSignIn();
+
     public static void main(String[] args) {
-        LogInAndSignIn logInAndSignIn = new LogInAndSignIn();
         SwingUtilities.invokeLater(logInAndSignIn.runUI());
 
         AuthHelper authHelper = AuthHelper.getInstance();
 
-        authHelper.setOnLoggedInListener(() -> {
-            logInAndSignIn.dispose();
+        authHelper.setOnLoggedInListener(CSVTranslatorMain::disposeOldPanelAndStartMainView);
 
-            startMainView();
-        });
-
-        authHelper.setOnSignedInListener(() -> {
-            logInAndSignIn.dispose();
-
-            startMainView();
-        });
+        authHelper.setOnSignedInListener(CSVTranslatorMain::disposeOldPanelAndStartMainView);
     }
 
-    private static void startMainView() {
+    public static Component getLogInAndSignInPanel(){
+        return logInAndSignIn.mainPanel;
+    }
+
+    private static void disposeOldPanelAndStartMainView() {
+        logInAndSignIn.dispose();
+
         MainView mainView = new MainView();
         SwingUtilities.invokeLater(mainView.runUI());
     }
