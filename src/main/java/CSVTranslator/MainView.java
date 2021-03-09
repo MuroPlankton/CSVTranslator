@@ -89,12 +89,23 @@ public class MainView {
     }
 
     public MainView() {
-        addButton.addActionListener(e -> addNewLanguage());
-//        newTranslation.addActionListener(e -> addNewTranslation());
+        ActionListener buttonListener = actionEvent -> {
+            Object obj = actionEvent.getSource();
 
-        saveButton.addActionListener(e -> {
-            addTranslationToLibraries();
-        });
+            if(obj == addButton){
+                addNewLanguage();
+            } else if(obj == saveButton){
+                addTranslationToLibraries();
+            } else if(obj == exportButton){
+                ExportDialog exportDialog = new ExportDialog(libraryID, mainPanel);
+                SwingUtilities.invokeLater(exportDialog.runUI());
+            }
+        };
+
+        addButton.addActionListener(buttonListener);
+        saveButton.addActionListener(buttonListener);
+        exportButton.addActionListener(buttonListener);
+//        newTranslation.addActionListener(e -> addNewTranslation());
 
         addLanguageToDropDown("suomi");
         addLanguageToDropDown("english");
@@ -106,11 +117,6 @@ public class MainView {
             System.out.println(libraryList.getSelectedValue());
             libraryName = libraryList.getSelectedValue();
             loadSingleLibraryContent(libraryName);
-        });
-
-        exportButton.addActionListener(e -> {
-            ExportDialog exportDialog = new ExportDialog(libraryID, mainPanel);
-            SwingUtilities.invokeLater(exportDialog.runUI());
         });
     }
 
@@ -271,13 +277,21 @@ public class MainView {
         JMenuItem profile = new JMenuItem("Profile");
         JMenuItem addNewFile = new JMenuItem("Add new library");
 
-        importFile.addActionListener(e -> System.out.println("import pressed"));
-        profile.addActionListener(e -> System.out.println("profile pressed"));
+        ActionListener buttonListener = actionEvent -> {
+            Object obj = actionEvent.getSource();
 
-        addNewFile.addActionListener(e -> {
-            System.out.println("pressed");
-            addNewLibrary();
-        });
+            if(obj == importFile){
+                System.out.println("import pressed");
+            } else if(obj == profile){
+                System.out.println("profile pressed");
+            } else if(obj == addNewFile){
+                addNewLibrary();
+            }
+        };
+
+        importFile.addActionListener(buttonListener);
+        profile.addActionListener(buttonListener);
+        addNewFile.addActionListener(buttonListener);
 
         jMenu.add(addNewFile);
         jMenu.add(profile);
