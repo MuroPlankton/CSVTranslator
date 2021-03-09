@@ -1,5 +1,10 @@
 package CSVTranslator;
 
+import CSVTranslator.auth.AuthHelper;
+import CSVTranslator.util.Pair;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -50,6 +55,16 @@ public class ExportDialog extends JDialog {
 
         langComboBox.setEnabled(false);
         langComboBox.addItem("Every language");
+        Pair<String, Boolean> langResponseInfo = new FireBaseRequests().getData(String.format(
+                "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/%s/languages.json" +
+                        "?auth=%s", libraryID, AuthHelper.getInstance().getIDToken()));
+        System.out.println(String.format("Lang response json: %s", langResponseInfo.getKey()));
+        if (langResponseInfo.getValue()) {
+            JsonObject langInfoObject = JsonParser.parseString(langResponseInfo.getKey()).getAsJsonObject();
+            for (String langKey : langInfoObject.keySet()) {
+                langComboBox.addItem(langKey);
+            }
+        }
         LangLabel.setEnabled(false);
         infoLabel.setText("Directory to export to:");
         leftButton.setText("Default/previous");
@@ -155,7 +170,7 @@ public class ExportDialog extends JDialog {
 
     private void finalizeExportDialog(String outputFileType) {
         CsvHandler csvHandler = new CsvHandler();
-        csvHandler.exportLibrary(libraryID, outputFileType, langComboBox.getSelectedItem().toString());
+        csvHandler.exportLibrary(libraryID, outputFileType, langComboBox.getSelectedItem().toString(), outputPath);
         dispose();
     }
 }
