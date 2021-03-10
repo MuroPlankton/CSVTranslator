@@ -13,10 +13,10 @@ public class Profile extends JDialog {
     public Profile() {
         setDialog();
 
-//        signOutBtn.addActionListener(actionEvent -> {
+        signOutBtn.addActionListener(actionEvent -> {
 //            dispose();
-//
-//        });
+
+        });
     }
 
     private void setDialog() {
