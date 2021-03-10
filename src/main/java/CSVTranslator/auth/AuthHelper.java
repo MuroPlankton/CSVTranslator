@@ -64,6 +64,7 @@ public class AuthHelper {
             if (onSignedInListener != null) {
                 onSignedInListener.onSignedIn();
             }
+            //TODO: might not be the best way to do this. Nothing else came to mind
         } else if (signInResponseInfo.getKey().contains("EMAIL_EXISTS")) {
             JOptionPane.showMessageDialog(CSVTranslatorMain.getLogInAndSignInPanel(), "Email already exists");
         } else if (signInResponseInfo.getKey().contains("WEAK_PASSWORD")) {

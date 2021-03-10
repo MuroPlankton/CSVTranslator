@@ -9,7 +9,6 @@ public class CSVTranslatorMain {
     private static final LogInAndSignIn logInAndSignIn = new LogInAndSignIn();
 
     public static void main(String[] args) {
-
         SwingUtilities.invokeLater(logInAndSignIn.runUI());
 
         AuthHelper authHelper = AuthHelper.getInstance();

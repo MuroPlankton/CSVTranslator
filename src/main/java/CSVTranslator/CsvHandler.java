@@ -1,6 +1,9 @@
 package CSVTranslator;
 
+import CSVTranslator.auth.AuthHelper;
 import CSVTranslator.util.Pair;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -73,7 +76,7 @@ public class CsvHandler {
 
                 OutPutFileWriter writer = writerMap.get(pair);
                 if (writer != null && isNotEmpty(osKey) && isNotEmpty(translation)) {
-                    switch (pair.getKey()) {
+                    switch (osIndex) {
                         case ANDROID_INDEX:
                             writer.writeOneRow(String.format("\t<string name=\"%s\">%s</string>", osKey, translation), null, true);
                             break;
@@ -88,6 +91,7 @@ public class CsvHandler {
                                 comma = null;
 
                                 writer.writeOneRow(String.format("\"%s\" : \"%s\"", osKey, translation), comma, true);
+                                //TODO: comma seems to always be null
                             }
                             break;
                     }
@@ -109,8 +113,73 @@ public class CsvHandler {
         return text != null && text.length() > 0;
     }
 
-    public void exportLibrary(String libraryID, String outputFileType, String selectedLang) {
+    public void exportLibrary(String libraryID, String outputFileType, String selectedLang, String outputDir) {
+        AuthHelper authHelper = AuthHelper.getInstance();
+        FireBaseRequests fireBaseRequests = new FireBaseRequests();
+        Pair<String, Boolean> libraryResponseInfo = fireBaseRequests.getData(String.format(
+                "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/%s.json?auth=%s",
+                libraryID, authHelper.getIDToken()));
+
+        JsonObject jsonObject = null;
+        if (libraryResponseInfo.getValue()) {
+            jsonObject = JsonParser.parseString(libraryResponseInfo.getKey()).getAsJsonObject();
+            if (outputFileType.equals(".csv")) {
+                exportLibraryToCSV(jsonObject, selectedLang, outputDir);
+            }
+        }
         //TODO: export logic
+    }
+
+    private void exportLibraryToCSV(JsonObject libraryObject, String selectedLang, String outputDir) {
+        OutPutFileWriter csvWriter = new OutPutFileWriter("csv", selectedLang, outputDir);
+        String line = "android,ios,web-admin,web-main,web-widget";
+        List<String> langKeyList = new ArrayList<>();
+        if (selectedLang.equals("Every language")) {
+            JsonObject langObject = libraryObject.getAsJsonObject("languages");
+            for (String langKey : langObject.keySet()) {
+                langKeyList.add(langKey);
+                line += String.format(",%s", langKey);
+            }
+        } else {
+            line += String.format(",%s", selectedLang);
+            langKeyList.add(selectedLang);
+        }
+        csvWriter.writeOneRow(line, null, true);
+
+        List<String> platformKeyList = new ArrayList<>();
+        platformKeyList.add("android_key");
+        platformKeyList.add("ios_key");
+        platformKeyList.add("web_admin_key");
+        platformKeyList.add("web_key");
+        platformKeyList.add("web_widget_key");
+
+        JsonObject textsObject = libraryObject.getAsJsonObject("texts");
+        for (String textKey : textsObject.keySet()) {
+            JsonObject textObject = textsObject.getAsJsonObject(textKey);
+
+            line = textObject.get(platformKeyList.get(0)).getAsString();
+            for (int index = 1; index < platformKeyList.size(); index++) {
+                try {
+                    line += String.format(",%s", textObject.get(platformKeyList.get(index)).getAsString());
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            JsonObject translationsObject = textObject.getAsJsonObject("translations");
+            for (String langKey : langKeyList) {
+                line += ",";
+                try {
+                    line += String.format("%s", translationsObject.get(langKey).getAsString());
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            csvWriter.writeOneRow(line, null, true);
+        }
+
+        csvWriter.stopWriting();
     }
 
     interface CsvLineHandlerInterface {
