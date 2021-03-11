@@ -51,3 +51,4 @@ settings.gradle
 .gradle/
 .idea/
 refreshTokenFile.txt
+src/main/java/META-INF/MANIFEST.MF
