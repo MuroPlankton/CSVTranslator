@@ -18,7 +18,7 @@ public class AuthHelper {
 
     private final static String PROJECT_API_KEY = "AIzaSyBxx--8gER1rh7py1o6jYLWb_FiN5kvom4";
     private final static String PROJECT_ID = "csv-android-app-f0353-default-rtdb";
-    private static final File refreshTokenFile = new File(System.getProperty("user.dir") + "refreshTokenFile.txt");
+    private static final File refreshTokenFile = new File(System.getProperty("user.dir") + "\\refreshTokenFile.txt");
 
     private static AuthHelper instance;
 
@@ -65,9 +65,9 @@ public class AuthHelper {
                 onSignedInListener.onSignedIn();
             }
             //TODO: might not be the best way to do this. Nothing else came to mind
-        } else if (signInResponseInfo.getKey().contains("EMAIL_EXISTS")) {
+        } else if (signInResponseInfo.getKey().contains("EMAIL_EXISTS") && CSVTranslatorMain.getLogInAndSignInPanel() != null) {
             JOptionPane.showMessageDialog(CSVTranslatorMain.getLogInAndSignInPanel(), "Email already exists");
-        } else if (signInResponseInfo.getKey().contains("WEAK_PASSWORD")) {
+        } else if (signInResponseInfo.getKey().contains("WEAK_PASSWORD") && CSVTranslatorMain.getLogInAndSignInPanel() != null) {
             JOptionPane.showMessageDialog(CSVTranslatorMain.getLogInAndSignInPanel(), "Password should be at least 6 characters");
         } else {
             System.out.println("Registering failed");
@@ -238,5 +238,4 @@ public class AuthHelper {
     public interface OnSignedInListener {
         void onSignedIn();
     }
-
 }
