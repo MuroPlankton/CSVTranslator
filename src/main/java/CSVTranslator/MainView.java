@@ -58,11 +58,13 @@ public class MainView {
     private int languageCount;
     private String libraryID = "";
     private String libraryName = "";
+    private String translationID = "";
 
     private final List<Pair<String, String>> responseList = new ArrayList<>();
     private final List<Pair<String, String>> translationIDList = new ArrayList<>();
 
     private final Runnable runUI = this::createUI;
+
 
     public final Runnable runUI() {
         return runUI;
@@ -110,7 +112,7 @@ public class MainView {
                 ExportDialog exportDialog = new ExportDialog(libraryID, mainPanel);
                 SwingUtilities.invokeLater(exportDialog.runUI());
             } else if (obj == newTranslation) {
-                clearTranslationTextFields();
+                addNewTranslation();
             }
         };
 
@@ -152,8 +154,15 @@ public class MainView {
 
     }
 
+    private void addNewTranslation() {
+
+//        translationID = UUID.randomUUID().toString();
+
+        clearTranslationTextFields();
+    }
+
     private void getTranslationContent(String translationName) {
-        String translationID = "";
+
         for (Pair<String, String> stringStringPair : translationIDList) {
             if (stringStringPair.getValue().equals(translationName)) {
                 translationID = stringStringPair.getKey();
@@ -167,7 +176,9 @@ public class MainView {
 
         JsonObject responseObject = JsonParser.parseString(response).getAsJsonObject();
 
+
         if (responseObject != null) {
+            //todo when trying to add a new translation to a language, and then updating it, a nullPointerException comes here, although it does not crash anything.
             String androidKey = responseObject.get("android_key").getAsString();
             String iosKey = responseObject.get("ios_key").getAsString();
             String webKey = responseObject.get("web_key").getAsString();
@@ -330,28 +341,40 @@ public class MainView {
         String language = languagesDropDown.getItemAt(languagesDropDown.getSelectedIndex());
         String translation = translationNameTextField2.getText();
         System.out.println("save pressed");
-        String translationID = UUID.randomUUID().toString();
+        if (translationID.equals("")) {
+            translationID = UUID.randomUUID().toString();
+        }
+        System.out.println(libraryID);
 
         String jsonBody = "{\n" +
                 "  \"android_key\":\"" + androidKey + "\",\n" +
                 "  \"ios_key\":\"" + iosKey + "\",\n" +
                 "  \"web_key\":\"" + webKey + "\",\n" +
                 "  \"name\":\"" + translationName + "\",\n" +
-                "  \"description\":\"" + translationDescription + "\",\n" +
-                "  \"translations\":{\n" +
-                "  \"" + language + "\":\"" + translation + "\"\n" +
-                "\t}\n" +
+                "  \"description\":\"" + translationDescription + "\"\n" +
                 "}\n";
 
-        System.out.println(libraryID);
-
         String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + "/texts/" + translationID + ".json?auth=" + authHelper.getIDToken();
+
         System.out.println(jsonBody);
         System.out.println(url);
         fireBaseRequests.patchData(url, jsonBody, MediaType.parse("application/json"));
 
+        addTranslationToALanguage(language, translation);
+
+        translationID = "";
         loadSingleLibraryContent(libraryName);
         clearTranslationTextFields();
+    }
+
+    private void addTranslationToALanguage(String language, String translation) {
+        String jsonBody2 = "{\n" +
+                "  \"" + language + "\":\"" + translation + "\"\n" +
+                "}";
+
+        String url2 = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + "/texts/" + translationID + "/translations.json?auth=" + authHelper.getIDToken();
+
+        fireBaseRequests.patchData(url2, jsonBody2, MediaType.parse("application/json"));
     }
 
     private void makeJMenu() {
