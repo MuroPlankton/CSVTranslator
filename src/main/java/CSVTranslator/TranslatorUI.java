@@ -210,6 +210,6 @@ public class TranslatorUI {
     }
 
     private void handleCsvToTranslateFiles() {
-        csvHandler.readCsvAndCreateTranslateFiles(languageToSearch.getSelectedItem().toString());
+//        csvHandler.readCsvAndCreateTranslateFiles(languageToSearch.getSelectedItem().toString());
     }
 }

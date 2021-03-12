@@ -9,9 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,13 +18,13 @@ public class CsvHandler {
     private static final Pattern CSV_PATTERN = Pattern.compile("\\s*(?:\"[^\"]*\"|(?:^|(?<=,))[^,]*)");
 
     private int linesHandled = 0;
-    private final Map<Pair<Integer, Integer>, OutPutFileWriter> writerMap = new HashMap<>();
+    private List<OutPutFileWriter> writerList = new ArrayList<>();
 
-    private final int ANDROID_INDEX = 0;
-    private final int IOS_INDEX = 1;
-    private final int WEB_ADMIN_INDEX = 2;
-    private final int WEB_MAIN_INDEX = 3;
-    private final int WEB_WIDGET_INDEX = 4;
+    private final String ANDROID = "android";
+    private final String IOS = "ios";
+    private final String WEB_ADMIN = "web-admin";
+    private final String WEB_MAIN = "web-main";
+    private final String WEB_WIDGET = "web-widget";
 
     private List<String> firstLineAsList;
 
@@ -44,69 +42,69 @@ public class CsvHandler {
         this.outputDir = chosenPath;
     }
 
-    public void handleTranslateData(String line) {
-        List<String> cellList = splitCSVLine(line);
+//    public void handleTranslateData(String line) {
+//        List<String> cellList = splitCSVLine(line);
+//
+//        if (linesHandled == 0) {
+//            if (selectedLang.equals(DEFAULT_SELECTED_LANG_VALUE)) {
+//                for (int langIndex = 5; langIndex < cellList.size(); langIndex++) {
+//                    //in this for loop we go trough every language
+//                    String lang = cellList.get(langIndex);
+//                    addWritersToList(langIndex, lang);
+//                }
+//            } else {
+//                int langIndex = cellList.indexOf(selectedLang);
+//                addWritersToList(langIndex, selectedLang);
+//            }
+//
+//        } else if (!cellList.isEmpty()) {
+//            for (Pair<Integer, Integer> pair : writerMap.keySet()) {
+//                int osIndex = pair.getKey();
+//                int langIndex = pair.getValue();
+//                String translation = null;
+//                String osKey = null;
+//
+//                if (cellList.size() > osIndex) {
+//                    osKey = cellList.get(osIndex);
+//                }
+//
+//                if (cellList.size() > langIndex) {
+//                    translation = cellList.get(langIndex);
+//                }
+//
+//                OutPutFileWriter writer = writerMap.get(pair);
+//                if (writer != null && isNotEmpty(osKey) && isNotEmpty(translation)) {
+//                    switch (osIndex) {
+//                        case ANDROID_INDEX:
+//                            writer.writeOneRow(String.format("\t<string name=\"%s\">%s</string>", osKey, translation), null, true);
+//                            break;
+//                        case IOS_INDEX:
+//                            writer.writeOneRow(String.format("\"%s\" = \"%s\";", osKey, translation), null, true);
+//                            break;
+//                        case WEB_ADMIN_INDEX:
+//                        case WEB_MAIN_INDEX:
+//                        case WEB_WIDGET_INDEX:
+//                            String comma = ",";
+//                            if (!writer.isFirstLineWritten()) {
+//                                comma = null;
+//
+//                                writer.writeOneRow(String.format("\"%s\" : \"%s\"", osKey, translation), comma, true);
+//                                //TODO: comma seems to always be null
+//                            }
+//                            break;
+//                    }
+//                }
+//            }
+//        }
+//        linesHandled++;
+//    }
 
-        if (linesHandled == 0) {
-            if (selectedLang.equals(DEFAULT_SELECTED_LANG_VALUE)) {
-                for (int langIndex = 5; langIndex < cellList.size(); langIndex++) {
-                    //in this for loop we go trough every language
-                    String lang = cellList.get(langIndex);
-                    addWritersToWriterMap(langIndex, lang);
-                }
-            } else {
-                int langIndex = cellList.indexOf(selectedLang);
-                addWritersToWriterMap(langIndex, selectedLang);
-            }
-
-        } else if (!cellList.isEmpty()) {
-            for (Pair<Integer, Integer> pair : writerMap.keySet()) {
-                int osIndex = pair.getKey();
-                int langIndex = pair.getValue();
-                String translation = null;
-                String osKey = null;
-
-                if (cellList.size() > osIndex) {
-                    osKey = cellList.get(osIndex);
-                }
-
-                if (cellList.size() > langIndex) {
-                    translation = cellList.get(langIndex);
-                }
-
-                OutPutFileWriter writer = writerMap.get(pair);
-                if (writer != null && isNotEmpty(osKey) && isNotEmpty(translation)) {
-                    switch (osIndex) {
-                        case ANDROID_INDEX:
-                            writer.writeOneRow(String.format("\t<string name=\"%s\">%s</string>", osKey, translation), null, true);
-                            break;
-                        case IOS_INDEX:
-                            writer.writeOneRow(String.format("\"%s\" = \"%s\";", osKey, translation), null, true);
-                            break;
-                        case WEB_ADMIN_INDEX:
-                        case WEB_MAIN_INDEX:
-                        case WEB_WIDGET_INDEX:
-                            String comma = ",";
-                            if (!writer.isFirstLineWritten()) {
-                                comma = null;
-
-                                writer.writeOneRow(String.format("\"%s\" : \"%s\"", osKey, translation), comma, true);
-                                //TODO: comma seems to always be null
-                            }
-                            break;
-                    }
-                }
-            }
-        }
-        linesHandled++;
-    }
-
-    private void addWritersToWriterMap(int langIndex, String lang) {
-        writerMap.put(new Pair<>(ANDROID_INDEX, langIndex), new OutPutFileWriter("android", lang, outputDir));
-        writerMap.put(new Pair<>(IOS_INDEX, langIndex), new OutPutFileWriter("ios", lang, outputDir));
-        writerMap.put(new Pair<>(WEB_ADMIN_INDEX, langIndex), new OutPutFileWriter("web-admin", lang, outputDir));
-        writerMap.put(new Pair<>(WEB_MAIN_INDEX, langIndex), new OutPutFileWriter("web-main", lang, outputDir));
-        writerMap.put(new Pair<>(WEB_WIDGET_INDEX, langIndex), new OutPutFileWriter("web-widget", lang, outputDir));
+    private void addWritersToList(String lang) {
+        writerList.add(new OutPutFileWriter("android", lang, outputDir));
+        writerList.add(new OutPutFileWriter("ios", lang, outputDir));
+        writerList.add(new OutPutFileWriter("web-admin", lang, outputDir));
+        writerList.add(new OutPutFileWriter("web-main", lang, outputDir));
+        writerList.add(new OutPutFileWriter("web-widget", lang, outputDir));
     }
 
     private boolean isNotEmpty(String text) {
@@ -114,23 +112,174 @@ public class CsvHandler {
     }
 
     public void exportLibrary(String libraryID, String outputFileType, String selectedLang, String outputDir) {
+        writerList.clear();
+        this.outputDir = outputDir;
         AuthHelper authHelper = AuthHelper.getInstance();
         FireBaseRequests fireBaseRequests = new FireBaseRequests();
         Pair<String, Boolean> libraryResponseInfo = fireBaseRequests.getData(String.format(
                 "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/%s.json?auth=%s",
                 libraryID, authHelper.getIDToken()));
 
-        JsonObject jsonObject = null;
+        JsonObject libraryObject = null;
         if (libraryResponseInfo.getValue()) {
-            jsonObject = JsonParser.parseString(libraryResponseInfo.getKey()).getAsJsonObject();
+            libraryObject = JsonParser.parseString(libraryResponseInfo.getKey()).getAsJsonObject();
+
             if (outputFileType.equals(".csv")) {
-                exportLibraryToCSV(jsonObject, selectedLang, outputDir);
+                writerList.add(new OutPutFileWriter("csv", selectedLang, outputDir));
+                String line = "android,ios,web-admin,web-main,web-widget";
+                List<String> langKeyList = new ArrayList<>();
+
+                if (selectedLang.equals("Every language")) {
+                    JsonObject langObject = libraryObject.getAsJsonObject("languages");
+
+                    for (String langKey : langObject.keySet()) {
+                        langKeyList.add(langKey);
+                        line += String.format(",%s", langKey);
+                    }
+                } else {
+                    line += String.format(",%s", selectedLang);
+                    langKeyList.add(selectedLang);
+                }
+
+                writerList.get(0).writeOneRow(line, null, true);
+            } else {
+                if (selectedLang.equals("Every language")) {
+                    JsonObject langObject = libraryObject.getAsJsonObject("languages");
+
+                    for (String langKey : langObject.keySet()) {
+                        addWritersToList(langKey);
+                    }
+                } else {
+                    addWritersToList(selectedLang);
+                }
             }
+
+            writeLinesToFiles(libraryObject);
+            stopWriters();
         }
-        //TODO: export logic
     }
 
-    private void exportLibraryToCSV(JsonObject libraryObject, String selectedLang, String outputDir) {
+    private void writeLinesToFiles(JsonObject libraryObject) {
+        JsonObject textsObject = libraryObject.getAsJsonObject("texts");
+
+        for (String textKey : textsObject.keySet()) {
+            JsonObject textObject = textsObject.getAsJsonObject(textKey);
+            System.out.println(textObject.get("name").getAsString());
+
+            for (OutPutFileWriter writer : writerList) {
+                String osKey = null;
+
+                try {
+                    switch (writer.getFileType()) {
+                        case ANDROID:
+                            osKey = textObject.get("android_key").getAsString();
+                            break;
+
+                        case IOS:
+                            osKey = textObject.get("ios_key").getAsString();
+                            break;
+
+                        case WEB_ADMIN:
+                            osKey = textObject.get("web_admin_key").getAsString();
+                            break;
+
+                        case WEB_MAIN:
+                            osKey = textObject.get("web_key").getAsString();
+                            break;
+
+                        case WEB_WIDGET:
+                            osKey = textObject.get("web_widget_key").getAsString();
+                            break;
+
+                        case "csv":
+                            osKey = "csv";
+                            break;
+                    }
+                } catch (NullPointerException e) {
+                    System.out.println("platform key not found");
+                }
+
+
+                JsonObject translationsObject = textObject.getAsJsonObject("translations");
+                String writerLang = writer.getLang();
+
+                String translation = null;
+                try {
+                    translation = (writerLang.equals("Every language")) ? "Every language" :
+                            translationsObject.get(writerLang).getAsString();
+                } catch (NullPointerException e) {
+                    System.out.println("Translation not found");
+                }
+
+
+                if (writer.getFileType().equals("csv")) {
+                    List<String> platformKeyList = new ArrayList<>();
+                    platformKeyList.add("android_key");
+                    platformKeyList.add("ios_key");
+                    platformKeyList.add("web_admin_key");
+                    platformKeyList.add("web_key");
+                    platformKeyList.add("web_widget_key");
+
+                    String line = textObject.get(platformKeyList.get(0)).getAsString();
+                    for (int index = 1; index < platformKeyList.size(); index++) {
+                        line += ",";
+                        try {
+                            line += String.format("%s", textObject.get(platformKeyList.get(index)).getAsString());
+                        } catch (NullPointerException e) {
+                            line += ",";
+                        }
+                    }
+
+                    if (translation.equals("Every language")) {
+                        for (String langKey : libraryObject.getAsJsonObject("languages").keySet()) {
+                            line += ",";
+                            try {
+                                line += String.format("%s", translationsObject.get(langKey).getAsString());
+                            } catch (NullPointerException e) {
+                                System.out.println("Translation not found");
+                            }
+                        }
+                    } else {
+                        line += ",";
+                        try {
+                            line += String.format("%s", translation);
+                        } catch (NullPointerException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    writer.writeOneRow(line, null, true);
+                } else {
+                    if (isNotEmpty(osKey) && isNotEmpty(translation)) {
+                        switch (writer.getFileType()) {
+                            case ANDROID:
+                                writer.writeOneRow(String.format("\t<string name=\"%s\">%s</string>", osKey, translation), null, true);
+                                break;
+
+                            case IOS:
+                                writer.writeOneRow(String.format("\"%s\" = \"%s\";", osKey, translation), null, true);
+                                break;
+
+                            case WEB_ADMIN:
+                            case WEB_MAIN:
+                            case WEB_WIDGET:
+                                writer.writeOneRow(String.format("\"%s\" : \"%s\"", osKey, translation),
+                                        (writer.isFirstLineWritten()) ? "," : null, true);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void stopWriters() {
+        for (OutPutFileWriter writer : writerList) {
+            writer.stopWriting();
+        }
+    }
+
+    private void exportLibraryToCSV(JsonObject libraryObject, String selectedLang) {
         OutPutFileWriter csvWriter = new OutPutFileWriter("csv", selectedLang, outputDir);
         String line = "android,ios,web-admin,web-main,web-widget";
         List<String> langKeyList = new ArrayList<>();
@@ -186,14 +335,14 @@ public class CsvHandler {
         void handleCsvLine(String line);
     }
 
-    public void readCsvAndCreateTranslateFiles(String selectedLang) {
-        writerMap.clear();
-        linesHandled = 0;
-        this.selectedLang = selectedLang;
-
-        readCSV(this::handleTranslateData);
-        finishWriterWriting();
-    }
+//    public void readCsvAndCreateTranslateFiles(String selectedLang) {
+//        writerMap.clear();
+//        linesHandled = 0;
+//        this.selectedLang = selectedLang;
+//
+//        readCSV(this::handleTranslateData);
+//        finishWriterWriting();
+//    }
 
     public void readCSV(CsvLineHandlerInterface lineHandler) {
         BufferedReader br = null;
@@ -220,10 +369,10 @@ public class CsvHandler {
     }
 
     private void finishWriterWriting() {
-        for (Pair<Integer, Integer> pair : writerMap.keySet()) {
-            OutPutFileWriter writer = writerMap.get(pair);
-            writer.stopWriting();
-        }
+//        for (Pair<Integer, Integer> pair : writerMap.keySet()) {
+//            OutPutFileWriter writer = writerMap.get(pair);
+//            writer.stopWriting();
+//        }
     }
 
     public List<String> findLanguages(String pathToFile) {
