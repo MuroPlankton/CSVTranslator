@@ -1,6 +1,8 @@
 package CSVTranslator;
 
 import CSVTranslator.auth.AuthHelper;
+import CSVTranslator.importexport.ExportDialog;
+import CSVTranslator.importexport.ImportViewClass;
 import CSVTranslator.util.Pair;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -365,7 +367,8 @@ public class MainView {
             Object obj = actionEvent.getSource();
 
             if (obj == importFile) {
-                System.out.println("import pressed");
+                ImportViewClass importViewClass = new ImportViewClass(mainPanel);
+                SwingUtilities.invokeLater(importViewClass.runUI());
             } else if (obj == profile) {
                 System.out.println("profile pressed");
             } else if (obj == addNewFile) {
