@@ -10,7 +10,10 @@ import okhttp3.MediaType;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -276,6 +279,7 @@ public class MainView {
                 System.out.println("Languages: " + languages);
 
                 if (languages != null) {
+                    languagesDropDown.removeAllItems();
                     for (String language : languages.keySet()) {
                         languagesDropDown.addItem(languages.get(language).getAsString());
                     }
@@ -341,10 +345,7 @@ public class MainView {
 
         fireBaseRequests.patchData(librariesUrl, librariesJsonBody, MediaType.parse("application/json"));
 
-
-        //todo when the user creates a new library, that library should be shown in the libraryList by calling addAllLibrariesToList
-        // , but for some reason calling it again after initial launch doesn't work properly
-
+        responseList.add(new Pair<>(libraryID, libraryName));
         addAllLibrariesToList();
     }
 
@@ -371,6 +372,9 @@ public class MainView {
         String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + "/languages.json?auth=" + authHelper.getIDToken();
 
         fireBaseRequests.patchData(url, jsonBody, MediaType.parse("application/json"));
+
+        languageCodeTextField.setText("");
+        languageNameTextField.setText("");
 
         languagesDropDown.addItem(languageName);
     }
