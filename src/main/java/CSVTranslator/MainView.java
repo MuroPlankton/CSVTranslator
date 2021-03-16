@@ -8,15 +8,10 @@ import okhttp3.MediaType;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class MainView {
     FireBaseRequests fireBaseRequests = new FireBaseRequests();
@@ -43,7 +38,7 @@ public class MainView {
     private JTextField androidKeyTextField;
     private JTextField iosKeyTextField;
     private JTextField webKeyTextField;
-    private JTextField translationNameTextField2;
+    private JTextField translationTextField;
     private JButton saveButton;
     private JLabel languageCountLabel;
     private JLabel languageCodeLabel;
@@ -103,6 +98,17 @@ public class MainView {
         frame.setVisible(true);
     }
 
+    private final ActionListener actionListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Object object = e.getSource();
+            if (object == languagesDropDown && (!libraryID.equals("") && !translationID.equals(""))) {
+                System.out.println("toimii");
+                getTranslationForLanguage();
+            }
+        }
+    };
+
     public MainView() {
         ActionListener buttonListener = actionEvent -> {
             Object obj = actionEvent.getSource();
@@ -118,29 +124,33 @@ public class MainView {
             }
         };
 
-
         addButton.addActionListener(buttonListener);
         saveButton.addActionListener(buttonListener);
         exportButton.addActionListener(buttonListener);
         newTranslation.addActionListener(buttonListener);
+        languagesDropDown.addActionListener(actionListener);
 
         loadAllLibraries();
 
         ListSelectionListener listSelectionListener = actionEvent -> {
-            Object obj = actionEvent.getSource();
-            if (obj == libraryList) {
-                System.out.println("pressed");
-                clearTranslationTextFields();
-                libraryContentJList.removeAll();
-                System.out.println(libraryList.getSelectedValue());
-                libraryName = libraryList.getSelectedValue();
-                loadSingleLibraryContent(libraryName);
-            } else if (obj == libraryContentJList) {
-                System.out.println("clicked");
-                clearTranslationTextFields();
-                getTranslationContent(libraryContentJList.getSelectedValue());
+            System.out.println(actionEvent.getValueIsAdjusting());
+            if (actionEvent.getValueIsAdjusting()) {
+                Object obj = actionEvent.getSource();
+                if (obj == libraryList) {
+                    System.out.println("pressed");
+                    clearTranslationTextFields();
+                    libraryContentJList.removeAll();
+                    System.out.println(libraryList.getSelectedValue());
+                    libraryName = libraryList.getSelectedValue();
+                    loadSingleLibraryContent(libraryName);
+                } else if (obj == libraryContentJList) {
+                    System.out.println("clicked");
+                    clearTranslationTextFields();
+                    getTranslationContent(libraryContentJList.getSelectedValue());
+                }
             }
         };
+
         libraryList.addListSelectionListener(listSelectionListener);
         libraryContentJList.addListSelectionListener(listSelectionListener);
 
@@ -155,35 +165,37 @@ public class MainView {
                 saveLibraryName();
             }
         });
+
     }
 
     private void addNewTranslation() {
+        System.out.println(translationID);
+        translationID = "";
+        libraryContentJList.clearSelection();
         clearTranslationTextFields();
     }
 
     private void getTranslationContent(String translationName) {
 
-        for (Pair<String, String> stringStringPair : translationIDList) {
-            if (stringStringPair.getValue().equals(translationName)) {
-                translationID = stringStringPair.getKey();
+        for (Pair<String, String> translationValue : translationIDList) {
+            if (translationValue.getValue().equals(translationName)) {
+                translationID = translationValue.getKey();
             }
         }
         String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + "/texts/" + translationID + ".json?auth=" + authHelper.getIDToken();
-        parseTranslationContent(fireBaseRequests.getData(url).getKey());
+        setTranslationContent(fireBaseRequests.getData(url).getKey());
     }
 
-    private void parseTranslationContent(String response) {
-
+    private void setTranslationContent(String response) {
         JsonObject responseObject = JsonParser.parseString(response).getAsJsonObject();
+        System.out.println("Response: " + responseObject);
+        System.out.println("Translation ID: " + translationID);
         if (responseObject != null) {
-            //todo when trying to add a new translation to a language, and then updating it, a nullPointerException comes here, although it does not crash anything.
             String androidKey = responseObject.get("android_key").getAsString();
             String iosKey = responseObject.get("ios_key").getAsString();
             String webKey = responseObject.get("web_key").getAsString();
             String name = responseObject.get("name").getAsString();
             String description = responseObject.get("description").getAsString();
-
-//
 
             System.out.println(androidKey + ", " + iosKey + ", " + webKey + ", " + name + ", " + description);
 
@@ -193,42 +205,54 @@ public class MainView {
             iosKeyTextField.setText(iosKey);
             webKeyTextField.setText(webKey);
 
-            JsonObject translations = responseObject.getAsJsonObject("translations");
+            JsonObject translationsObject = responseObject.getAsJsonObject("translations");
+            System.out.println("All translations :" + translationsObject);
 
-            languagesDropDown.addActionListener(e -> {
-                if (translations.get((String) languagesDropDown.getSelectedItem()).getAsString().equals(null)) {
-                    translationNameTextField2.setText("");
-                } else {
-                    String translation = translations.get(Objects.requireNonNull(languagesDropDown.getSelectedItem()).toString()).getAsString();
-                    translationNameTextField2.setText(translation);
-                }
-            });
+            getTranslationForLanguage();
+        }
+    }
+
+    private void getTranslationForLanguage() {
+        String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + "/texts/" + translationID + "/translations.json?auth=" + authHelper.getIDToken();
+        String response = fireBaseRequests.getData(url).getKey();
+
+        JsonObject responseObject = JsonParser.parseString(response).getAsJsonObject();
+        System.out.println("Response object: " + responseObject);
+
+        if (responseObject.get((String) languagesDropDown.getSelectedItem()) != null) {
+            String translation = responseObject.get((String) languagesDropDown.getSelectedItem()).getAsString();
+            translationTextField.setText(translation);
+            System.out.println(translation);
+        } else {
+            translationTextField.setText("");
+            System.out.println("No translation for this language");
         }
     }
 
     private void loadSingleLibraryContent(String library) {
         libraryNameTextField.setText(libraryName);
 
-        for (Pair<String, String> stringStringPair : responseList) {
-            if (stringStringPair.getValue().equals(library)) {
-                libraryID = stringStringPair.getKey();
-                String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + ".json?auth=" + authHelper.getIDToken();
-                parseLibraryData(fireBaseRequests.getData(url).getKey());
+        for (Pair<String, String> responseValue : responseList) {
+            if (responseValue.getValue().equals(library)) {
+                libraryID = responseValue.getKey();
             }
         }
+        String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + ".json?auth=" + authHelper.getIDToken();
+        parseLibraryData(fireBaseRequests.getData(url).getKey());
     }
+
+    private final DefaultListModel<String> libraryContentJListListModel = new DefaultListModel<>();
 
     private void parseLibraryData(String response) {
         if (response != null) {
 
-            DefaultListModel<String> defaultListModel = new DefaultListModel<>();
-            defaultListModel.removeAllElements();
+            libraryContentJListListModel.removeAllElements();
 
-            System.out.println(defaultListModel);
+            System.out.println(libraryContentJListListModel);
             translationIDList.clear();
 
             JsonObject responseObject = JsonParser.parseString(response).getAsJsonObject();
-            if (responseObject.has("texts") && responseObject != null) {
+            if (responseObject.has("texts")) {
                 JsonObject singleTranslationObject = responseObject.getAsJsonObject("texts");
 
                 for (String translationID : singleTranslationObject.keySet()) {
@@ -242,24 +266,25 @@ public class MainView {
                     System.out.println(translationName);
                     translationIDList.add(new Pair<>(translationID, translationName));
 
-                    defaultListModel.addElement(translationName);
+                    libraryContentJListListModel.addElement(translationName);
                 }
 
                 JsonObject languages = responseObject.getAsJsonObject("languages");
                 System.out.println("Response: " + responseObject);
                 System.out.println("Languages: " + languages);
+
                 if (languages != null) {
                     for (String language : languages.keySet()) {
                         languagesDropDown.addItem(languages.get(language).getAsString());
                     }
                 }
 
-                System.out.println(defaultListModel);
+                System.out.println(libraryContentJListListModel);
             } else {
                 System.out.println("no texts found");
             }
 
-            libraryContentJList.setModel(defaultListModel);
+            libraryContentJList.setModel(libraryContentJListListModel);
         }
     }
 
@@ -284,8 +309,8 @@ public class MainView {
         DefaultListModel<String> defaultListModel = new DefaultListModel<>();
         defaultListModel.removeAllElements();
 
-        for (Pair<String, String> stringStringPair : responseList) {
-            defaultListModel.addElement(stringStringPair.getValue());
+        for (Pair<String, String> responseValue : responseList) {
+            defaultListModel.addElement(responseValue.getValue());
         }
         libraryList.setModel(defaultListModel);
     }
@@ -346,7 +371,6 @@ public class MainView {
         fireBaseRequests.patchData(url, jsonBody, MediaType.parse("application/json"));
 
         languagesDropDown.addItem(languageName);
-
     }
 
     private void addTranslationToLibraries() {
@@ -356,7 +380,7 @@ public class MainView {
         String iosKey = iosKeyTextField.getText();
         String webKey = webKeyTextField.getText();
         String language = languagesDropDown.getItemAt(languagesDropDown.getSelectedIndex());
-        String translation = translationNameTextField2.getText();
+        String translation = translationTextField.getText();
         System.out.println("save pressed");
         if (translationID.equals("")) {
             translationID = UUID.randomUUID().toString();
@@ -379,8 +403,14 @@ public class MainView {
 
         addTranslationToALanguage(language, translation);
 
+        translationIDList.add(new Pair<>(translationID, translationName));
         translationID = "";
-        loadSingleLibraryContent(libraryName);
+
+        if (!libraryContentJListListModel.contains(translationName)) {
+            libraryContentJListListModel.addElement(translationName);
+            libraryContentJList.setModel(libraryContentJListListModel);
+        }
+        libraryContentJList.clearSelection();
         clearTranslationTextFields();
     }
 
@@ -424,17 +454,13 @@ public class MainView {
         frame.setJMenuBar(jMenuBar);
     }
 
-//    public void addLanguageToDropDown(String language) {
-//        languagesDropDown.addItem(language);
-//    }
-
     private void clearTranslationTextFields() {
         translationNameTextField.setText("");
         translationDescriptionTextField.setText("");
         androidKeyTextField.setText("");
         iosKeyTextField.setText("");
         webKeyTextField.setText("");
-        translationNameTextField2.setText("");
+        translationTextField.setText("");
     }
 
 //    public static void main(String[] args) {
