@@ -1,6 +1,9 @@
-package CSVTranslator;
+package CSVTranslator.importexport;
 
+import CSVTranslator.FireBaseRequests;
 import CSVTranslator.auth.AuthHelper;
+import CSVTranslator.importexport.CsvHandler;
+import CSVTranslator.importexport.LibraryExporter;
 import CSVTranslator.util.Pair;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -38,9 +41,9 @@ public class ExportDialog extends JDialog {
     }
 
     private void createUI() {
-        frame = new JFrame("LogInAndSignIn");
+        frame = new JFrame("Export");
         frame.setContentPane(contentPane);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLocationRelativeTo(calledFrom);
         frame.pack();
         frame.setVisible(true);
@@ -49,7 +52,6 @@ public class ExportDialog extends JDialog {
     public ExportDialog(String libraryID, Component calledFrom) {
         this.calledFrom = calledFrom;
         this.libraryID = libraryID;
-        setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(leftButton);
 
@@ -58,7 +60,6 @@ public class ExportDialog extends JDialog {
         Pair<String, Boolean> langResponseInfo = new FireBaseRequests().getData(String.format(
                 "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/%s/languages.json" +
                         "?auth=%s", libraryID, AuthHelper.getInstance().getIDToken()));
-        System.out.println(String.format("Lang response json: %s", langResponseInfo.getKey()));
         if (langResponseInfo.getValue()) {
             JsonObject langInfoObject = JsonParser.parseString(langResponseInfo.getKey()).getAsJsonObject();
             for (String langKey : langInfoObject.keySet()) {
@@ -83,7 +84,7 @@ public class ExportDialog extends JDialog {
         });
 
         // call onCancel() when cross is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 onCancel();
@@ -124,7 +125,6 @@ public class ExportDialog extends JDialog {
     }
 
     private void onCancel() {
-        System.out.println(rightButton.getText());
         switch (rightButton.getText()) {
             case "Custom":
                 dirChooser();
@@ -169,8 +169,8 @@ public class ExportDialog extends JDialog {
     }
 
     private void finalizeExportDialog(String outputFileType) {
-        CsvHandler csvHandler = new CsvHandler();
-        csvHandler.exportLibrary(libraryID, outputFileType, langComboBox.getSelectedItem().toString(), outputPath);
+        LibraryExporter exporter = new LibraryExporter();
+        exporter.exportLibrary(libraryID, outputFileType, langComboBox.getSelectedItem().toString(), outputPath);
         dispose();
     }
 }

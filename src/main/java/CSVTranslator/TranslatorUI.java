@@ -1,5 +1,7 @@
 package CSVTranslator;
 
+import CSVTranslator.importexport.CsvHandler;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
@@ -45,7 +47,7 @@ public class TranslatorUI {
             fileReader = new Scanner(saveFile);
             String fileName = fileReader.nextLine();
             System.out.println("This is the path of the last visited location: " + fileName);
-            csvHandler.setFileName(fileName);
+//            csvHandler.setFileName(fileName);
             languages = (csvHandler.findLanguages(fileName));
             fileReader.close();
         } catch (FileNotFoundException e) {
@@ -141,7 +143,7 @@ public class TranslatorUI {
             if (folderSelectorEnabler.isSelected()) {
                 dirChooser(outputDirLabel, folderSelectorEnabler);
             } else {
-                csvHandler.setOutputDir(null);
+//                csvHandler.setOutputDir(null);
                 outputDirLabel.setText("");
             }
         });
@@ -164,7 +166,7 @@ public class TranslatorUI {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             String chosenPath = file.getAbsolutePath();
-            csvHandler.setFileName(chosenPath);
+//            csvHandler.setFileName(chosenPath);
             filePath.setText(chosenPath);
 
             saveLastCsvPath(chosenPath);
@@ -184,7 +186,7 @@ public class TranslatorUI {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File outputDir = directoryChooser.getSelectedFile();
             String chosenPath = outputDir.getAbsolutePath();
-            csvHandler.setOutputDir(chosenPath);
+//            csvHandler.setOutputDir(chosenPath);
             outputDirLabel.setText(chosenPath);
         } else {
             customDirChosen.setSelected(false);

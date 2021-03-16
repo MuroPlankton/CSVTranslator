@@ -1,4 +1,4 @@
-package CSVTranslator;
+package CSVTranslator.importexport;
 
 import java.io.File;
 import java.io.FileWriter;
