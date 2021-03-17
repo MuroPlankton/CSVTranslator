@@ -39,7 +39,7 @@ public class MainView {
     private JTextField translationDescriptionTextField;
     private JTextField androidKeyTextField;
     private JTextField iosKeyTextField;
-    private JTextField webKeyTextField;
+    private JTextField webAdminTextField;
     private JTextField translationTextField;
     private JButton saveButton;
     private JLabel languageCountLabel;
@@ -48,13 +48,17 @@ public class MainView {
     private JLabel translationNameLabel;
     private JLabel translationDescriptionLabel;
     private JLabel iosKeyLabel;
-    private JLabel webKeyLabel;
+    private JLabel webAdminLabel;
     private JLabel languageSpinnerLabel;
     private JLabel translationsLabel;
     private JLabel androidKeyLabel;
     private JComboBox<String> languagesDropDown;
     private JTextField libraryNameTextField;
     private JButton exportButton;
+    private JTextField webMainTextField;
+    private JTextField webWidgetTextField;
+    private JLabel webMainLabel;
+    private JLabel webWidgetLabel;
 
     private int languageCount;
     private String libraryID = "";
@@ -216,17 +220,21 @@ public class MainView {
         if (responseObject != null) {
             String androidKey = responseObject.get("android_key").getAsString();
             String iosKey = responseObject.get("ios_key").getAsString();
-            String webKey = responseObject.get("web_key").getAsString();
+            String webMainKey = responseObject.get("web_key").getAsString();
+            String webAdminKey = responseObject.get("web_admin_key").getAsString();
+            String webWidgetKey = responseObject.get("web_admin_key").getAsString();
             String name = responseObject.get("name").getAsString();
             String description = responseObject.get("description").getAsString();
 
-            System.out.println(androidKey + ", " + iosKey + ", " + webKey + ", " + name + ", " + description);
+            System.out.println(androidKey + ", " + iosKey + ", " + webMainKey + ", " + name + ", " + description);
 
             translationNameTextField.setText(name);
             translationDescriptionTextField.setText(description);
             androidKeyTextField.setText(androidKey);
             iosKeyTextField.setText(iosKey);
-            webKeyTextField.setText(webKey);
+            webAdminTextField.setText(webAdminKey);
+            webMainTextField.setText(webMainKey);
+            webWidgetTextField.setText(webWidgetKey);
 
             JsonObject translationsObject = responseObject.getAsJsonObject("translations");
             System.out.println("All translations :" + translationsObject);
@@ -395,7 +403,9 @@ public class MainView {
         String translationDescription = translationDescriptionTextField.getText();
         String androidKey = androidKeyTextField.getText();
         String iosKey = iosKeyTextField.getText();
-        String webKey = webKeyTextField.getText();
+        String webAdminKey = webAdminTextField.getText();
+        String webMainKey = webMainTextField.getText();
+        String webWigdetKey = webWidgetTextField.getText();
         String language = languagesDropDown.getItemAt(languagesDropDown.getSelectedIndex());
         String translation = translationTextField.getText();
         System.out.println("save pressed");
@@ -407,7 +417,9 @@ public class MainView {
         String jsonBody = "{\n" +
                 "  \"android_key\":\"" + androidKey + "\",\n" +
                 "  \"ios_key\":\"" + iosKey + "\",\n" +
-                "  \"web_key\":\"" + webKey + "\",\n" +
+                "  \"web_key\":\"" + webMainKey + "\",\n" +
+                "  \"web_admin_key\":\"" + webAdminKey + "\",\n" +
+                "  \"web_widget_key\":\"" + webWigdetKey + "\",\n" +
                 "  \"name\":\"" + translationName + "\",\n" +
                 "  \"description\":\"" + translationDescription + "\"\n" +
                 "}\n";
@@ -477,7 +489,9 @@ public class MainView {
         translationDescriptionTextField.setText("");
         androidKeyTextField.setText("");
         iosKeyTextField.setText("");
-        webKeyTextField.setText("");
+        webAdminTextField.setText("");
+        webWidgetTextField.setText("");
+        webMainTextField.setText("");
         translationTextField.setText("");
         translationTextField.setText("");
     }
