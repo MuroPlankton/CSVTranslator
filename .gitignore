@@ -51,3 +51,4 @@ settings.gradle
 .gradle/
 .idea/
 refreshTokenFile.txt
+MANIFEST.MF

@@ -88,10 +88,9 @@ public class CsvHandler {
                         case WEB_WIDGET_INDEX:
                             String comma = ",";
                             if (!writer.isFirstLineWritten()) {
-                                comma = null;
+//                                comma = null;
 
                                 writer.writeOneRow(String.format("\"%s\" : \"%s\"", osKey, translation), comma, true);
-                                //TODO: comma seems to always be null
                             }
                             break;
                     }

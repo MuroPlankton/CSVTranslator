@@ -7,7 +7,7 @@ import java.io.IOException;
 public class OutPutFileWriter {
     private FileWriter writer;
 
-    private final String fileType/*os*/;
+    private final String fileType;
     private final String lang;
 
     private final String ANDROID = "android";
@@ -19,8 +19,8 @@ public class OutPutFileWriter {
 
     private boolean isFirstLineWritten = false;
 
-    public OutPutFileWriter(String fileType/*os*/, String lang, String translationFolder) {
-        this.fileType = fileType/*os*/;
+    public OutPutFileWriter(String fileType, String lang, String translationFolder) {
+        this.fileType = fileType;
         this.lang = lang;
 
         String upperDir;

@@ -18,8 +18,8 @@ public class MainView {
     FireBaseRequests fireBaseRequests = new FireBaseRequests();
     AuthHelper authHelper = AuthHelper.getInstance();
 
-    private JFrame frame;
     private JPanel mainPanel;
+    private JFrame frame;
     private JPanel mainView;
     private JPanel secondPanel;
     private JPanel editTranslationsPane;
@@ -357,29 +357,31 @@ public class MainView {
     private void makeJMenu() {
         JMenu jMenu = new JMenu("Options");
         JMenuBar jMenuBar = new JMenuBar();
-        JMenuItem importFile = new JMenuItem("Import");
-        JMenuItem profile = new JMenuItem("Profile");
-        JMenuItem addNewFile = new JMenuItem("Add new library");
+        JMenuItem importFileItem = new JMenuItem("Import");
+        JMenuItem profileItem = new JMenuItem("Profile");
+        JMenuItem newLibraryItem = new JMenuItem("Add new library");
 
         ActionListener buttonListener = actionEvent -> {
             Object obj = actionEvent.getSource();
 
-            if (obj == importFile) {
+            if (obj == importFileItem) {
                 System.out.println("import pressed");
-            } else if (obj == profile) {
+            } else if (obj == profileItem) {
                 System.out.println("profile pressed");
-            } else if (obj == addNewFile) {
+                Profile profile = new Profile();
+                SwingUtilities.invokeLater(profile.runUI());
+            } else if (obj == newLibraryItem) {
                 addNewLibrary();
             }
         };
 
-        importFile.addActionListener(buttonListener);
-        profile.addActionListener(buttonListener);
-        addNewFile.addActionListener(buttonListener);
+        importFileItem.addActionListener(buttonListener);
+        profileItem.addActionListener(buttonListener);
+        newLibraryItem.addActionListener(buttonListener);
 
-        jMenu.add(addNewFile);
-        jMenu.add(profile);
-        jMenu.add(importFile);
+        jMenu.add(newLibraryItem);
+        jMenu.add(profileItem);
+        jMenu.add(importFileItem);
         jMenuBar.add(jMenu);
         frame.setJMenuBar(jMenuBar);
     }
@@ -396,6 +398,8 @@ public class MainView {
         webKeyTextField.setText("");
         translationNameTextField2.setText("");
     }
+
+    public void dispose() { frame.dispose(); }
 
 //    public static void main(String[] args) {
 //        JFrame frame = new JFrame("Main view");

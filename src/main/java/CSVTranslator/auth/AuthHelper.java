@@ -184,6 +184,13 @@ public class AuthHelper {
         }
     }
 
+    public void emptyInformationOnSignOut() {
+        refreshTokenFile.delete();
+        idToken = null;
+        refreshToken = null;
+        userID = null;
+    }
+
     private void saveRefreshTokenToFile() {
         try {
             FileWriter tokenWriter = new FileWriter(System.getProperty("user.dir") + "\\refreshTokenFile.txt");
