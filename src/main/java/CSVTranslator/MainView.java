@@ -236,19 +236,21 @@ public class MainView {
     }
 
     private void getTranslationForLanguage() {
-        String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + "/texts/" + translationID + "/translations.json?auth=" + authHelper.getIDToken();
-        String response = fireBaseRequests.getData(url).getKey();
+        if (languagesDropDown.getSelectedItem() != null) {
+            String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + "/texts/" + translationID + "/translations.json?auth=" + authHelper.getIDToken();
+            String response = fireBaseRequests.getData(url).getKey();
 
-        JsonObject responseObject = JsonParser.parseString(response).getAsJsonObject();
-        System.out.println("Response object: " + responseObject);
+            JsonObject responseObject = JsonParser.parseString(response).getAsJsonObject();
+            System.out.println("Response object: " + responseObject);
 
-        if (responseObject.get((String) languagesDropDown.getSelectedItem()) != null) {
-            String translation = responseObject.get((String) languagesDropDown.getSelectedItem()).getAsString();
-            translationTextField.setText(translation);
-            System.out.println(translation);
-        } else {
-            translationTextField.setText("");
-            System.out.println("No translation for this language");
+            if (responseObject.get((String) languagesDropDown.getSelectedItem()) != null) {
+                String translation = responseObject.get((String) languagesDropDown.getSelectedItem()).getAsString();
+                translationTextField.setText(translation);
+                System.out.println(translation);
+            } else {
+                translationTextField.setText("");
+                System.out.println("No translation for this language");
+            }
         }
     }
 
@@ -337,44 +339,38 @@ public class MainView {
     }
 
     private void addNewLibrary() {
+        clearTranslationTextFields();
+        libraryList.clearSelection();
+        libraryContentJListListModel.removeAllElements();
+
         System.out.println("new library");
         String userLibrariesUrl = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/" + authHelper.getUserID() + ".json?auth=" + authHelper.getIDToken();
 
         String libraryID = UUID.randomUUID().toString();
         String libraryName = JOptionPane.showInputDialog(frame, "Enter a name for the created library");
 
-        String userLibrariesJsonBody = "{\n" +
-                "  \"" + libraryID + "\":\"" + libraryName + "\"\n" +
-                "}";
+        if (libraryName != null) {
+            String userLibrariesJsonBody = "{\n" +
+                    "  \"" + libraryID + "\":\"" + libraryName + "\"\n" +
+                    "}";
 
-        fireBaseRequests.patchData(userLibrariesUrl, userLibrariesJsonBody, MediaType.parse("application/json"));
+            fireBaseRequests.patchData(userLibrariesUrl, userLibrariesJsonBody, MediaType.parse("application/json"));
 
-        String librariesUrl = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + ".json?auth=" + authHelper.getIDToken();
+            String librariesUrl = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + ".json?auth=" + authHelper.getIDToken();
 
-        String librariesJsonBody = "{\n" +
-                "  \"library_name\":\"" + libraryName + "\",\n" +
-                "  \"users\":{\n" +
-                "    \"" + authHelper.getUserID() + "\":\"" + authHelper.getDisplayName() + "\"\n" +
-                "  }\n" +
-                "}";
+            String librariesJsonBody = "{\n" +
+                    "  \"library_name\":\"" + libraryName + "\",\n" +
+                    "  \"users\":{\n" +
+                    "    \"" + authHelper.getUserID() + "\":\"" + authHelper.getDisplayName() + "\"\n" +
+                    "  }\n" +
+                    "}";
 
-        fireBaseRequests.patchData(librariesUrl, librariesJsonBody, MediaType.parse("application/json"));
+            fireBaseRequests.patchData(librariesUrl, librariesJsonBody, MediaType.parse("application/json"));
 
-        responseList.add(new Pair<>(libraryID, libraryName));
-        addAllLibrariesToList();
+            responseList.add(new Pair<>(libraryID, libraryName));
+            addAllLibrariesToList();
+        }
     }
-
-//    private void addNewTranslation() {
-//        String translationID = UUID.randomUUID().toString();
-//
-//        String jsonBody = "";
-//
-//        String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + "/texts/" + translationID + ".json?auth=" + authHelper.getIDToken();
-//        fireBaseRequests.patchData(url, jsonBody, MediaType.parse("application/json"));
-//        languageCountLabel.setText(String.format("amount of languages: $d", languageCount));
-
-//        clearTranslationTextFields();
-//    }
 
     private void addNewLanguage() {
         String languageCode = languageCodeTextField.getText();
@@ -482,6 +478,7 @@ public class MainView {
         androidKeyTextField.setText("");
         iosKeyTextField.setText("");
         webKeyTextField.setText("");
+        translationTextField.setText("");
         translationTextField.setText("");
     }
 
