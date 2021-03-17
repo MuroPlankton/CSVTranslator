@@ -1,4 +1,4 @@
-package CSVTranslator;
+package CSVTranslator.importexport;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -84,17 +84,25 @@ public class OutPutFileWriter {
         }
     }
 
-    // previousLineAppendic: what character do you want to add to the previous line
-    // newLine: should there be a line before this row
-    public void writeOneRow(String row, String previousLineAppendic, boolean newLine) {
-        isFirstLineWritten = true;
-        internalWriteOneRow(row, previousLineAppendic, newLine);
+    public String getFileType() {
+        return fileType;
     }
 
-    private void internalWriteOneRow(String row, String previousLineAppendic, boolean newLine) {
+    public String getLang() {
+        return lang;
+    }
+
+    // previousLineAppendic: what character do you want to add to the previous line
+    // newLine: should there be a line before this row
+    public void writeOneRow(String row, String previousLineAppendix, boolean newLine) {
+        isFirstLineWritten = true;
+        internalWriteOneRow(row, previousLineAppendix, newLine);
+    }
+
+    private void internalWriteOneRow(String row, String previousLineAppendix, boolean newLine) {
         try {
-            if (previousLineAppendic != null) {
-                writer.append(previousLineAppendic);
+            if (previousLineAppendix != null) {
+                writer.append(previousLineAppendix);
             }
             if (newLine) {
                 writer.write(System.lineSeparator());
