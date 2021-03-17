@@ -10,10 +10,7 @@ import okhttp3.MediaType;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -115,6 +112,26 @@ public class MainView {
     };
 
     public MainView() {
+        languageCodeTextField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if ((languageCodeTextField.getText() + e.getKeyChar()).length() > 2) {
+                    e.consume();
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
+
+
         ActionListener buttonListener = actionEvent -> {
             Object obj = actionEvent.getSource();
             if (obj == addButton) {
@@ -180,6 +197,7 @@ public class MainView {
         clearTranslationTextFields();
     }
 
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void getTranslationContent(String translationName) {
 
         for (Pair<String, String> translationValue : translationIDList) {
@@ -234,6 +252,7 @@ public class MainView {
         }
     }
 
+    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
     private void loadSingleLibraryContent(String library) {
         libraryNameTextField.setText(libraryName);
 
@@ -252,8 +271,6 @@ public class MainView {
         if (response != null) {
 
             libraryContentJListListModel.removeAllElements();
-
-            System.out.println(libraryContentJListListModel);
             translationIDList.clear();
 
             JsonObject responseObject = JsonParser.parseString(response).getAsJsonObject();
@@ -274,22 +291,20 @@ public class MainView {
                     libraryContentJListListModel.addElement(translationName);
                 }
 
-                JsonObject languages = responseObject.getAsJsonObject("languages");
-                System.out.println("Response: " + responseObject);
-                System.out.println("Languages: " + languages);
-
-                if (languages != null) {
-                    languagesDropDown.removeAllItems();
-                    for (String language : languages.keySet()) {
-                        languagesDropDown.addItem(languages.get(language).getAsString());
-                    }
-                }
-
                 System.out.println(libraryContentJListListModel);
             } else {
                 System.out.println("no texts found");
             }
+            JsonObject languages = responseObject.getAsJsonObject("languages");
+            System.out.println("Response: " + responseObject);
+            System.out.println("Languages: " + languages);
 
+            languagesDropDown.removeAllItems();
+            if (languages != null) {
+                for (String language : languages.keySet()) {
+                    languagesDropDown.addItem(languages.get(language).getAsString());
+                }
+            }
             libraryContentJList.setModel(libraryContentJListListModel);
         }
     }
