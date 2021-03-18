@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="CSVTranslator.MainView">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="CSVTranslator.mainView.MainView">
   <grid id="27dc6" binding="mainPanel" layout-manager="GridBagLayout">
     <constraints>
-      <xy x="20" y="20" width="1000" height="543"/>
+      <xy x="20" y="20" width="1000" height="614"/>
     </constraints>
     <properties>
       <enabled value="true"/>
       <inheritsPopupMenu value="true"/>
       <minimumSize width="0" height="0"/>
-      <preferredSize width="800" height="500"/>
+      <preferredSize width="800" height="550"/>
     </properties>
     <border type="none"/>
     <children>
@@ -96,6 +96,7 @@
                   <splitpane position="left"/>
                 </constraints>
                 <properties>
+                  <enabled value="false"/>
                   <minimumSize width="0" height="0"/>
                   <preferredSize width="200" height="28"/>
                 </properties>
@@ -174,6 +175,7 @@
                                       <alignmentY value="0.1"/>
                                       <opaque value="false"/>
                                       <requestFocusEnabled value="true"/>
+                                      <text value=""/>
                                     </properties>
                                   </component>
                                   <component id="e9a58" class="javax.swing.JLabel" binding="LanguageNameLabel">
@@ -267,27 +269,23 @@
                   </component>
                 </children>
               </grid>
-              <grid id="702a9" binding="editTranslationsPane" layout-manager="GridLayoutManager" row-count="5" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="702a9" binding="editTranslationsPane" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <splitpane position="right"/>
                 </constraints>
                 <properties>
+                  <enabled value="false"/>
                   <minimumSize width="100" height="24"/>
                   <preferredSize width="100" height="24"/>
                   <requestFocusEnabled value="true"/>
                 </properties>
                 <border type="none"/>
                 <children>
-                  <vspacer id="cc135">
-                    <constraints>
-                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                    </constraints>
-                  </vspacer>
-                  <grid id="66888" layout-manager="GridLayoutManager" row-count="11" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="66888" layout-manager="GridLayoutManager" row-count="13" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="20" left="0" bottom="0" right="0"/>
                     <constraints>
-                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                      <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties/>
                     <border type="none"/>
@@ -302,11 +300,6 @@
                           <text value=""/>
                         </properties>
                       </component>
-                      <vspacer id="4ec8b">
-                        <constraints>
-                          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                      </vspacer>
                       <component id="7e481" class="javax.swing.JTextField" binding="iosKeyTextField" default-binding="true">
                         <constraints>
                           <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
@@ -317,19 +310,9 @@
                           <text value=""/>
                         </properties>
                       </component>
-                      <component id="131ca" class="javax.swing.JTextField" binding="webKeyTextField" default-binding="true">
+                      <component id="131ca" class="javax.swing.JTextField" binding="webAdminTextField">
                         <constraints>
                           <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="-1"/>
-                          </grid>
-                        </constraints>
-                        <properties>
-                          <text value=""/>
-                        </properties>
-                      </component>
-                      <component id="ace7f" class="javax.swing.JTextField" binding="translationTextField">
-                        <constraints>
-                          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
@@ -353,17 +336,17 @@
                           <text value="Ios key"/>
                         </properties>
                       </component>
-                      <component id="a73b7" class="javax.swing.JLabel" binding="webKeyLabel">
+                      <component id="a73b7" class="javax.swing.JLabel" binding="webAdminLabel">
                         <constraints>
                           <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Web key"/>
+                          <text value="Web Admin"/>
                         </properties>
                       </component>
                       <component id="f19bd" class="javax.swing.JLabel" binding="translationsLabel">
                         <constraints>
-                          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="Translation"/>
@@ -371,7 +354,7 @@
                       </component>
                       <component id="f32d7" class="javax.swing.JLabel" binding="languageSpinnerLabel">
                         <constraints>
-                          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="Languages"/>
@@ -379,7 +362,7 @@
                       </component>
                       <component id="5ad1" class="javax.swing.JComboBox" binding="languagesDropDown">
                         <constraints>
-                          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                          <grid row="11" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <editable value="false"/>
@@ -387,12 +370,44 @@
                           <name value=""/>
                         </properties>
                       </component>
+                      <component id="fb012" class="javax.swing.JTextField" binding="webMainTextField">
+                        <constraints>
+                          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="a8049" class="javax.swing.JTextField" binding="webWidgetTextField">
+                        <constraints>
+                          <grid row="9" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="44017" class="javax.swing.JLabel" binding="webMainLabel">
+                        <constraints>
+                          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Web Main"/>
+                        </properties>
+                      </component>
+                      <component id="63b56" class="javax.swing.JLabel" binding="webWidgetLabel">
+                        <constraints>
+                          <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Web Widget"/>
+                        </properties>
+                      </component>
                     </children>
                   </grid>
                   <grid id="52a8d" layout-manager="GridLayoutManager" row-count="4" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties/>
                     <border type="none" title=""/>
@@ -437,10 +452,25 @@
                   </grid>
                   <component id="81c98" class="javax.swing.JButton" binding="saveButton" default-binding="true">
                     <constraints>
-                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <grid row="4" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <text value="Save"/>
+                    </properties>
+                  </component>
+                  <component id="6c901" class="javax.swing.JTextArea" binding="translationTextArea">
+                    <constraints>
+                      <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                        <preferred-size width="150" height="50"/>
+                      </grid>
+                    </constraints>
+                    <properties>
+                      <columns value="6"/>
+                      <lineWrap value="true"/>
+                      <margin top="2" left="6" bottom="6" right="2"/>
+                      <requestFocusEnabled value="true"/>
+                      <rows value="3"/>
+                      <text value=""/>
                     </properties>
                   </component>
                 </children>
