@@ -64,7 +64,7 @@ public class AuthHelper {
             if (onSignedInListener != null) {
                 onSignedInListener.onSignedIn();
             }
-            //TODO: these errors are a bit trickier to check in the LogInSignIn class, so I check them here
+            // these errors are a bit trickier to check in the LogInSignIn class, so I check them here
         } else if (signInResponseInfo.getKey().contains("EMAIL_EXISTS") && CSVTranslatorMain.getLogInAndSignInPanel() != null) {
             JOptionPane.showMessageDialog(CSVTranslatorMain.getLogInAndSignInPanel(), "Email already exists");
         } else if (signInResponseInfo.getKey().contains("INVALID_EMAIL") && CSVTranslatorMain.getLogInAndSignInPanel() != null) {
@@ -94,7 +94,7 @@ public class AuthHelper {
             if (onLoggedInListener != null) {
                 onLoggedInListener.onLoggedIn();
             }
-            //TODO: these errors are a bit trickier to check in the LogInSignIn class, so I check them here
+            // these errors are a bit trickier to check in the LogInSignIn class, so I check them here
         } else if (logInResponseInfo.getKey().contains("INVALID_PASSWORD") && CSVTranslatorMain.getLogInAndSignInPanel() != null) {
             JOptionPane.showMessageDialog(CSVTranslatorMain.getLogInAndSignInPanel(), "Invalid password");
         } else if (logInResponseInfo.getKey().contains("INVALID_EMAIL") && CSVTranslatorMain.getLogInAndSignInPanel() != null) {

@@ -100,10 +100,14 @@ public class LogInAndSignIn {
         String email = signInEmailTextField.getText();
         String password = String.valueOf(logInPasswordField.getPassword());
 
-        if (!password.isEmpty()) {
-            authHelper.logExistingUserIn(email, password);
+        if (!email.isEmpty()) {
+            if (!password.isEmpty()) {
+                authHelper.logExistingUserIn(email, password);
+            } else {
+                JOptionPane.showMessageDialog(mainPanel, "Password is missing");
+            }
         } else {
-            JOptionPane.showMessageDialog(mainPanel, "Password is missing");
+            JOptionPane.showMessageDialog(mainPanel, "Email is missing");
         }
     }
 
