@@ -459,8 +459,6 @@ public class MainView {
     }
 
     private void addTranslationToALanguage(String languageCode, String translation) {
-        //todo change language to language code
-
         String jsonBody2 = "{\n" +
                 "  \"" + languageCode + "\":\"" + translation + "\"\n" +
                 "}";
