@@ -1,6 +1,7 @@
 package CSVTranslator.mainView;
 
 import CSVTranslator.FireBaseRequests;
+import CSVTranslator.Profile;
 import CSVTranslator.auth.AuthHelper;
 import CSVTranslator.importexport.ExportDialog;
 import CSVTranslator.importexport.ImportViewClass;
@@ -111,7 +112,6 @@ public class MainView {
         public void actionPerformed(ActionEvent e) {
             Object object = e.getSource();
             if (object == languagesDropDown && (!libraryID.equals("") && !translationID.equals(""))) {
-                System.out.println("toimii");
                 getTranslationForLanguage();
             }
         }
@@ -164,14 +164,12 @@ public class MainView {
             if (actionEvent.getValueIsAdjusting()) {
                 Object obj = actionEvent.getSource();
                 if (obj == libraryList) {
-                    System.out.println("pressed");
                     clearTranslationTextFields();
                     libraryContentJList.removeAll();
                     System.out.println(libraryList.getSelectedValue());
                     libraryName = libraryList.getSelectedValue();
                     loadSingleLibraryContent(libraryName);
                 } else if (obj == libraryContentJList) {
-                    System.out.println("clicked");
                     clearTranslationTextFields();
                     getTranslationContent(libraryContentJList.getSelectedValue());
                 }
@@ -202,7 +200,6 @@ public class MainView {
         clearTranslationTextFields();
     }
 
-    //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     private void getTranslationContent(String translationName) {
 
         for (Pair<String, String> translationValue : translationIDList) {
@@ -476,30 +473,32 @@ public class MainView {
     private void makeJMenu() {
         JMenu jMenu = new JMenu("Options");
         JMenuBar jMenuBar = new JMenuBar();
-        JMenuItem importFile = new JMenuItem("Import");
-        JMenuItem profile = new JMenuItem("Profile");
-        JMenuItem addNewFile = new JMenuItem("Add new library");
+        JMenuItem importFileItem = new JMenuItem("Import");
+        JMenuItem profileItem = new JMenuItem("Profile");
+        JMenuItem newLibraryItem = new JMenuItem("Add new library");
 
         ActionListener buttonListener = actionEvent -> {
             Object obj = actionEvent.getSource();
 
-            if (obj == importFile) {
+            if (obj == importFileItem) {
                 ImportViewClass importViewClass = new ImportViewClass(mainPanel);
                 SwingUtilities.invokeLater(importViewClass.runUI());
-            } else if (obj == profile) {
+            } else if (obj == profileItem) {
                 System.out.println("profile pressed");
-            } else if (obj == addNewFile) {
+                Profile profile = new Profile();
+                SwingUtilities.invokeLater(profile.runUI());
+            } else if (obj == newLibraryItem) {
                 addNewLibrary();
             }
         };
 
-        importFile.addActionListener(buttonListener);
-        profile.addActionListener(buttonListener);
-        addNewFile.addActionListener(buttonListener);
+        importFileItem.addActionListener(buttonListener);
+        profileItem.addActionListener(buttonListener);
+        newLibraryItem.addActionListener(buttonListener);
 
-        jMenu.add(addNewFile);
-        jMenu.add(profile);
-        jMenu.add(importFile);
+        jMenu.add(newLibraryItem);
+        jMenu.add(profileItem);
+        jMenu.add(importFileItem);
         jMenuBar.add(jMenu);
         frame.setJMenuBar(jMenuBar);
     }
@@ -514,6 +513,8 @@ public class MainView {
         webMainTextField.setText("");
         translationTextArea.setText("");
     }
+
+    public void dispose() { frame.dispose(); }
 
 //    public static void main(String[] args) {
 //        JFrame frame = new JFrame("Main view");

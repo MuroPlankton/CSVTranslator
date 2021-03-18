@@ -4,8 +4,7 @@ import CSVTranslator.auth.AuthHelper;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.Arrays;
 
 public class LogInAndSignIn {
@@ -32,6 +31,8 @@ public class LogInAndSignIn {
     private JTextField signInEmailTextField;
     private JPasswordField logInPasswordField;
 
+    private final AuthHelper authHelper = AuthHelper.getInstance();
+
     private final Runnable runUI = this::createUI;
 
     public final Runnable runUI() {
@@ -47,24 +48,34 @@ public class LogInAndSignIn {
         frame.setVisible(true);
     }
 
-    public void dispose() { frame.dispose(); }
+    public void dispose() {
+        frame.dispose();
+    }
 
     public LogInAndSignIn() {
-        AuthHelper authHelper = AuthHelper.getInstance();
+        logInLogic();
 
+        signInLogic();
+    }
+
+    private void logInLogic() {
         logInBtn.addActionListener(actionEvent -> {
-            String email = signInEmailTextField.getText();
-            String password = String.valueOf(logInPasswordField.getPassword());
-
-            authHelper.logExistingUserIn(email, password);
+            logIn();
         });
+
+        logInPanel.registerKeyboardAction(e -> logIn(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         linkToSignIn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         linkToSignIn.addMouseListener(new MouseListener() {
             @Override
-            public void mouseClicked(MouseEvent mouseEvent) { }
+            public void mouseClicked(MouseEvent mouseEvent) {
+            }
+
             @Override
-            public void mousePressed(MouseEvent mouseEvent) { }
+            public void mousePressed(MouseEvent mouseEvent) {
+            }
 
             @Override
             public void mouseReleased(MouseEvent mouseEvent) {
@@ -76,39 +87,49 @@ public class LogInAndSignIn {
             }
 
             @Override
-            public void mouseEntered(MouseEvent mouseEvent) { }
+            public void mouseEntered(MouseEvent mouseEvent) {
+            }
+
             @Override
-            public void mouseExited(MouseEvent mouseEvent) { }
-        });
-
-        signInBtn.addActionListener(actionEvent -> {
-            String userName;
-            String email;
-            String password;
-
-            if (userNameTextField.getText() != null && emailTextField.getText() != null) {
-                userName = userNameTextField.getText();
-                email = emailTextField.getText();
-
-                if (passwordField1.getPassword() != null && passwordField2.getPassword() != null) {
-                    if (Arrays.equals(passwordField1.getPassword(), passwordField2.getPassword())) {
-                        password = String.valueOf(passwordField1.getPassword());
-
-                        authHelper.signNewUserIn(email, userName, password);
-                    } else {
-                        JOptionPane.showMessageDialog(mainPanel, "Passwords don't match!");
-                    }
-                }
+            public void mouseExited(MouseEvent mouseEvent) {
             }
         });
+    }
+
+    private void logIn() {
+        String email = signInEmailTextField.getText();
+        String password = String.valueOf(logInPasswordField.getPassword());
+
+        if (!email.isEmpty()) {
+            if (!password.isEmpty()) {
+                authHelper.logExistingUserIn(email, password);
+            } else {
+                JOptionPane.showMessageDialog(mainPanel, "Password is missing");
+            }
+        } else {
+            JOptionPane.showMessageDialog(mainPanel, "Email is missing");
+        }
+    }
+
+    private void signInLogic() {
+        signInBtn.addActionListener(actionEvent -> {
+            signIn();
+        });
+
+        signInPanel.registerKeyboardAction(e -> signIn(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         linkToLogIn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         linkToLogIn.addMouseListener(new MouseListener() {
             @Override
-            public void mouseClicked(MouseEvent mouseEvent) { }
+            public void mouseClicked(MouseEvent mouseEvent) {
+            }
+
             @Override
-            public void mousePressed(MouseEvent mouseEvent) { }
+            public void mousePressed(MouseEvent mouseEvent) {
+            }
 
             @Override
             public void mouseReleased(MouseEvent mouseEvent) {
@@ -122,9 +143,39 @@ public class LogInAndSignIn {
             }
 
             @Override
-            public void mouseEntered(MouseEvent mouseEvent) { }
+            public void mouseEntered(MouseEvent mouseEvent) {
+            }
+
             @Override
-            public void mouseExited(MouseEvent mouseEvent) { }
+            public void mouseExited(MouseEvent mouseEvent) {
+            }
         });
+    }
+
+    private void signIn() {
+        String userName;
+        String email;
+        String password;
+
+        userName = userNameTextField.getText();
+        if (!userName.isEmpty()) {
+            email = emailTextField.getText();
+            if (!email.isEmpty()) {
+                if (Arrays.equals(passwordField1.getPassword(), passwordField2.getPassword())) {
+                    password = String.valueOf(passwordField1.getPassword());
+                    if (!password.isEmpty()) {
+                        authHelper.signNewUserIn(email, userName, password);
+                    } else {
+                        JOptionPane.showMessageDialog(mainPanel, "Password is missing");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(mainPanel, "Passwords don't match!");
+                }
+            } else {
+                JOptionPane.showMessageDialog(mainPanel, "Email is missing");
+            }
+        } else {
+            JOptionPane.showMessageDialog(mainPanel, "Username is missing");
+        }
     }
 }

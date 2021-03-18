@@ -1,5 +1,7 @@
 package CSVTranslator;
 
+import CSVTranslator.auth.AuthHelper;
+
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -10,13 +12,36 @@ public class Profile extends JDialog {
     private JButton buttonCancel;
     private JButton signOutBtn;
 
+    private final Runnable runUI = this::createUI;
+
+    public final Runnable runUI() {
+        return runUI;
+    }
+
+    private void createUI() {
+        Profile dialog = new Profile();
+        dialog.pack();
+        dialog.setSize(500, 500);
+        dialog.setVisible(true);
+    }
+
     public Profile() {
         setDialog();
 
         signOutBtn.addActionListener(actionEvent -> {
-//            dispose();
-
+            signOut();
         });
+    }
+
+    public void signOut() {
+        dispose();
+
+        CSVTranslatorMain.disposeMainView();
+
+        AuthHelper authHelper = AuthHelper.getInstance();
+        authHelper.emptyInformationOnSignOut();
+
+        CSVTranslatorMain.appStart();
     }
 
     private void setDialog() {
@@ -50,13 +75,5 @@ public class Profile extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
-    }
-
-    public static void main(String[] args) {
-        Profile dialog = new Profile();
-//        dialog.pack();
-        dialog.setSize(500, 500);
-        dialog.setVisible(true);
-        System.exit(0);
     }
 }
