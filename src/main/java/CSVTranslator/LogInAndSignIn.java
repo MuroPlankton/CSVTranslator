@@ -4,8 +4,7 @@ import CSVTranslator.auth.AuthHelper;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.Arrays;
 
 public class LogInAndSignIn {
@@ -32,8 +31,9 @@ public class LogInAndSignIn {
     private JTextField signInEmailTextField;
     private JPasswordField logInPasswordField;
 
-    private final Runnable runUI = this::createUI;
+    private final AuthHelper authHelper = AuthHelper.getInstance();
 
+    private final Runnable runUI = this::createUI;
     public final Runnable runUI() {
         return runUI;
     }
@@ -50,14 +50,19 @@ public class LogInAndSignIn {
     public void dispose() { frame.dispose(); }
 
     public LogInAndSignIn() {
-        AuthHelper authHelper = AuthHelper.getInstance();
+        logInLogic();
 
+        signInLogic();
+    }
+
+    private void logInLogic() {
         logInBtn.addActionListener(actionEvent -> {
-            String email = signInEmailTextField.getText();
-            String password = String.valueOf(logInPasswordField.getPassword());
-
-            authHelper.logExistingUserIn(email, password);
+            logIn();
         });
+
+        logInPanel.registerKeyboardAction(e -> logIn(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         linkToSignIn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         linkToSignIn.addMouseListener(new MouseListener() {
@@ -80,27 +85,23 @@ public class LogInAndSignIn {
             @Override
             public void mouseExited(MouseEvent mouseEvent) { }
         });
+    }
 
+    private void logIn() {
+        String email = signInEmailTextField.getText();
+        String password = String.valueOf(logInPasswordField.getPassword());
+
+        authHelper.logExistingUserIn(email, password);
+    }
+
+    private void signInLogic() {
         signInBtn.addActionListener(actionEvent -> {
-            String userName;
-            String email;
-            String password;
-
-            if (userNameTextField.getText() != null && emailTextField.getText() != null) {
-                userName = userNameTextField.getText();
-                email = emailTextField.getText();
-
-                if (passwordField1.getPassword() != null && passwordField2.getPassword() != null) {
-                    if (Arrays.equals(passwordField1.getPassword(), passwordField2.getPassword())) {
-                        password = String.valueOf(passwordField1.getPassword());
-
-                        authHelper.signNewUserIn(email, userName, password);
-                    } else {
-                        JOptionPane.showMessageDialog(mainPanel, "Passwords don't match!");
-                    }
-                }
-            }
+            signIn();
         });
+
+        signInPanel.registerKeyboardAction(e -> signIn(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+                JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         linkToLogIn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
@@ -126,5 +127,26 @@ public class LogInAndSignIn {
             @Override
             public void mouseExited(MouseEvent mouseEvent) { }
         });
+    }
+
+    private void signIn() {
+        String userName;
+        String email;
+        String password;
+
+        if (userNameTextField.getText() != null && emailTextField.getText() != null) {
+            userName = userNameTextField.getText();
+            email = emailTextField.getText();
+
+            if (passwordField1.getPassword() != null && passwordField2.getPassword() != null) {
+                if (Arrays.equals(passwordField1.getPassword(), passwordField2.getPassword())) {
+                    password = String.valueOf(passwordField1.getPassword());
+
+                    authHelper.signNewUserIn(email, userName, password);
+                } else {
+                    JOptionPane.showMessageDialog(mainPanel, "Passwords don't match!");
+                }
+            }
+        }
     }
 }
