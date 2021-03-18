@@ -5,10 +5,8 @@ import com.google.gson.JsonObject;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
@@ -22,9 +20,10 @@ public class ImportViewClass {
     private JPanel contentPane;
 
     private Component calledFrom;
-    private CsvHandler csvHandler;
+    private CSVImporter csvImporter;
     private Stack<String> langStack = new Stack<>();
     private String chosenFile;
+    private String fileName;
     private JsonObject languagesObject = new JsonObject();
 
     private final Runnable runUI = this::createUI;
@@ -44,7 +43,7 @@ public class ImportViewClass {
 
     public ImportViewClass(Component calledFrom) {
         this.calledFrom = calledFrom;
-        csvHandler = new CsvHandler();
+        csvImporter = new CSVImporter();
         fileChooser();
 
         langNameLabel.setText(String.format("%s stands for:", langStack.peek()));
@@ -65,7 +64,7 @@ public class ImportViewClass {
             } else {
                 frame.setVisible(false);
                 frame.dispose();
-                //TODO: attach import logic here
+                csvImporter.readCsvAndImportToFirebase(chosenFile, fileName, languagesObject, langComboBox.getSelectedItem().toString());
             }
         }
     };
@@ -81,8 +80,9 @@ public class ImportViewClass {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             chosenFile = file.getAbsolutePath();
+            fileName = file.getName();
 
-            List<String> languages = csvHandler.findLanguages(chosenFile);
+            List<String> languages = csvImporter.findLanguages(chosenFile);
             langComboBox.removeAllItems();
             for (String lang : languages) {
                 langComboBox.addItem(lang);

@@ -58,7 +58,7 @@ public class OutPutFileWriter {
                 break;
             case CSV:
                 dir = "./csv";
-                fileName = "library name...";
+                fileName = "library-output.csv";
                 break;
         }
 

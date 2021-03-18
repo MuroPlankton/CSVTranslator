@@ -93,4 +93,27 @@ public class FireBaseRequests {
 
         return null;
     }
+
+    public Pair<String, Boolean> putData(String url, String jsonBody, MediaType mediaType) {
+        RequestBody body = RequestBody.create(jsonBody, mediaType);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .put(body)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            ResponseBody responseBody = response.body();
+            if (responseBody != null) {
+                String responseBodyString = responseBody.string();
+                if (!("null").equals(responseBodyString)) {
+                    return new Pair<>(responseBodyString, (response.isSuccessful()));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

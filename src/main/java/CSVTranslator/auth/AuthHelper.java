@@ -6,7 +6,6 @@ import CSVTranslator.util.Pair;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
 
 import javax.swing.*;
 import java.io.File;
@@ -32,8 +31,6 @@ public class AuthHelper {
     private long tokenExpiryTime;
 
     private String userID;
-
-    private final OkHttpClient client = new OkHttpClient();
 
     private AuthHelper() {
     }
@@ -147,9 +144,6 @@ public class AuthHelper {
         Pair<String, Boolean> userLibsResponseInfo =
                 fireBaseRequests.getData(String.format("https://%s.firebaseio.com/user_libraries/%s.json?auth=%s",
                         PROJECT_ID, userID, getIDToken()));
-
-//        System.out.println("DISPLAY \n" + "key: \n " + userLibsResponseInfo.getKey() +
-//                "\n value: \n" + userLibsResponseInfo.getValue());
 
         if (userLibsResponseInfo != null) {
             if (userLibsResponseInfo.getValue()) {
