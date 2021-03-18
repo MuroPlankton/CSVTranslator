@@ -1,6 +1,7 @@
 package CSVTranslator;
 
 import CSVTranslator.auth.AuthHelper;
+import CSVTranslator.mainView.MainView;
 
 import javax.swing.*;
 import java.awt.*;
