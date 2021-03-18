@@ -119,7 +119,6 @@ public class AuthHelper {
                 return JsonParser.parseString(tokenRefreshResponseInfo.getKey())
                         .getAsJsonObject().get("id_token").getAsString();
             } else {
-                //TODO: act accordingly to an unsuccessful response
                 return null;
             }
         }
@@ -139,7 +138,6 @@ public class AuthHelper {
                     .get(0).getAsJsonObject()
                     .get("displayName").getAsString();
         } else {
-            //TODO: act accordingly to an unsuccessful response
             return null;
         }
     }
