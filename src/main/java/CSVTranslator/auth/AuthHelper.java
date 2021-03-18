@@ -64,9 +64,11 @@ public class AuthHelper {
             if (onSignedInListener != null) {
                 onSignedInListener.onSignedIn();
             }
-            //TODO: might not be the best way to do this. Nothing else came to mind
+            //TODO: these errors are a bit trickier to check in the LogInSignIn class, so I check them here
         } else if (signInResponseInfo.getKey().contains("EMAIL_EXISTS") && CSVTranslatorMain.getLogInAndSignInPanel() != null) {
             JOptionPane.showMessageDialog(CSVTranslatorMain.getLogInAndSignInPanel(), "Email already exists");
+        } else if (signInResponseInfo.getKey().contains("INVALID_EMAIL") && CSVTranslatorMain.getLogInAndSignInPanel() != null) {
+            JOptionPane.showMessageDialog(CSVTranslatorMain.getLogInAndSignInPanel(), "Invalid email");
         } else if (signInResponseInfo.getKey().contains("WEAK_PASSWORD") && CSVTranslatorMain.getLogInAndSignInPanel() != null) {
             JOptionPane.showMessageDialog(CSVTranslatorMain.getLogInAndSignInPanel(), "Password should be at least 6 characters");
         } else {
@@ -82,6 +84,9 @@ public class AuthHelper {
 
         Pair<String, Boolean> logInResponseInfo =
                 fireBaseRequests.postData(logInURL, logInJson, MediaType.parse("application/json"));
+
+        System.out.println("LOG IN \n" + "key \n" + logInResponseInfo.getKey() + "value \n" + logInResponseInfo.getValue());
+
         if (logInResponseInfo.getValue()) {
             setTokenInfoAndUID(JsonParser.parseString(logInResponseInfo.getKey()).getAsJsonObject());
             saveRefreshTokenToFile();
@@ -89,8 +94,14 @@ public class AuthHelper {
             if (onLoggedInListener != null) {
                 onLoggedInListener.onLoggedIn();
             }
+            //TODO: these errors are a bit trickier to check in the LogInSignIn class, so I check them here
+        } else if (logInResponseInfo.getKey().contains("INVALID_PASSWORD") && CSVTranslatorMain.getLogInAndSignInPanel() != null) {
+            JOptionPane.showMessageDialog(CSVTranslatorMain.getLogInAndSignInPanel(), "Invalid password");
+        } else if (logInResponseInfo.getKey().contains("INVALID_EMAIL") && CSVTranslatorMain.getLogInAndSignInPanel() != null) {
+            JOptionPane.showMessageDialog(CSVTranslatorMain.getLogInAndSignInPanel(), "Invalid email");
+        } else if (logInResponseInfo.getKey().contains("EMAIL_NOT_FOUND") && CSVTranslatorMain.getLogInAndSignInPanel() != null) {
+            JOptionPane.showMessageDialog(CSVTranslatorMain.getLogInAndSignInPanel(), "Email not found");
         } else {
-            //TODO: act accordingly to an unsuccessful response
             System.out.println("Response for log in wasn't successful");
         }
     }
@@ -234,15 +245,15 @@ public class AuthHelper {
         this.onLoggedInListener = listener;
     }
 
-    public interface OnLoggedInListener {
-        void onLoggedIn();
-    }
+public interface OnLoggedInListener {
+    void onLoggedIn();
+}
 
     public void setOnSignedInListener(OnSignedInListener listener) {
         this.onSignedInListener = listener;
     }
 
-    public interface OnSignedInListener {
-        void onSignedIn();
-    }
+public interface OnSignedInListener {
+    void onSignedIn();
+}
 }
