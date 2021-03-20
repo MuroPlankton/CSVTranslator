@@ -22,6 +22,7 @@ public class CSVImporter {
     private List<String> firstLineAsList;
 
     private String filePath;
+    private String fileName;
     private JsonObject libraryObject;
     private String mainLang;
     private JsonObject textsObject = new JsonObject();
@@ -29,6 +30,7 @@ public class CSVImporter {
     public void readCsvAndImportToFirebase(String filePath, String fileName, JsonObject languagesObject, String mainLang) {
         this.filePath = filePath;
         this.mainLang = mainLang;
+        this.fileName = fileName;
         libraryObject = new JsonObject();
         libraryObject.addProperty("library_name", fileName);
         libraryObject.add("languages", new Gson().toJsonTree(languagesObject));
@@ -58,11 +60,24 @@ public class CSVImporter {
             libraryObject.add("texts", new Gson().toJsonTree(textsObject));
 
             FireBaseRequests fireBaseRequests = new FireBaseRequests();
+            AuthHelper authHelper = AuthHelper.getInstance();
+            String libraryID = UUID.randomUUID().toString();
             fireBaseRequests.putData(
-                    String.format("https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/%s.json",
-                            UUID.randomUUID().toString()),
-                    libraryObject.getAsString(), //TODO: bug with this line
+                    String.format("https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/%s.json?auth=%s",
+                            libraryID, authHelper.getIDToken()),
+
+                    libraryObject.toString(), //TODO: bug with this line
+
                     MediaType.parse("application/json"));
+
+            String userLibraryJsonBody = "{\n" +
+                    "  \"" + libraryID + "\":\"" + fileName + "\"\n" +
+                    "}";
+
+            fireBaseRequests.patchData(String.format("https://csv-android-app-f0353-default-rtdb.firebaseio.com/user_libraries/%s.json?auth=%s",
+                    authHelper.getUserID(), authHelper.getIDToken()),
+                    userLibraryJsonBody, MediaType.parse("application/json"));
+
             if (br != null) {
                 try {
                     br.close();

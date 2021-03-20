@@ -29,7 +29,8 @@ public class MainView {
     protected JSplitPane splitPane;
 
     protected JList<String> libraryList;
-    protected JList<String> libraryContentJList;
+    private final JList<String> libraryContentJList = new JList<>();
+    //    protected JList<String> libraryContentJList;
     protected JLabel libraryNameLabel;
     protected JButton newTranslation;
     protected JTextField languageNameTextField;
@@ -40,7 +41,6 @@ public class MainView {
     protected JTextField androidKeyTextField;
     protected JTextField iosKeyTextField;
     protected JTextField webAdminTextField;
-    //    protected JTextField translationTextField;
     protected JTextArea translationTextArea;
 
     protected JButton saveButton;
@@ -61,6 +61,7 @@ public class MainView {
     protected JTextField webWidgetTextField;
     protected JLabel webMainLabel;
     protected JLabel webWidgetLabel;
+    private JScrollPane libraryContentJScrollPane;
 
     protected int languageCount;
     protected String libraryID = "";
@@ -118,6 +119,8 @@ public class MainView {
     };
 
     public MainView() {
+        libraryContentJScrollPane.setViewportView(libraryContentJList);
+
         languageCodeTextField.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -165,7 +168,7 @@ public class MainView {
                 Object obj = actionEvent.getSource();
                 if (obj == libraryList) {
                     clearTranslationTextFields();
-                    libraryContentJList.removeAll();
+                    libraryContentJList.clearSelection();
                     System.out.println(libraryList.getSelectedValue());
                     libraryName = libraryList.getSelectedValue();
                     loadSingleLibraryContent(libraryName);
@@ -190,7 +193,6 @@ public class MainView {
                 saveLibraryName();
             }
         });
-
     }
 
     private void addNewTranslation() {
@@ -216,13 +218,36 @@ public class MainView {
         System.out.println("Response: " + responseObject);
         System.out.println("Translation ID: " + translationID);
         if (responseObject != null) {
-            String androidKey = responseObject.get("android_key").getAsString();
-            String iosKey = responseObject.get("ios_key").getAsString();
-            String webMainKey = responseObject.get("web_key").getAsString();
-            String webAdminKey = responseObject.get("web_admin_key").getAsString();
-            String webWidgetKey = responseObject.get("web_admin_key").getAsString();
-            String name = responseObject.get("name").getAsString();
-            String description = responseObject.get("description").getAsString();
+
+            String androidKey = "";
+            String iosKey = "";
+            String webMainKey = "";
+            String webAdminKey = "";
+            String webWidgetKey = "";
+            String name = "";
+            String description = "";
+
+            if (responseObject.has("android_key")) {
+                androidKey = responseObject.get("android_key").getAsString();
+            }
+            if (responseObject.has("ios_key")) {
+                iosKey = responseObject.get("ios_key").getAsString();
+            }
+            if (responseObject.has("web_key")) {
+                webMainKey = responseObject.get("web_key").getAsString();
+            }
+            if (responseObject.has("web_admin_key")) {
+                webAdminKey = responseObject.get("web_admin_key").getAsString();
+            }
+            if (responseObject.has("web_widget_key")) {
+                webWidgetKey = responseObject.get("web_widget_key").getAsString();
+            }
+            if (responseObject.has("name")) {
+                name = responseObject.get("name").getAsString();
+            }
+            if (responseObject.has("description")) {
+                description = responseObject.get("description").getAsString();
+            }
 
             System.out.println(androidKey + ", " + iosKey + ", " + webMainKey + ", " + name + ", " + description);
 
@@ -244,7 +269,8 @@ public class MainView {
     private void getTranslationForLanguage() {
         if (languagesDropDown.getSelectedItem() != null) {
             String url = "https://csv-android-app-f0353-default-rtdb.firebaseio.com/libraries/" + libraryID + "/texts/" + translationID + "/translations.json?auth=" + authHelper.getIDToken();
-            String response = fireBaseRequests.getData(url).getKey();
+
+           String response = fireBaseRequests.getData(url).getKey();
 
             JsonObject responseObject = JsonParser.parseString(response).getAsJsonObject();
             System.out.println("Response object: " + responseObject);
@@ -512,15 +538,7 @@ public class MainView {
         translationTextArea.setText("");
     }
 
-    public void dispose() { frame.dispose(); }
-
-//    public static void main(String[] args) {
-//        JFrame frame = new JFrame("Main view");
-//        frame.setContentPane(new MainView().mainPanel);
-//        makeJMenu(frame);
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.pack();
-//        frame.setResizable(false);
-//        frame.setVisible(true);
-//    }
+    public void dispose() {
+        frame.dispose();
+    }
 }
