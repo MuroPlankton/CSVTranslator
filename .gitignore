@@ -3,7 +3,7 @@ build/
 dist/
 strings.xml
 idea/
-out/
+out/production/
 *.iml
 nbproject/
 Localizable.strings
